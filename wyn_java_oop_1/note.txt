@@ -1,0 +1,13 @@
+1. Class vs Object
+Class (Lớp) là kiểu (type) của Object (đối tượng)
+ví dụ:
+
+Class Sinhvien{
+    //biến thành viên
+
+String hoten;
+String MaSV;
+String diachi;
+//Phương thức hoạt động (methods)
+String
+}
