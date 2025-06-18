@@ -17,7 +17,7 @@ LichChoAn
 # Thành viên:
 ```
 
-Lò Tuấn Quỳnh (24104502)
+Lò Tuấn Quỳnh (24104502) (github: wyn0502)
 
 Vũ Xuân Trường (24107720) (github: xuantruong1612)
 
