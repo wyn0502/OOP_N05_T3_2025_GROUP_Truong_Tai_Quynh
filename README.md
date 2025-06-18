@@ -1,25 +1,48 @@
-# 🐾 Ứng dụng Quản Lý Sở Thú
+<h1 align="center">🐾 Ứng Dụng Quản Lý Sở Thú</h1>
 
-**Nhóm:** OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh  
-**Thành viên:**
-- Lò Tuấn Quỳnh (24104502) – GitHub: [@wyn0502](https://github.com/wyn0502)
-- Vũ Xuân Trường (24107720) – GitHub: [@xuantruong1612](https://github.com/xuantruong1612)
-- Đặng Đức Tài (24107665) – GitHub: [@dangtai-0510](https://github.com/dangtai-0510)
-
----
-
-## 📌 Giới thiệu
-
-Dự án được xây dựng nhằm mô phỏng hệ thống quản lý trong một sở thú, giúp theo dõi thông tin về các loài động vật, chuồng trại, nhân viên chăm sóc và lịch cho ăn. Ứng dụng được phát triển bằng ngôn ngữ Java theo mô hình lập trình hướng đối tượng (OOP), sử dụng các lớp sau:
-
-- `DongVat`: đại diện cho động vật trong sở thú, lưu thông tin như mã, tên, loại, tuổi, chuồng và giờ cho ăn.
-- `Chuong`: quản lý thông tin về chuồng nuôi (mã, khu vực, sức chứa, số lượng hiện tại).
-- `NhanVien`: đại diện cho nhân viên chăm sóc động vật, gồm mã, tên, số điện thoại, chuồng phụ trách.
-- `LichChoAn`: lưu lịch cho ăn theo ngày, giờ và loại thức ăn.
-
-Dự án hướng đến việc luyện tập các khái niệm như **lớp, đối tượng, kế thừa, đa hình, đóng gói** cũng như khả năng tổ chức và mở rộng chương trình.
+<p align="center">
+  📚 <strong>Java OOP Project</strong> – Nhóm: <code>OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh</code><br>
+  🎓 Môn học: Lập trình Hướng Đối Tượng – Năm nhất – Khoa CNTT
+</p>
 
 ---
 
-🔗 **Repo nhóm:** [https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh](https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh)
- 
+## 📌 Giới thiệu dự án
+
+🎯 Đây là một ứng dụng mô phỏng hệ thống quản lý trong một sở thú, nơi người dùng có thể:
+- Quản lý thông tin các 🦁 động vật (mã, tên, loại, tuổi, chuồng...)
+- Theo dõi chuồng 🏠 (sức chứa, khu vực, số lượng hiện tại)
+- Ghi nhận nhân viên 👨‍🌾 chăm sóc
+- Quản lý lịch cho ăn 🍽️ theo ngày giờ và loại thức ăn
+
+🔧 Dự án được phát triển bằng **Java thuần túy (OOP)**, với trọng tâm là:
+- 🎯 Luyện tập các khái niệm: **Lớp, Đối tượng, Đóng gói, Kế thừa, Đa hình**
+- 🔁 Mô hình hóa sát thực tế với các lớp **DongVat, Chuong, NhanVien, LichChoAn**
+
+---
+
+## 🧱 Các lớp chính
+
+| 📦 Lớp         | 📝 Mô tả chức năng                                                                 |
+|----------------|-------------------------------------------------------------------------------------|
+| `DongVat`      | Lưu thông tin động vật: mã, tên, loài, tuổi, chuồng, giờ ăn                        |
+| `Chuong`       | Quản lý chuồng nuôi: khu vực, sức chứa, số lượng hiện tại                          |
+| `NhanVien`     | Thông tin nhân viên: mã, tên, sđt, chuồng phụ trách                                |
+| `LichChoAn`    | Ghi nhận lịch cho ăn theo ngày giờ và loại thức ăn                                 |
+
+---
+
+## 👨‍👩‍👧‍👦 Thành viên nhóm
+
+| Tên thành viên        | Mã SV      | GitHub                      |
+|------------------------|------------|------------------------------|
+| 🧑‍💻 Lò Tuấn Quỳnh       | 24104502   | [@wyn0502](https://github.com/wyn0502) |
+| 👨‍💻 Vũ Xuân Trường      | 24107720   | [@xuantruong1612](https://github.com/xuantruong1612) |
+| 👨‍💻 Đặng Đức Tài         | 24107665   | [@dangtai-0510](https://github.com/dangtai-0510)     |
+
+---
+
+## 🔗 Liên kết repo
+
+📂 Repository GitHub:  
+👉 [github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh](https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh)
