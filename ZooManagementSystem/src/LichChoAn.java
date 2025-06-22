@@ -1,5 +1,6 @@
 package ZooManagementSystem.src;
-public class Lichchoan {
+
+public class LichChoAn {
     String Malich;
     String DongVat;
     String ThucAn;
