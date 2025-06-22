@@ -7,4 +7,5 @@ public class LichChoAn {
     String NhanVienChoAn;
     String Ngay;
     String Gio;
+    String loaidongvat;
 }
