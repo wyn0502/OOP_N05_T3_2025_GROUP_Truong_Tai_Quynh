@@ -6,4 +6,3 @@ public class NhanVien {
     String soDienThoai;
     String chuongPhuTrach;
 }
-}

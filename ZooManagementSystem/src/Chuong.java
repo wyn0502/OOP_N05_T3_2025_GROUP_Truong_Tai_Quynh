@@ -5,5 +5,4 @@ public class Chuong {
     String Tenkhuvuc;
     int SucChuaToiDa;
     int SoLuongHienTai;
-    
 }

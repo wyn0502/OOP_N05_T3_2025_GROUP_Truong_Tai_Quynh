@@ -6,5 +6,5 @@ public class DongVat {
     String Loai;
     int Tuoi;
     String ChuongSo;
-    String ThoiGianChoAn; 
+    String ThoiGianChoAn;
 }
