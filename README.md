@@ -29,6 +29,7 @@
 | `Chuong`       | Quản lý chuồng nuôi: khu vực, sức chứa, số lượng hiện tại                          |
 | `NhanVien`     | Thông tin nhân viên: mã, tên, sđt, chuồng phụ trách                                |
 | `LichChoAn`    | Ghi nhận lịch cho ăn theo ngày giờ và loại thức ăn                                 |
+| `GiaVe`        | Quản lí giá vé như học sinh, sinh viên, người lớn, trẻ em,..                       |
 
 ---
 
