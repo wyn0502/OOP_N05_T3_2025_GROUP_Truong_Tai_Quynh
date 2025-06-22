@@ -10,26 +10,27 @@
 ## 📌 Giới thiệu dự án
 
 🎯 Đây là một ứng dụng mô phỏng hệ thống quản lý trong một sở thú, nơi người dùng có thể:
-- Quản lý thông tin các 🦁 động vật (mã, tên, loại, tuổi, chuồng...)
-- Theo dõi chuồng 🏠 (sức chứa, khu vực, số lượng hiện tại)
-- Ghi nhận nhân viên 👨‍🌾 chăm sóc
-- Quản lý lịch cho ăn 🍽️ theo ngày giờ và loại thức ăn
+- Quản lý thông tin các 🦁 động vật (mã, tên, loại, tuổi, chuồng...).
+- Theo dõi chuồng 🏠 (sức chứa, khu vực, số lượng hiện tại).
+- Ghi nhận nhân viên 👨‍🌾 chăm sóc.
+- Quản lý lịch cho ăn 🍽️ theo ngày giờ và loại thức ăn.
+- Quản lý giá vé 🎫 khi tham gia sở thú.
 
-🔧 Dự án được phát triển bằng **Java thuần túy (OOP)**, với trọng tâm là:
-- 🎯 Luyện tập các khái niệm: **Lớp, Đối tượng, Đóng gói, Kế thừa, Đa hình**
-- 🔁 Mô hình hóa sát thực tế với các lớp **DongVat, Chuong, NhanVien, LichChoAn**
+🔧 Dự án được phát triển bằng **Java (OOP)**, với trọng tâm là:
+- 🎯 Luyện tập các khái niệm: **Class, Đối tượng, Đóng gói, Kế thừa, Đa hình**.
+- 🔁 Mô hình hóa sát thực tế với các **class**: ***DongVat, Chuong, NhanVien, LichChoAn, GiaVe***.
 
 ---
 
-## 🧱 Các lớp chính
+## 🧱 Main class
 
-| 📦 Lớp         | 📝 Mô tả chức năng                                                                 |
+| 📦 Class       | 📝 Mô tả chức năng                                                                 |
 |----------------|-------------------------------------------------------------------------------------|
-| `DongVat`      | Lưu thông tin động vật: mã, tên, loài, tuổi, chuồng, giờ ăn                        |
-| `Chuong`       | Quản lý chuồng nuôi: khu vực, sức chứa, số lượng hiện tại                          |
-| `NhanVien`     | Thông tin nhân viên: mã, tên, sđt, chuồng phụ trách                                |
-| `LichChoAn`    | Ghi nhận lịch cho ăn theo ngày giờ và loại thức ăn                                 |
-| `GiaVe`        | Quản lí giá vé như học sinh, sinh viên, người lớn, trẻ em,..                       |
+| `DongVat`      | Lưu thông tin động vật: mã, tên, loài, tuổi, chuồng, giờ ăn.                        |
+| `Chuong`       | Quản lý chuồng nuôi: khu vực, sức chứa, số lượng hiện tại.                          |
+| `NhanVien`     | Thông tin nhân viên: mã, tên, sđt, chuồng phụ trách.                                |
+| `LichChoAn`    | Ghi nhận lịch cho ăn theo ngày giờ và loại thức ăn.                                 |
+| `GiaVe`        | Quản lí giá vé như học sinh, sinh viên, người lớn, trẻ em,...                       |
 
 ---
 
@@ -43,7 +44,7 @@
 
 ---
 
-## 🔗 Liên kết repo
+## 🔗 Link repo
 
 📂 Repository GitHub:  
 👉 [github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh](https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh)
