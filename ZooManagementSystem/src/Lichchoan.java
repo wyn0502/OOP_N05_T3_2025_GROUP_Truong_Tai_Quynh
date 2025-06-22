@@ -1,9 +1,9 @@
 package ZooManagementSystem.src;
 public class Lichchoan {
-    String malich;
+    String Malich;
     String DongVat;
     String ThucAn;
-    String nhanvienchoan;
-    String ngay;
-    String gio;
+    String NhanVienChoAn;
+    String Ngay;
+    String Gio;
 }

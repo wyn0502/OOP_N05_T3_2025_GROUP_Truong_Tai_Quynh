@@ -1,8 +1,8 @@
 package ZooManagementSystem.src;
 
 public class NhanVien {
-    String maNhanVien;
-    String tenNhanVien;
-    String soDienThoai;
-    String chuongPhuTrach;
+    String MaNhanVien;
+    String TenNhanVien;
+    String SoDienThoai;
+    String ChuongPhuTrach;
 }
