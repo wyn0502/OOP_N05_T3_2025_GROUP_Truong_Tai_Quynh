@@ -4,5 +4,6 @@ public class App {
 
         TestGiaVe.Inve();
 
-        Pass.f();}
+        Pass.f(new MyNumber());
+    }
 }
