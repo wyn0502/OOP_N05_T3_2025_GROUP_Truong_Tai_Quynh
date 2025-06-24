@@ -4,6 +4,6 @@ public class App {
 
         TestGiaVe.Inve();
 
-        Pass.f(new MyNumber());
+        PassObject.f(new MyNumber());
     }
 }

@@ -3,5 +3,6 @@
         "ZooManagementSystem/test",
         "ZooManagementSystem/src"
     ],
-    "java.project.referencedLibraries": []
+    "java.project.referencedLibraries": [],
+    "java.debug.settings.onBuildFailureProceed": true
 }
