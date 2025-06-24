@@ -5,5 +5,6 @@ public class App {
         TestGiaVe.Inve();
 
         PassObject.f(new MyNumber());
+        BreakAndContinue.testFor();
     }
 }
