@@ -3,5 +3,6 @@ public class App {
         System.out.println("Hello, World!");
 
         TestGiaVe.Inve();
-    }
+
+        Pass.f();}
 }
