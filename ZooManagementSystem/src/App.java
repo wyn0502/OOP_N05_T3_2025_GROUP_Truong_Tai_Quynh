@@ -3,8 +3,8 @@ public class App {
         System.out.println("Hello, World!");
 
         TestGiaVe.Inve();
-
-        PassObject.f(new MyNumber());
+        PassObject.main(new MyNumber());
         BreakAndContinue.testFor();
+        BreakAndContinue.testWhile();
     }
 }
