@@ -5,7 +5,7 @@ public class LichChoAn {
     String DongVat;
     String ThucAn;
     String NhanVienChoAn;
-    String Ngay;
-    String Gio;
+    String ThoiGian;
+    
 
 }
