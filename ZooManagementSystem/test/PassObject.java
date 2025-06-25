@@ -4,7 +4,7 @@ public class PassObject {
         System.out.println("Trong hàm f, i = " + m.i);
     }
 
-    public static void s(String[] args) {
+    public static void main(MyNumber m) {
         MyNumber n = new MyNumber();
         n.i = 14;
         PassObject.f(n);
