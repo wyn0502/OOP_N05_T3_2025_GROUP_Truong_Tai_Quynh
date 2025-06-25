@@ -13,12 +13,31 @@
 **Ứng dụng quản lý sở thú - Zoo Management System**
 
 ### Câu 2: Phân tích đối tượng
-1. **Động vật (DongVat)**
-   - Quản lý thông tin: ID, tên, loài, tuổi, chuồng nuôi.
-2. **Nhân viên (NhanVien)**
-   - Theo dõi nhân sự: ID, tên, chức vụ, ca làm việc.
-3. **Chuồng (Chuong)**
-   - Quản lý khu vực nuôi: ID, loại chuồng, sức chứa.
+## 🔍 Câu 2: Phân tích 03 đối tượng chính
+
+### 1. Động vật (DongVat)
+| Thành phần       | Chi tiết                                                                 |
+|------------------|--------------------------------------------------------------------------|
+| **Mục đích**     | Quản lý thông tin và hành vi của các cá thể động vật trong sở thú         |
+| **Thuộc tính**   | `maDongVat`, `ten`, `loai`, `tuoi`, `chuong`, `thoiGianChoAn`           |
+| **Phương thức**  | `diChuyenChuong()`, `kiemTraSucKhoe()`, `capNhatThongTin()`             |
+| **Quan hệ**      | Thuộc về 1 `Chuong`, được chăm sóc bởi nhiều `NhanVien`                 |
+
+### 2. Chuồng (Chuong)
+| Thành phần       | Chi tiết                                                                 |
+|------------------|--------------------------------------------------------------------------|
+| **Mục đích**     | Quản lý không gian sống và điều kiện nuôi nhốt động vật                  |
+| **Thuộc tính**   | `maChuong`, `khuVuc`, `sucChua`, `soLuongHienTai`                       |
+| **Phương thức**  | `themDongVat()`, `kiemTraConChoTrong()`, `veSinhChuong()`               |
+| **Quan hệ**      | Chứa nhiều `DongVat`, được quản lý bởi nhiều `NhanVien`                 |
+
+### 3. Nhân viên (NhanVien)
+| Thành phần       | Chi tiết                                                                 |
+|------------------|--------------------------------------------------------------------------|
+| **Mục đích**     | Quản lý thông tin và công việc của nhân sự trong sở thú                  |
+| **Thuộc tính**   | `maNhanVien`, `ten`, `soDT`, `chuongPhuTrach`                           |
+| **Phương thức**  | `phanCongChuong()`, `xemLichLamViec()`, `baoCaosuCo()`                  |
+| **Quan hệ**      | Phụ trách nhiều `Chuong`, chăm sóc nhiều `DongVat`                       |
 
 ### Câu 3: Cấu trúc thư mục
 ````
