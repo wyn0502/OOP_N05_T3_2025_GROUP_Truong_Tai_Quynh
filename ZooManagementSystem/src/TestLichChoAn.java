@@ -1,7 +1,5 @@
-package ZooManagementSystem.src;
-
 public class TestLichChoAn {
-    public static void inthoigian(String[] args) {
+    public static void inThoiGian() {
         
         LichChoAn lich = new LichChoAn();
 

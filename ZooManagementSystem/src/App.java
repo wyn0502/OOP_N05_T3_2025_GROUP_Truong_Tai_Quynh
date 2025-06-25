@@ -7,7 +7,7 @@ public class App {
         // BreakAndContinue.testFor();
         // BreakAndContinue.testWhile();
         // BreakAndContinue.testDoWhile();
-        TestLichChoAn.inthoigian();
+        TestLichChoAn.inThoiGian();
 
         TestKhi.test();
         TestSuTu.test();

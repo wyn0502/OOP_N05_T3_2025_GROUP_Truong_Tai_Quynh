@@ -1,7 +1,3 @@
-
-
-package ZooManagementSystem.src;
-
 public class LichChoAn {
 
     private String maLich;
@@ -10,7 +6,7 @@ public class LichChoAn {
     private String nhanVienChoAn;
     private String thoiGian;
 
-    public LichChoAn() {}
+    // public LichChoAn() {}
 
     public void vietMaLich(String maLich) { this.maLich = maLich; }
 
