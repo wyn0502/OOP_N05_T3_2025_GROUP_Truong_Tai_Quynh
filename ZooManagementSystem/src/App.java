@@ -6,5 +6,6 @@ public class App {
         PassObject.main(new MyNumber());
         BreakAndContinue.testFor();
         BreakAndContinue.testWhile();
+        BreakAndContinue.testDoWhile();
     }
 }

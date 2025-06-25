@@ -2,7 +2,8 @@
     "java.project.sourcePaths": [
         "ZooManagementSystem/test",
         "ZooManagementSystem/src",
-        "ZooManagementSystem"
+        "ZooManagementSystem",
+        "ZooManagementSystem\\for-while-do"
     ],
     "java.project.referencedLibraries": [],
     "java.debug.settings.onBuildFailureProceed": true
