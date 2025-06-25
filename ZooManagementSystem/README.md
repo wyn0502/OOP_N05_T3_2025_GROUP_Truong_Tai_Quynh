@@ -46,16 +46,14 @@ ZooManagementSystem/
     └── for-while-do/
         ├── BreakAndContinue.java
         ├── TestWhile.java
-
-    │   ├── App.java
-    │   ├── Chuong.java
-    │   ├── DongVat.java
-    │   ├── GiaVe.java
-    │   ├── LichChoAn.java
-    │   └── NhanVien.java
-    └── test/         
+    └── Learn/xuantruong_is_here/
+        ├── ABC.java
+        ├── for-while-do.md
+        ├── NhapTenTuoi.java
+    └── Test/
+        ├── MyNumber.java
+        ├── PassObject.java
         ├── TestGiaVe.java
-        └── ... (các file test khác)
 
 
 
