@@ -8,9 +8,7 @@ public class App {
         // BreakAndContinue.testWhile();
         // BreakAndContinue.testDoWhile();
 
-        DongVat Con_Khi = new DongVat();
-        Con_Khi.keu();
-        Con_Khi.nhapTuoi(5);
-        System.out.printf("Tuoi: %d", Con_Khi.hienThiTuoi());
+        TestKhi.test();
+        TestSuTu.test();
     }
 }
