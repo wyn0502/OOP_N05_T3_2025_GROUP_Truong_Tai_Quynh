@@ -21,6 +21,7 @@
    - Quản lý khu vực nuôi: ID, loại chuồng, sức chứa.
 
 ### Câu 3: Cấu trúc thư mục
+````
 
 ZooManagementSystem/
 ├── .vscode/               # Cấu hình VS Code
@@ -55,8 +56,7 @@ ZooManagementSystem/
         ├── PassObject.java
         ├── TestGiaVe.java
 
-
-
+````
 ---
 
 ## 🧱 Main class
