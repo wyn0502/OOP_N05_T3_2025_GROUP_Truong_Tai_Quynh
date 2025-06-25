@@ -1,5 +1,3 @@
-package ZooManagementSystem.src;
-
 public class DongVat {
     String MaDongVat;
     String TenDongVat;
@@ -7,4 +5,16 @@ public class DongVat {
     int Tuoi;
     String ChuongSo;
     String ThoiGianChoAn;
+
+    public void nhapTuoi (int x){
+        this.Tuoi = x;
+    }
+
+    public int hienThiTuoi(){
+        return this.Tuoi;
+    }
+
+    public void keu(){
+        System.out.println("ec ec!");
+    }
 }
