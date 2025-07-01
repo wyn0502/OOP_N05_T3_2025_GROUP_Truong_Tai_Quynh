@@ -1,32 +1,29 @@
 public class LichChoAn {
+    String maLich;
+    String dongVat;
+    String thucAn;
+    String nhanVienChoAn;
+    String thoiGian;
 
-    private String maLich;
-    private String dongVat;
-    private String thucAn;
-    private String nhanVienChoAn;
-    private String thoiGian;
+   
+    public LichChoAn() { }
 
-    // public LichChoAn() {}
-
-    public void vietMaLich(String maLich) { this.maLich = maLich; }
-
-    public String hienThiMaLich() { return maLich; }
-
-    public void chonDongVat(String dongVat) { this.dongVat = dongVat; }
-
-    public String hienThiDongVat() { return dongVat; }
-
-    public void chonThucAn(String thucAn) { this.thucAn = thucAn; }
-
-    public String hienThiThucAn() { return thucAn; }
-
-    public void chonNhanVienChoAn(String nhanVienChoAn) {
-        this.nhanVienChoAn = nhanVienChoAn;
+    
+    public LichChoAn(String ma, String dv, String ta, String nv, String tg) {
+        maLich = ma;
+        dongVat = dv;
+        thucAn = ta;
+        nhanVienChoAn = nv;
+        thoiGian = tg;
     }
 
-    public String hienThiNhanVienChoAn() { return nhanVienChoAn; }
-
-    public void chonThoiGian(String thoiGian) { this.thoiGian = thoiGian; }
-
-    public String hienThiThoiGian() { return thoiGian; }
+    public static void main(String[] args) {
+        
+        LichChoAn lich = new LichChoAn("001", "Ho", "Thit", "Dang Duc Tai", "16:30 1/7/2025");
+        System.out.println("Ma lich: " + lich.maLich);
+        System.out.println("Donng vat: " + lich.dongVat);
+        System.out.println("Thuc an: " + lich.thucAn);
+        System.out.println("Nhan vien cho an: " + lich.nhanVienChoAn);
+        System.out.println("Thoi gian: " + lich.thoiGian);
+    }
 }
