@@ -20,7 +20,7 @@ public class LichChoAn {
 
     public static void main(String[] args) {
         
-        LichChoAn lich = new LichChoAn("001", "Ho", "Thit", "Dang Duc Tai", "16:30 1/7/2025");
+        LichChoAn lich = new LichChoAn("001", "Ho", "Thit", "Tai YAG", "16:30 1/7/2025");
         System.out.println("Ma lich: " + lich.maLich);
         System.out.println("Donng vat: " + lich.dongVat);
         System.out.println("Thuc an: " + lich.thucAn);
