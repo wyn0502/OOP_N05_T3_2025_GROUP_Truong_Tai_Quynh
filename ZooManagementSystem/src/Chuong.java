@@ -15,4 +15,17 @@ public class Chuong {
         System.out.println("Ten khu vuc: " + Tenkhuvuc);
         System.out.println("Suc chua: " + SucChuaToiDa);
     }
+    
+    Chuong(){};
+    public Chuong (String t, String a, int p, int q){
+    MaChuong = t;
+    Tenkhuvuc = a;
+    SucChuaToiDa = p;
+    SoLuongHienTai = q;
+    }
+
+    public static void main(String[] args){
+    Chuong myObj = new Chuong ("a", "b", 2, 3);
+    System.out.println(myObj.MaChuong);
+    }
 }
