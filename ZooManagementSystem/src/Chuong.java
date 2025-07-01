@@ -26,6 +26,7 @@ public class Chuong {
 
     public static void main(String[] args){
     Chuong myObj = new Chuong ("001", "16", 10, 6);
-    System.out.println(myObj.MaChuong);
-    }
+    System.out.println(myObj.MaChuong + " " + myObj.Tenkhuvuc);
+   }
+
 }
