@@ -4,7 +4,7 @@ public class Chuong {
     int SucChuaToiDa;
     int SoLuongHienTai;
 
-    public Chuong(String maChuong, String Tenkhuvuc, int SucChuaToiDa) {
+    public Chuong(String MaChuong, String Tenkhuvuc, int SucChuaToiDa) {
         this.MaChuong = MaChuong;
         this.Tenkhuvuc = Tenkhuvuc;
         this.SucChuaToiDa = SucChuaToiDa;
