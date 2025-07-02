@@ -9,7 +9,12 @@ public class App {
         // BreakAndContinue.testDoWhile();
         //LichChoAn.inThoiGian();
 
-        TestKhi.test();
-        TestSuTu.test();
+        //TestKhi.test();
+        //TestSuTu.test();
+        TestUser.test(new String[] {});
+        TestTime.test(new String[] {});
+        TestRecursion.test(new String[] {});
+        
+        
     }
 }
