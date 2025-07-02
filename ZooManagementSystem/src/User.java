@@ -1,11 +1,11 @@
-public class user {
+public class User {
     private String HoTen;
     private String email;
 
-    public user() {
+    public User() {
     }
 
-    public user(String HoTen, String email) {
+    public User(String HoTen, String email) {
         this.HoTen = HoTen;
         this.email = email;
     }
@@ -31,7 +31,7 @@ public class user {
     }
 
     public static void main(String[] args){
-        user u = new user("Lò Tuấn Quỳnh", "24104502@st.phenikaa-uni.edu.vn");
+        User u = new User("Lò Tuấn Quỳnh", "24104502@st.phenikaa-uni.edu.vn");
         System.out.println(u);
 }
 }
