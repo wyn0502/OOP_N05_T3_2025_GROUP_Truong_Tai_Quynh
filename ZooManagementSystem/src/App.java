@@ -7,9 +7,10 @@ public class App {
         // BreakAndContinue.testFor();
         // BreakAndContinue.testWhile();
         // BreakAndContinue.testDoWhile();
-        //LichChoAn.inThoiGian();
+        // LichChoAn.inThoiGian();
 
-        TestKhi.test();
-        TestSuTu.test();
+        //TestKhi.test();
+        //TestSuTu.test();
+        TruongTestUser.main(new String[] {});
     }
 }
