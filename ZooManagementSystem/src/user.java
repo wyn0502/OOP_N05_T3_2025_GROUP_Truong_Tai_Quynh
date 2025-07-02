@@ -22,7 +22,7 @@ public class user {
         return email;
     }
 
-    public void setEmail(){
+    public void setEmail() {
         this.email = email;
     }
 
@@ -30,4 +30,7 @@ public class user {
         return "Họ tên: " + HoTen + ", Email: " + email;
     }
 
+    public static void main(String[] args){
+        User u = new user("Lò Tuấn Quỳnh", "24104502@st.phenikaa-uni.edu.vn");
+        System.out.println(u);
 }
