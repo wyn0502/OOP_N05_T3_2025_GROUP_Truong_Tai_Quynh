@@ -5,8 +5,16 @@ public class user {
     public user() {
     }
 
-    public user(String hoTen, String email) {
-        this.HoTen = hoTen;
+    public user(String HoTen, String email) {
+        this.HoTen = HoTen;
         this.email = email;
+    }
+
+    public String getHoTen() {
+        return HoTen;
+    }
+
+    public void setHoTen(String HoTen) {
+        this.HoTen = HoTen;
     }
 }
