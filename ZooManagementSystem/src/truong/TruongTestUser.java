@@ -7,7 +7,7 @@ public class TruongTestUser {
 
         user.setHoTen("Trường");
         user.setTuoi(19);
-        user.setEmail("truong@gmail.com");
+        user.setEmail("truong@gmail.com\n");
 
         System.out.println("Thông tin sau khi cập nhật:");
         System.out.println(user);
