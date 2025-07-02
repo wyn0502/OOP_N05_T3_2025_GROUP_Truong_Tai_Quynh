@@ -17,4 +17,12 @@ public class user {
     public void setHoTen(String HoTen) {
         this.HoTen = HoTen;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(){
+        this.email = email;
+    }
 }
