@@ -1,5 +1,5 @@
 public class TruongTestUser {
-    public static void main(String[] args) {
+    public static void test(String[] args) {
         User user = new User("Xuân Trường", 16, "truong@gmail.com");
 
         System.out.println("Thông tin ban đầu:");
