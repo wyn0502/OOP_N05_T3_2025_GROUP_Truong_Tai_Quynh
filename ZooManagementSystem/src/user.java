@@ -25,4 +25,9 @@ public class user {
     public void setEmail(){
         this.email = email;
     }
+
+    public String toString() {
+        return "Họ tên: " + HoTen + ", Email: " + email;
+    }
+
 }
