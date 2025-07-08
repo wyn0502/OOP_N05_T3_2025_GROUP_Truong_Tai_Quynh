@@ -1,3 +1,5 @@
+package review.test;
+
 public class Recursion {
     public int tinhGiaiThua(int n) {
         if (n <= 1)

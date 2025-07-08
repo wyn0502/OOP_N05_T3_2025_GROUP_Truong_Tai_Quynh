@@ -1,3 +1,5 @@
+package review.test;
+
 public class User {
     private String hoTen;
     private int tuoi;

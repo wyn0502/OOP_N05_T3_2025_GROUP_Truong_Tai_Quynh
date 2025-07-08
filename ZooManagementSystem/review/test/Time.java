@@ -1,3 +1,5 @@
+package review.test;
+
 public class Time {
     int hour;
     int minute;
