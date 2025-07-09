@@ -20,6 +20,9 @@
 - 🎯 Luyện tập các khái niệm: **Class, Đối tượng, Đóng gói, Kế thừa, Đa hình**.
 - 🔁 Mô hình hóa sát thực tế với các **class**: ***DongVat, Chuong, NhanVien, LichChoAn, GiaVe***.
 
+# Sơ đồ Diagram
+<img src = ZooManagementSystem/image/image1.png>
+
 ---
 
 ## 🧱 Main class
