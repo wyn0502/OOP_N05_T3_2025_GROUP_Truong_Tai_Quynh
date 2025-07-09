@@ -15,7 +15,6 @@ public class App {
 
         //TestKhi.test();
         //TestSuTu.test();
-        TestUser.main(new String[] {});
         
         TruongTestUser.test(new String[] {});
         TruongTestTime.test(new String[] {});
