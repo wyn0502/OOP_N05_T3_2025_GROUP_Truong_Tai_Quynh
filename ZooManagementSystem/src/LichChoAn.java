@@ -1,4 +1,4 @@
-package src;
+
 public class LichChoAn {
     String maLich;
     String dongVat;
@@ -6,8 +6,10 @@ public class LichChoAn {
     String nhanVienChoAn;
     String thoiGian;
 
+   
     public LichChoAn() { }
 
+    
     public LichChoAn(String ma, String dv, String ta, String nv, String tg) {
         maLich = ma;
         dongVat = dv;
@@ -16,45 +18,18 @@ public class LichChoAn {
         thoiGian = tg;
     }
 
-    // Các method setter
-    public void vietMaLich(String ma) {
-        this.maLich = ma;
-    }
+    public String hienThiNhanVienChoAn() { return nhanVienChoAn; }
 
-    public void chonDongVat(String dv) {
-        this.dongVat = dv;
-    }
+    public void chonThoiGian(String thoiGian) { this.thoiGian = thoiGian; }
 
-    public void chonThucAn(String ta) {
-        this.thucAn = ta;
-    }
-
-    public void chonNhanVienChoAn(String nv) {
-        this.nhanVienChoAn = nv;
-    }
-
-    public void chonThoiGian(String tg) {
-        this.thoiGian = tg;
-    }
-
-    // Các method getter
-    public String hienThiMaLich() {
-        return maLich;
-    }
-
-    public String hienThiDongVat() {
-        return dongVat;
-    }
-
-    public String hienThiThucAn() {
-        return thucAn;
-    }
-
-    public String hienThiNhanVienChoAn() {
-        return nhanVienChoAn;
-    }
-
-    public String hienThiThoiGian() {
-        return thoiGian;
+    public String hienThiThoiGian() { return thoiGian; }
+    public static void main(String[] args) {
+        
+        LichChoAn lich = new LichChoAn("001", "Ho", "Thit", "Dang Duc Tai", "16:30 1/7/2025");
+        System.out.println("Ma lich: " + lich.maLich);
+        System.out.println("Donng vat: " + lich.dongVat);
+        System.out.println("Thuc an: " + lich.thucAn);
+        System.out.println("Nhan vien cho an: " + lich.nhanVienChoAn);
+        System.out.println("Thoi gian: " + lich.thoiGian);
     }
 }
