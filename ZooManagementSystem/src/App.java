@@ -1,3 +1,9 @@
+import test.TestUser;
+import truong.TruongTestRecursion;
+import truong.TruongTestTime;
+import truong.TruongTestUser;
+import test.TestTime;
+import test.TestRecursion;
 public class App {
     public static void main(String[] args) throws Exception {
         // System.out.println("Hello, World!");
@@ -11,16 +17,10 @@ public class App {
 
         //TestKhi.test();
         //TestSuTu.test();
-<<<<<<< HEAD
-        TestUser.test(new String[] {});
-        TestTime.test(new String[] {});
-        TestRecursion.test(new String[] {});
+        TestUser.main(new String[] {});
         
-        
-=======
         TruongTestUser.test(new String[] {});
         TruongTestTime.test(new String[] {});
         TruongTestRecursion.test(new String[] {});
->>>>>>> 6d7cc2f61a647a293939461deb3b7d17b73828e8
     }
 }
