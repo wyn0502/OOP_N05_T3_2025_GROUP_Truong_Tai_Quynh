@@ -27,13 +27,14 @@
 
 ## 🧱 Main class
 
-| 📦 Class       | 📝 Mô tả chức năng                                                                 |
-|----------------|-------------------------------------------------------------------------------------|
-| `DongVat`      | Lưu thông tin động vật: mã, tên, loài, tuổi, chuồng, giờ ăn.                        |
-| `Chuong`       | Quản lý chuồng nuôi: khu vực, sức chứa, số lượng hiện tại.                          |
-| `NhanVien`     | Thông tin nhân viên: mã, tên, sđt, chuồng phụ trách.                                |
-| `LichChoAn`    | Ghi nhận lịch cho ăn theo ngày giờ và loại thức ăn.                                 |
-| `GiaVe`        | Quản lí giá vé như học sinh, sinh viên, người lớn, trẻ em,...                       |
+| 📦 Class    | 📝 Mô tả chức năng                                                                                                                                                                  |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DongVat`   | Lưu thông tin động vật: mã, tên, loài, tuổi, chuồng, giờ ăn.                                                                                                                        |
+| `Chuong`    | Quản lý chuồng nuôi: khu vực, sức chứa, số lượng hiện tại.<br>🛠️ Có các constructor hỗ trợ khởi tạo với các tham số khác nhau và hàm `HienThiThongTin()` in thông tin chuồng.      |
+| `GiaVe`     | Quản lý giá vé theo từng đối tượng:<br> ➤ Trẻ em (giảm 50%)<br> ➤ Sinh viên (giảm 30%)<br> ➤ Người già (giảm 40%)<br> ➤ Người lớn (giá gốc)<br>➕ Tính tổng tiền, hỗ trợ khuyến mãi. |
+| `NhanVien`  | Thông tin nhân viên: mã, tên, số điện thoại, chuồng phụ trách.                                                                                                                      |
+| `LichChoAn` | Ghi nhận lịch cho ăn theo ngày giờ và loại thức ăn cho từng động vật.                                                                                                               |
+
 
 ---
 
