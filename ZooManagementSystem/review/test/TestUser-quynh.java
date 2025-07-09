@@ -1,4 +1,6 @@
-public class TestUser {
+package review.test;
+
+public class TestUser-quynh{
    
     public static void main(String[] args) {
         User u = new User(

@@ -1,4 +1,5 @@
 package src;
+
 public class Time {
     private int gio;
     private int phut;

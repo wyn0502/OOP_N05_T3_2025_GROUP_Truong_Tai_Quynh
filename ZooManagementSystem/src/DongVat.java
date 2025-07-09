@@ -1,3 +1,5 @@
+package src;
+
 public class DongVat {
     String ten;
     int tuoi;

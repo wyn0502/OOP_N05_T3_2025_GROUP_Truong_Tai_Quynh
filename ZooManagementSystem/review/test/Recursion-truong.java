@@ -1,6 +1,6 @@
 package review.test;
 
-public class Recursion {
+public class Recursion-truong {
     public int tinhGiaiThua(int n) {
         if (n <= 1)
             return 1;

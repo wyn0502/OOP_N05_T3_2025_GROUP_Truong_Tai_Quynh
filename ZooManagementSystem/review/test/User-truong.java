@@ -1,6 +1,6 @@
 package review.test;
 
-public class User {
+public class User-truong{
     private String hoTen;
     private int tuoi;
     private String email;

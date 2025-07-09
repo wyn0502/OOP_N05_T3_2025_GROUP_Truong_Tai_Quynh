@@ -1,4 +1,6 @@
-public class TestRecursion {
+package review.test;
+
+public class TestRecursion-truong {
     public static void main(String[] args) {
         Recursion r = new Recursion();
         int n = 5;

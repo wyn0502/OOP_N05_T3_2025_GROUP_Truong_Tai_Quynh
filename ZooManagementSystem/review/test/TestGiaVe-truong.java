@@ -1,6 +1,6 @@
 package review.test;
 
-public class TestGiaVe {
+public class TestGiaVe-truong {
     public static void Inve(){
         System.out.println("in ve:...");
     }

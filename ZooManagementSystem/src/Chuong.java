@@ -1,3 +1,5 @@
+package src;
+
 public class Chuong {
     String MaChuong;
     String Tenkhuvuc;

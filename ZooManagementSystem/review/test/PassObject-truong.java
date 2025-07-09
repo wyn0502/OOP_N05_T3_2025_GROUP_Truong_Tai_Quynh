@@ -1,6 +1,6 @@
 package review.test;
 
-public class PassObject {
+public class PassObject-truong {
     static void f(MyNumber m) {
         m.i = 15;
         System.out.println("Trong hàm f, i = " + m.i);

@@ -1,6 +1,6 @@
 package review.test;
 
-public class Time {
+public class Time-truong {
     int hour;
     int minute;
     int second;
