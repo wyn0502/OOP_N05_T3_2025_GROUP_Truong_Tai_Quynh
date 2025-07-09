@@ -1,3 +1,5 @@
+package review.test;
+
 public class PassObject {
     static void f(MyNumber m) {
         m.i = 15;

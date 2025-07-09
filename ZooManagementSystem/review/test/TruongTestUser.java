@@ -1,3 +1,5 @@
+package review.test;
+
 public class TruongTestUser {
     public static void test(String[] args) {
         User user = new User("Xuân Trường", 16, "truong@gmail.com");
