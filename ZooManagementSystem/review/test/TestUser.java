@@ -1,4 +1,5 @@
 public class TestUser {
+   
     public static void main(String[] args) {
         User u = new User(
             "Lò Tuấn Quỳnh",
@@ -9,8 +10,6 @@ public class TestUser {
             19,
             "24104502"
         );
-
-        System.out.println("=== Thông tin User ===");
         System.out.println(u);
     }
 }
