@@ -21,7 +21,7 @@
 - 🔁 Mô hình hóa sát thực tế với các **class**: ***DongVat, Chuong, NhanVien, LichChoAn, GiaVe***.
 
 # Sơ đồ Diagram
-<img width="593" height="671" alt="Image" src="https://github.com/user-attachments/assets/4bc8b6ae-49f1-4fe7-b596-1c87beb038bf" />
+<img width="677" height="748" alt="Image" src="https://github.com/user-attachments/assets/2a4ac1fa-f240-4816-be47-c03028be4c02" />
 
 ---
 
