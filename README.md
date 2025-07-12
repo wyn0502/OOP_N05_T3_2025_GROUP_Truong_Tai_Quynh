@@ -20,7 +20,7 @@
 - 🎯 Luyện tập các khái niệm: **Class, Đối tượng, Đóng gói, Kế thừa, Đa hình**.
 - 🔁 Mô hình hóa sát thực tế với các **class**: ***DongVat, Chuong, NhanVien, LichChoAn, GiaVe***.
 
-# Sơ đồ Diagram
+# Sơ đồ Class Diagram
 <img width="677" height="748" alt="Image" src="https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/blob/main/ZooManagementSystem/image/class%20diagram.png?raw=true"/>
 
 ---
