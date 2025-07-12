@@ -17,11 +17,17 @@ public class LichChoAn {
         thoiGian = tg;
     }
 
-    public String hienThiNhanVienChoAn() { return nhanVienChoAn; }
+    public String hienThiNhanVienChoAn() { 
+        return nhanVienChoAn; 
+    }
 
-    public void chonThoiGian(String thoiGian) { this.thoiGian = thoiGian; }
+    public void setThoiGian(String thoiGian) {
+        this.thoiGian = thoiGian; 
+    }
 
-    public String hienThiThoiGian() { return thoiGian; }
+    public String hienThiThoiGian() { 
+        return thoiGian; 
+    }
     public static void main(String[] args) {
         
         LichChoAn lich = new LichChoAn("001", "Ho", "Thit", "Dang Duc Tai", "16:30 1/7/2025");
