@@ -18,8 +18,8 @@ public class App {
         //TestKhi.test();
         //TestSuTu.test();
         
-        TruongTestUser.test(new String[] {});
-        TruongTestTime.test(new String[] {});
-        // TruongTestRecursion.test(new String[] {});
+        // TruongTestUser.test(new String[] {});
+        // TruongTestTime.test(new String[] {});
+        TruongTestRecursion.test();
     }
 }
