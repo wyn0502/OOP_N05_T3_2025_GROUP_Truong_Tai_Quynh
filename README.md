@@ -22,6 +22,7 @@
 
 # Sơ đồ Diagram
 <img src = ZooManagementSystem/image/image1.png>
+<img width="593" height="671" alt="Image" src="https://github.com/user-attachments/assets/4bc8b6ae-49f1-4fe7-b596-1c87beb038bf" />
 
 ---
 
