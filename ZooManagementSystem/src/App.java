@@ -22,6 +22,9 @@ public class App {
         // TruongTestTime.test(new String[] {});
         // TruongTestRecursion.test();
 
+        TestNN.test();
+
+        
         NNCollection collection = new NNCollection();
         collection.insert(new NameNumber("Tran", "123"));
         collection.insert(new NameNumber("Le", "456"));
@@ -31,5 +34,6 @@ public class App {
 
         System.out.println("Tìm số của Le: " + collection.findNumber("Le"));
         System.out.println("Tìm số của Vo: " + collection.findNumber("Vo"));
+
     }
 }
