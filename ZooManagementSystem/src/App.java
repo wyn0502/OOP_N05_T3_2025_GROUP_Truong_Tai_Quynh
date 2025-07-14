@@ -23,6 +23,8 @@ public class App {
         // TruongTestRecursion.test();
 
         TestNN.test();
+
+        
         NNCollection collection = new NNCollection();
         collection.insert(new NameNumber("Tran", "123"));
         collection.insert(new NameNumber("Le", "456"));
