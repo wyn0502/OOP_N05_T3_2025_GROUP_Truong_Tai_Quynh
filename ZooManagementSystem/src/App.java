@@ -1,6 +1,6 @@
 package src;
 
-import review.test.TruongTestRecursion;
+// import review.test.TruongTestRecursion;
 // import review.test.TruongTestUser;
 // import review.test.TruongTestTime;
 
@@ -20,6 +20,7 @@ public class App {
         
         // TruongTestUser.test(new String[] {});
         // TruongTestTime.test(new String[] {});
-        TruongTestRecursion.test();
+        // TruongTestRecursion.test();
+        TestNN.test();
     }
 }
