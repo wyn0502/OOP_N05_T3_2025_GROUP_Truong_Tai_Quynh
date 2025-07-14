@@ -20,8 +20,18 @@
 - 🎯 Luyện tập các khái niệm: **Class, Đối tượng, Đóng gói, Kế thừa, Đa hình**.
 - 🔁 Mô hình hóa sát thực tế với các **class**: ***DongVat, Chuong, NhanVien, LichChoAn, GiaVe***.
 
-# Sơ đồ Diagram
-<img width="677" height="748" alt="Image" src="https://github.com/user-attachments/assets/2a4ac1fa-f240-4816-be47-c03028be4c02" />
+# Sơ đồ Class Diagram
+<img width="677" height="748" alt="Image" src="https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/blob/main/ZooManagementSystem/image/class%20diagram.png?raw=true"/>
+
+# Sơ đồ Activity Diagram
+<details>
+<summary>Click me</summary>
+<img width="696" height="732" alt="Image" src="https://github.com/user-attachments/assets/1630336a-5629-46f6-8ef2-4865798ce0ad" />
+<img width="393" height="706" alt="Image" src="https://github.com/user-attachments/assets/bc42dae3-ffb3-4eb5-889c-82c032fc2acf" />
+<img width="629" height="683" alt="Image" src="https://github.com/user-attachments/assets/946fc813-4757-4e8d-be5f-1b1838697849" />
+<img width="474" height="627" alt="Image" src="https://github.com/user-attachments/assets/04166dc4-4de6-47d2-97b9-0cb4dd0fbbd6" />
+<img width="857" height="736" alt="Image" src="https://github.com/user-attachments/assets/2a66e0e5-fd64-48c5-898c-70276ae92f37" />
+</details>
 
 ---
 
