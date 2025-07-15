@@ -1,5 +1,6 @@
 package src;
-
+import java.util.List;
+import java.util.ArrayList;
 // import review.test.TruongTestRecursion;
 // import review.test.TruongTestUser;
 // import review.test.TruongTestTime;
@@ -22,18 +23,30 @@ public class App {
         // TruongTestTime.test(new String[] {});
         // TruongTestRecursion.test();
 
-        TestNN.test();
+//        TestNN.test();
 
-        
-        NNCollection collection = new NNCollection();
-        collection.insert(new NameNumber("Tran", "123"));
-        collection.insert(new NameNumber("Le", "456"));
-        collection.insert(new NameNumber("Nguyen", "789"));
+//        NNCollection collection = new NNCollection();
+//        collection.insert(new NameNumber("Tran", "123"));
+//        collection.insert(new NameNumber("Le", "456"));
+//        collection.insert(new NameNumber("Nguyen", "789"));
+//
+//        collection.printAll();
+//
+//        System.out.println("Tìm số của Le: " + collection.findNumber("Le"));
+//        System.out.println("Tìm số của Vo: " + collection.findNumber("Vo"));
 
-        collection.printAll();
 
-        System.out.println("Tìm số của Le: " + collection.findNumber("Le"));
-        System.out.println("Tìm số của Vo: " + collection.findNumber("Vo"));
+        Book book1 = new Book("Doraemon", "Fujiko F. Fujio");
+        Book book2 = new Book("Java Programming", "James Gosling");
 
+        List<Book> myBooks = new ArrayList<>();
+        myBooks.add(book1);
+        myBooks.add(book2);
+
+        Library library = new Library(myBooks);
+
+        for (Book b : library.getList()) {
+            System.out.println(b);
+        }
     }
 }
