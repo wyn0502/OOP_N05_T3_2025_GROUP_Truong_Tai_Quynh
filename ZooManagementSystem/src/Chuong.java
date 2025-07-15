@@ -6,6 +6,10 @@
 // import java.util.List;
 // import java.util.Scanner;
 
+/**
+ * @author TRUONG
+ */
+
 // public class Chuong {
 //     private List<Chuong> danhSachChuong = new ArrayList<>();
 //     private Scanner scanner = new Scanner(System.in);
