@@ -39,6 +39,7 @@ public class App {
         Book book1 = new Book("Doraemon", "Fujiko F. Fujio");
         Book book2 = new Book("Java Programming", "James Gosling");
 
+        //ArrayList<Book> myBooks = new ArrayList<>();
         List<Book> myBooks = new ArrayList<>();
         myBooks.add(book1);
         myBooks.add(book2);

@@ -1,4 +1,4 @@
-package ZooManagementSystem.src;
+package src;
 
 public class GiaVe {
     private String loaiVe;
@@ -28,7 +28,6 @@ public class GiaVe {
 
     public void setGiaCoBan(double giaCoBan) { this.giaCoBan = giaCoBan; }
 
-    // Tính giá vé theo loại khách hàng
     public double tinhGiaTheoDoiTuong(String doiTuong) {
         switch (doiTuong.toLowerCase()) {
         case "tre em":
