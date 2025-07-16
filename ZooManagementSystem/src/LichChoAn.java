@@ -15,7 +15,7 @@ public class LichChoAn {
         this.thoiGian = thoiGian;
     }
 
-    // Getter & Setter
+
     public String getMaLich() {
         return maLich;
     }
