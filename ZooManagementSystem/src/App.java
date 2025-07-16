@@ -53,7 +53,7 @@ public class App {
 //         }
         List<LichChoAn> ds = new ArrayList<>();
        Scanner scan = new Scanner(System.in);
-        LichChoAnManager manager = TestLichChoAnManager.getSampleManager();
+        LichChoAnManager manager = TestLichChoAnManager.getManager();
 
         System.out.println("Danh sach ban dau");
         manager.printLichChoAn();
