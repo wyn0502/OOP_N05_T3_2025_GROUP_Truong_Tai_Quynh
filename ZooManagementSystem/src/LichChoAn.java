@@ -1,40 +1,48 @@
+import java.util.List;
+import java.util.Scanner;
+
 public class LichChoAn {
-    String maLich;
-    String dongVat;
-    String thucAn;
-    String nhanVienChoAn;
-    String thoiGian;
 
-   
-    public LichChoAn() { }
+    public List<LichChoAn> danhSach;
 
-    
-    public LichChoAn(String ma, String dv, String ta, String nv, String tg) {
-        maLich = ma;
-        dongVat = dv;
-        thucAn = ta;
-        nhanVienChoAn = nv;
-        thoiGian = tg;
+    public LichChoAn(List<LichChoAn> ds) {
+        this.danhSach = ds;
     }
 
-    public String hienThiNhanVienChoAn() { 
-        return nhanVienChoAn; 
+    public List<LichChoAn> getList() {
+        return danhSach;
     }
 
-    public void setThoiGian(String thoiGian) {
-        this.thoiGian = thoiGian; 
+    public List<LichChoAn> Create(LichChoAn lca) {
+        danhSach.add(lca);
+        return danhSach;
     }
 
-    public String hienThiThoiGian() { 
-        return thoiGian; 
+    public List<LichChoAn> Delete(String ma) {
+        for (int i = 0; i < danhSach.size(); i++) {
+            if (danhSach.get(i).maLich.equals(ma)) {
+                danhSach.remove(i);
+            }
+        }
+        return danhSach;
     }
-    public static void main(String[] args) {
-        
-        LichChoAn lich = new LichChoAn("001", "Ho", "Thit", "Dang Duc Tai", "16:30 1/7/2025");
-        System.out.println("Ma lich: " + lich.maLich);
-        System.out.println("Donng vat: " + lich.dongVat);
-        System.out.println("Thuc an: " + lich.thucAn);
-        System.out.println("Nhan vien cho an: " + lich.nhanVienChoAn);
-        System.out.println("Thoi gian: " + lich.thoiGian);
+
+    public List<LichChoAn> Edit(String ma) {
+        for (int i = 0; i < danhSach.size(); i++) {
+            if (danhSach.get(i).maLich.equals(ma)) {
+                Scanner scan = new Scanner(System.in);
+                System.out.print("Nhap thoi gian moi: ");
+                String tgMoi = scan.nextLine();
+                danhSach.get(i).thoiGian = tgMoi;
+            }
+        }
+        return danhSach;
+    }
+
+    public void printLichChoAn() {
+        for (int i = 0; i < danhSach.size(); i++) {
+            LichChoAn l = danhSach.get(i);
+            System.out.println("Lich: " + l.maLich + " | " + l.dongVat + " | " + l.thucAn + " | " + l.nhanVien + " | " + l.thoiGian);
+        }
     }
 }
