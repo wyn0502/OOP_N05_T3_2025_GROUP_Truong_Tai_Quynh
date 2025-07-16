@@ -18,11 +18,11 @@ public class App {
         manager.Create(newLich);
         manager.printLichChoAn();
 
-        System.out.println("\nXóa lịch có mã 'L02'");
-        manager.Delete("L02");
+        System.out.println("\nXóa lịch có mã '002'");
+        manager.Delete("002");
         manager.printLichChoAn();
 
-        System.out.println("\nSửa thời gian có mã 'L03'");
+        System.out.println("\nSửa thời gian có mã '003'");
         manager.Edit("003");
         manager.printLichChoAn();
 
