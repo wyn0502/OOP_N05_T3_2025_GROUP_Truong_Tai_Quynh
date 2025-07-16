@@ -1,48 +1,62 @@
-import java.util.List;
-import java.util.Scanner;
-
 public class LichChoAn {
+    private String maLich;
+    private String dongVat;
+    private String thucAn;
+    private String nhanVien;
+    private String thoiGian;
 
-    public List<LichChoAn> danhSach;
+    public LichChoAn() {}
 
-    public LichChoAn(List<LichChoAn> ds) {
-        this.danhSach = ds;
+    public LichChoAn(String maLich, String dongVat, String thucAn, String nhanVien, String thoiGian) {
+        this.maLich = maLich;
+        this.dongVat = dongVat;
+        this.thucAn = thucAn;
+        this.nhanVien = nhanVien;
+        this.thoiGian = thoiGian;
     }
 
-    public List<LichChoAn> getList() {
-        return danhSach;
+    // Getter & Setter
+    public String getMaLich() {
+        return maLich;
     }
 
-    public List<LichChoAn> Create(LichChoAn lca) {
-        danhSach.add(lca);
-        return danhSach;
+    public void setMaLich(String maLich) {
+        this.maLich = maLich;
     }
 
-    public List<LichChoAn> Delete(String ma) {
-        for (int i = 0; i < danhSach.size(); i++) {
-            if (danhSach.get(i).maLich.equals(ma)) {
-                danhSach.remove(i);
-            }
-        }
-        return danhSach;
+    public String getDongVat() {
+        return dongVat;
     }
 
-    public List<LichChoAn> Edit(String ma) {
-        for (int i = 0; i < danhSach.size(); i++) {
-            if (danhSach.get(i).maLich.equals(ma)) {
-                Scanner scan = new Scanner(System.in);
-                System.out.print("Nhap thoi gian moi: ");
-                String tgMoi = scan.nextLine();
-                danhSach.get(i).thoiGian = tgMoi;
-            }
-        }
-        return danhSach;
+    public void setDongVat(String dongVat) {
+        this.dongVat = dongVat;
     }
 
-    public void printLichChoAn() {
-        for (int i = 0; i < danhSach.size(); i++) {
-            LichChoAn l = danhSach.get(i);
-            System.out.println("Lich: " + l.maLich + " | " + l.dongVat + " | " + l.thucAn + " | " + l.nhanVien + " | " + l.thoiGian);
-        }
+    public String getThucAn() {
+        return thucAn;
+    }
+
+    public void setThucAn(String thucAn) {
+        this.thucAn = thucAn;
+    }
+
+    public String getNhanVien() {
+        return nhanVien;
+    }
+
+    public void setNhanVien(String nhanVien) {
+        this.nhanVien = nhanVien;
+    }
+
+    public String getThoiGian() {
+        return thoiGian;
+    }
+
+    public void setThoiGian(String thoiGian) {
+        this.thoiGian = thoiGian;
+    }
+
+    public void inThongTin() {
+        System.out.println("Lịch: " + maLich + " | " + dongVat + " | " + thucAn + " | " + nhanVien + " | " + thoiGian);
     }
 }
