@@ -1,3 +1,5 @@
+package src;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,24 +30,21 @@ public class LichChoAnManager {
     }
 
     public List<LichChoAn> Edit(String ma) {
-    for (int i = 0; i < danhSach.size(); i++) {
-        if (danhSach.get(i).getMaLich().equals(ma)) {
-            System.out.println("Nhap : ");
-            Scanner scan = new Scanner(System.in);
-            String newTg = scan.nextLine();
-            danhSach.get(i).setThoiGian(newTg);
+        for (int i = 0; i < danhSach.size(); i++) {
+            if (danhSach.get(i).getMaLich().equals(ma)) {
+                System.out.println("Nhập : ");
+                Scanner scan = new Scanner(System.in);
+                String newTg = scan.nextLine();
+                danhSach.get(i).setThoiGian(newTg);
+            }
         }
+        return danhSach;
     }
-    return danhSach;
-}
-
-
 
     public void printLichChoAn() {
         for (int i = 0; i < danhSach.size(); i++) {
             LichChoAn l = danhSach.get(i);
-            System.out.println("Lich: " + l.getMaLich() + " | " + l.getDongVat() + " | " + l.getThucAn() + " | " + l.getNhanVien() + " | " + l.getThoiGian());
-                               
+            System.out.println("Lịch: " + l.getMaLich() + " | " + l.getDongVat() + " | " + l.getThucAn() + " | " + l.getNhanVien() + " | " + l.getThoiGian());
         }
     }
 }

@@ -1,10 +1,10 @@
 package src;
 
-public class TestDongVatManager {
-    public static void main(String[] args) {
+public class testDongVatManager {
+    public void chayThu() {
         DongVatManager manager = new DongVatManager();
-      
-        manager.themDongVat(); 
+
+        manager.themDongVat();
         manager.themDongVat();
 
         System.out.println("Danh sách động vật hiện tại:");

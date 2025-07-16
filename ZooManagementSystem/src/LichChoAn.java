@@ -1,3 +1,5 @@
+package src;
+
 public class LichChoAn {
     private String maLich;
     private String dongVat;
@@ -5,8 +7,7 @@ public class LichChoAn {
     private String nhanVien;
     private String thoiGian;
 
-    public LichChoAn() {}
-
+    // Constructor
     public LichChoAn(String maLich, String dongVat, String thucAn, String nhanVien, String thoiGian) {
         this.maLich = maLich;
         this.dongVat = dongVat;
@@ -15,7 +16,7 @@ public class LichChoAn {
         this.thoiGian = thoiGian;
     }
 
-
+    // Getter và Setter
     public String getMaLich() {
         return maLich;
     }
@@ -56,7 +57,11 @@ public class LichChoAn {
         this.thoiGian = thoiGian;
     }
 
-    public void inThongTin() {
-        System.out.println("Lịch: " + maLich + " | " + dongVat + " | " + thucAn + " | " + nhanVien + " | " + thoiGian);
+    public void hienThiThongTin() {
+        System.out.println("Mã Lịch: " + maLich);
+        System.out.println("Động vật: " + dongVat);
+        System.out.println("Thức ăn: " + thucAn);
+        System.out.println("Nhân viên: " + nhanVien);
+        System.out.println("Thời gian: " + thoiGian);
     }
 }

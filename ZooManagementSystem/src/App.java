@@ -52,22 +52,22 @@ public class App {
 //             System.out.println(b);
 //         }
         List<LichChoAn> ds = new ArrayList<>();
-       Scanner scan = new Scanner(System.in);
-        LichChoAnManager manager = TestLichChoAnManager.getManager();
+        Scanner scan = new Scanner(System.in);
+        LichChoAnManager manager = testLichChoAnManager.getManager();
 
-        System.out.println("Danh sach ban dau");
+        System.out.println("Danh sách ban đầu");
         manager.printLichChoAn();
 
-        System.out.println("\nTao them lich moi");
+        System.out.println("\nTạo thêm lịch mới");
         LichChoAn newLich = new LichChoAn("004", "Gấu", "Mật ong", "NV04", "11:00");
         manager.Create(newLich);
         manager.printLichChoAn();
 
-        System.out.println("\n Xoa lich co ma 'L02'");
+        System.out.println("\nXóa lịch có mã 'L02'");
         manager.Delete("L02");
         manager.printLichChoAn();
 
-        System.out.println("\n Sua thoi gian co ma 'L03' ");
+        System.out.println("\nSửa thời gian có mã 'L03'");
         manager.Edit("003");
         manager.printLichChoAn();
 
@@ -87,7 +87,7 @@ public class App {
         testChuongManager test = new testChuongManager();
         test.chayThu();
 
-        testDongVatManager test = new testDongVatManager();
+        testDongVatManager test1 = new testDongVatManager();
         test.chayThu();
 
     }
