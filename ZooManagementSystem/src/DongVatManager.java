@@ -18,12 +18,12 @@ public class DongVatManager {
 
         DongVat dongVat = new DongVat(ten, tuoi, loai);
         danhSachDongVat.add(dongVat);
-        System.out.println("Đã thêm động vật thành công!");
+        System.out.println("Đã thêm động vật thành công");
     }
 
     public void hienThiTatCaDongVat() {
         if (danhSachDongVat.isEmpty()) {
-            System.out.println("Danh sách động vật trống.");
+            System.out.println("Danh sách động vật trống");
             return;
         }
 
@@ -46,11 +46,11 @@ public class DongVatManager {
                 System.out.print("→ Bạn có muốn sửa thông tin động vật này không? (y/n): ");
                 String confirm = scanner.nextLine();
                 if (confirm.equalsIgnoreCase("n") || confirm.isEmpty()) {
-                    System.out.println("Đã hủy thao tác sửa.");
+                    System.out.println("Đã hủy thao tác sửa");
                     return;
                 }
 
-                System.out.println("→ Để trống hoặc nhập 'n' nếu không muốn thay đổi một trường nào đó.");
+                System.out.println("→ Để trống hoặc nhập 'n' nếu không muốn thay đổi một trường nào đó");
                 System.out.print("Tên mới: ");
                 String tenMoi = scanner.nextLine();
                 if (!tenMoi.isEmpty() && !tenMoi.equalsIgnoreCase("n")) {
@@ -69,12 +69,12 @@ public class DongVatManager {
                     dv.setLoai(loaiMoi);
                 }
 
-                System.out.println("Đã cập nhật thông tin động vật.");
+                System.out.println("Đã cập nhật thông tin động vật");
                 return;
             }
         }
 
-        System.out.println("❌ Không tìm thấy động vật có tên '" + ten + "'.");
+        System.out.println("❌ Không tìm thấy động vật có tên '" + ten + "'");
     }
 
     public void xoaDongVat() {
@@ -82,18 +82,18 @@ public class DongVatManager {
         String ten = scanner.nextLine();
 
         if (ten.equalsIgnoreCase("n") || ten.isEmpty()) {
-            System.out.println("Đã hủy thao tác xóa.");
+            System.out.println("Đã hủy thao tác xóa");
             return;
         }
 
         for (DongVat dv : danhSachDongVat) {
             if (dv.getTen().equalsIgnoreCase(ten)) {
                 danhSachDongVat.remove(dv);
-                System.out.println("Đã xóa động vật thành công.");
+                System.out.println("Đã xóa động vật thành công");
                 return;
             }
         }
 
-        System.out.println("Không tìm thấy động vật có tên '" + ten + "'.");
+        System.out.println("Không tìm thấy động vật có tên '" + ten + "'");
     }
 }
