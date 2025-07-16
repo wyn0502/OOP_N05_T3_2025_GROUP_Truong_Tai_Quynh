@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TestLichChoAnManager {
 
-    public static LichChoAnManager getSampleManager() {
+    public static LichChoAnManager getManager() {
       
         List<LichChoAn> list = new ArrayList<>();
 
