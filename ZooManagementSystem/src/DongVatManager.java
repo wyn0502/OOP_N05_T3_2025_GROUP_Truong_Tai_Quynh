@@ -8,7 +8,6 @@ public class DongVatManager {
     private List<DongVat> danhSachDongVat = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
-    // 1. Create - Thêm động vật
     public void themDongVat() {
         System.out.print("Nhập tên động vật: ");
         String ten = scanner.nextLine();
@@ -22,7 +21,6 @@ public class DongVatManager {
         System.out.println("Đã thêm động vật thành công!");
     }
 
-    // 2. Read - Hiển thị tất cả động vật
     public void hienThiTatCaDongVat() {
         if (danhSachDongVat.isEmpty()) {
             System.out.println("Danh sách động vật trống.");
@@ -35,7 +33,6 @@ public class DongVatManager {
         }
     }
 
-    // 3. Update - Sửa thông tin động vật
     public void suaDongVat() {
         System.out.print("Nhập tên động vật cần sửa: ");
         String ten = scanner.nextLine();
@@ -80,7 +77,6 @@ public class DongVatManager {
         System.out.println("❌ Không tìm thấy động vật có tên '" + ten + "'.");
     }
 
-    // 4. Delete - Xóa động vật
     public void xoaDongVat() {
         System.out.print("Nhập tên động vật cần xóa (hoặc nhập 'n' để hủy): ");
         String ten = scanner.nextLine();

@@ -1,3 +1,4 @@
+package src;
 
 import java.util.List;
 import java.util.Scanner;
@@ -37,7 +38,6 @@ public class App {
 //        System.out.println("Tìm số của Vo: " + collection.findNumber("Vo"));
 
 
-<<<<<<< HEAD
 //         Book book1 = new Book("Doraemon", "Fujiko F. Fujio");
 //         Book book2 = new Book("Java Programming", "James Gosling");
 
@@ -85,6 +85,9 @@ public class App {
 //            System.out.println(b);
 
         testChuongManager test = new testChuongManager();
+        test.chayThu();
+
+        testDongVatManager test = new testDongVatManager();
         test.chayThu();
 
     }
