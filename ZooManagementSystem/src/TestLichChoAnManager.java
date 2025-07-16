@@ -6,7 +6,7 @@ import java.util.List;
 public class TestLichChoAnManager {
 
     public static LichChoAnManager getSampleManager() {
-        // Tạo danh sách mẫu
+      
         List<LichChoAn> list = new ArrayList<>();
 
         list.add(new LichChoAn("001", "Hổ", "Thịt", "NV01", "08:00"));
