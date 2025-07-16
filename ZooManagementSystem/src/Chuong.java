@@ -1,73 +1,55 @@
-// package src;
+package src;
 
-// import ZooManagementSystem.src.Chuong;
+public class Chuong {
+    private String maChuong;
+    private String tenKhuVuc;
+    private int sucChuaToiDa;
+    private int soLuongHienTai;
 
-// import java.util.ArrayList;
-// import java.util.List;
-// import java.util.Scanner;
+    public Chuong(String maChuong, String tenKhuVuc, int sucChuaToiDa, int soLuongHienTai) {
+        this.maChuong = maChuong;
+        this.tenKhuVuc = tenKhuVuc;
+        this.sucChuaToiDa = sucChuaToiDa;
+        this.soLuongHienTai = soLuongHienTai;
+    }
 
-/**
- * @author TRUONG
- */
+    // Getter & Setter
+    public String getMaChuong() {
+        return maChuong;
+    }
 
-// public class Chuong {
-//     private List<Chuong> danhSachChuong = new ArrayList<>();
-//     private Scanner scanner = new Scanner(System.in);
+    public void setMaChuong(String maChuong) {
+        this.maChuong = maChuong;
+    }
 
-//     // CREATE
-//     public void themChuong() {
-//         System.out.print("Nhập mã chuồng: ");
-//         String ma = scanner.nextLine();
-//         System.out.print("Nhập tên khu vực: ");
-//         String khu = scanner.nextLine();
-//         System.out.print("Nhập sức chứa tối đa: ");
-//         int sucChua = Integer.parseInt(scanner.nextLine());
-//         System.out.print("Nhập số lượng hiện tại: ");
-//         int soLuong = Integer.parseInt(scanner.nextLine());
+    public String getTenKhuVuc() {
+        return tenKhuVuc;
+    }
 
-//         Chuong c = new Chuong(ma, khu, sucChua, soLuong);
-//         danhSachChuong.add(c);
-//         System.out.println("Thêm chuồng thành công!");
-//     }
+    public void setTenKhuVuc(String tenKhuVuc) {
+        this.tenKhuVuc = tenKhuVuc;
+    }
 
-//     // READ
-//     public void hienThiTatCa() {
-//         for (Chuong c : danhSachChuong) {
-//             c.hienThiThongTin();
-//             System.out.println("----------");
-//         }
-//     }
+    public int getSucChuaToiDa() {
+        return sucChuaToiDa;
+    }
 
-//     // UPDATE
-//     public void suaChuong() {
-//         System.out.print("Nhập mã chuồng cần sửa: ");
-//         String ma = scanner.nextLine();
-//         for (Chuong c : danhSachChuong) {
-//             if (c.MaChuong.equals(ma)) {
-//                 System.out.print("Nhập tên khu vực mới: ");
-//                 c.Tenkhuvuc = scanner.nextLine();
-//                 System.out.print("Nhập sức chứa tối đa mới: ");
-//                 c.SucChuaToiDa = Integer.parseInt(scanner.nextLine());
-//                 System.out.print("Nhập số lượng hiện tại mới: ");
-//                 c.SoLuongHienTai = Integer.parseInt(scanner.nextLine());
-//                 System.out.println("Sửa thành công!");
-//                 return;
-//             }
-//         }
-//         System.out.println("Không tìm thấy chuồng!");
-//     }
+    public void setSucChuaToiDa(int sucChuaToiDa) {
+        this.sucChuaToiDa = sucChuaToiDa;
+    }
 
-//     // DELETE
-//     public void xoaChuong() {
-//         System.out.print("Nhập mã chuồng cần xóa: ");
-//         String ma = scanner.nextLine();
-//         for (Chuong c : danhSachChuong) {
-//             if (c.MaChuong.equals(ma)) {
-//                 danhSachChuong.remove(c);
-//                 System.out.println("Xóa thành công!");
-//                 return;
-//             }
-//         }
-//         System.out.println("Không tìm thấy chuồng!");
-//     }
-// }
+    public int getSoLuongHienTai() {
+        return soLuongHienTai;
+    }
+
+    public void setSoLuongHienTai(int soLuongHienTai) {
+        this.soLuongHienTai = soLuongHienTai;
+    }
+
+    public void hienThiThongTin() {
+        System.out.println("Mã chuồng: " + maChuong);
+        System.out.println("Khu vực: " + tenKhuVuc);
+        System.out.println("Sức chứa tối đa: " + sucChuaToiDa);
+        System.out.println("Số lượng hiện tại: " + soLuongHienTai);
+    }
+}
