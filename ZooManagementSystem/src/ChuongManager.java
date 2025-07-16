@@ -28,7 +28,6 @@ public class ChuongManager {
     public void hienThiTatCa() {
         if (danhSachChuong.isEmpty()) {
             System.out.println("Danh sách trống");
-            return;
         }
 
         for (Chuong c : danhSachChuong) {
@@ -53,7 +52,6 @@ public class ChuongManager {
                 String confirm = scanner.nextLine();
                 if (confirm.equalsIgnoreCase("n") || confirm.isEmpty()) {
                     System.out.println("Đã hủy thao tác sửa");
-                    return;
                 }
 
                 System.out.println("→ Để trống hoặc nhập 'n' nếu không muốn thay đổi một trường nào đó");
@@ -77,7 +75,6 @@ public class ChuongManager {
                 }
 
                 System.out.println("Đã cập nhật chuồng");
-                return;
             }
         }
 
@@ -94,16 +91,14 @@ public class ChuongManager {
 
         if (ma.equalsIgnoreCase("n") || ma.isEmpty()) {
             System.out.println("Hủy thao tác xóa");
-            return;
         }
 
-        for (Chuong c : danhSachChuong) {
-            if (c.getMaChuong().equals(ma)) {
-                danhSachChuong.remove(c);
-                System.out.println("Xóa thành công");
-                return;
+            for (Chuong c : danhSachChuong) {
+                if (c.getMaChuong().equals(ma)) {
+                    danhSachChuong.remove(c);
+                    System.out.println("Xóa thành công");
+                }
             }
-        }
 
         System.out.println("Không tìm thấy chuồng");
     }

@@ -24,7 +24,6 @@ public class DongVatManager {
     public void hienThiTatCaDongVat() {
         if (danhSachDongVat.isEmpty()) {
             System.out.println("Danh sách động vật trống");
-            return;
         }
 
         for (DongVat dv : danhSachDongVat) {
@@ -47,7 +46,6 @@ public class DongVatManager {
                 String confirm = scanner.nextLine();
                 if (confirm.equalsIgnoreCase("n") || confirm.isEmpty()) {
                     System.out.println("Đã hủy thao tác sửa");
-                    return;
                 }
 
                 System.out.println("→ Để trống hoặc nhập 'n' nếu không muốn thay đổi một trường nào đó");
@@ -70,7 +68,6 @@ public class DongVatManager {
                 }
 
                 System.out.println("Đã cập nhật thông tin động vật");
-                return;
             }
         }
 
@@ -83,14 +80,12 @@ public class DongVatManager {
 
         if (ten.equalsIgnoreCase("n") || ten.isEmpty()) {
             System.out.println("Đã hủy thao tác xóa");
-            return;
         }
 
         for (DongVat dv : danhSachDongVat) {
             if (dv.getTen().equalsIgnoreCase(ten)) {
                 danhSachDongVat.remove(dv);
                 System.out.println("Đã xóa động vật thành công");
-                return;
             }
         }
 
