@@ -38,7 +38,7 @@ public class App {
         TestTH5_CellPhone test2 = new TestTH5_CellPhone();
         test2.testTune();
 
-    }
+    // }
 }
     
     
