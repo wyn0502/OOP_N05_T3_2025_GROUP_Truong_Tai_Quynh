@@ -1,5 +1,7 @@
 package src;
 
+import src.Chuong;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,35 +18,70 @@ public class LichChoAnManager {
     }
 
     public List<LichChoAn> Create(LichChoAn lca) {
-        danhSach.add(lca);
+        try {
+            danhSach.add(lca);
+            System.out.println("Lich cho an da duoc them.");
+        } catch (Exception e) {
+            System.out.println("Lỗi khi thêm Lịch Cho Ăn: " + e.getMessage());
+        }
         return danhSach;
     }
 
     public List<LichChoAn> Delete(String ma) {
-        for (int i = 0; i < danhSach.size(); i++) {
-            if (danhSach.get(i).getMaLich().equals(ma)) {
-                danhSach.remove(i);
+        try {
+            boolean found = false;
+            for (int i = 0; i < danhSach.size(); i++) {
+                if (danhSach.get(i).maLich.equals(ma)) {
+                    danhSach.remove(i);
+                    found = true;
+                    System.out.println("Lịch cho ăn có mã " + ma + " đã bị xóa.");
+                    break;
+                }
             }
+            if (!found) {
+                System.out.println("Không tìm thấy Lịch Cho Ăn với mã: " + ma);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi xóa Lịch Cho Ăn: " + e.getMessage());
         }
         return danhSach;
     }
 
     public List<LichChoAn> Edit(String ma) {
-        for (int i = 0; i < danhSach.size(); i++) {
-            if (danhSach.get(i).getMaLich().equals(ma)) {
-                System.out.println("Nhập : ");
-                Scanner scan = new Scanner(System.in);
-                String newTg = scan.nextLine();
-                danhSach.get(i).setThoiGian(newTg);
+        try {
+            boolean found = false;
+            for (int i = 0; i < danhSach.size(); i++) {
+                if (danhSach.get(i).maLich.equals(ma)) {
+                    Scanner scan = new Scanner(System.in);
+                    System.out.print("Nhập thời gian mới: ");
+                    String tgMoi = scan.nextLine();
+                    danhSach.get(i).thoiGian = tgMoi;
+                    System.out.println("Thời gian của Lịch Cho Ăn có mã " + ma + " đã được sửa.");
+                    found = true;
+                    break;
+                }
             }
+            if (!found) {
+                System.out.println("Không tìm thấy Lịch Cho Ăn với mã: " + ma);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi chỉnh sửa Lịch Cho Ăn: " + e.getMessage());
         }
         return danhSach;
     }
 
     public void printLichChoAn() {
-        for (int i = 0; i < danhSach.size(); i++) {
-            LichChoAn l = danhSach.get(i);
-            System.out.println("Lịch: " + l.getMaLich() + " | " + l.getDongVat() + " | " + l.getThucAn() + " | " + l.getNhanVien() + " | " + l.getThoiGian());
+        try {
+            if (danhSach.isEmpty()) {
+                System.out.println("Danh sách Lịch Cho Ăn hiện tại rỗng.");
+            } else {
+                for (int i = 0; i < danhSach.size(); i++) {
+                    LichChoAn l = danhSach.get(i);
+                    System.out.println("Lịch: " + l.maLich + " | " + l.dongVat + " | " + l.thucAn + " | " + l.nhanVien + " | " + l.thoiGian);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi in danh sách Lịch Cho Ăn: " + e.getMessage());
         }
     }
 }

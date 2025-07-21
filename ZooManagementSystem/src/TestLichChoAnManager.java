@@ -3,7 +3,7 @@ package src;
 import java.util.ArrayList;
 import java.util.List;
 
-public class testLichChoAnManager {
+public class TestLichChoAnManager {
 
     public static LichChoAnManager getManager() {
 
