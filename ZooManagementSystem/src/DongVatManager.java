@@ -9,21 +9,28 @@ public class DongVatManager {
     private Scanner scanner = new Scanner(System.in);
 
     public void themDongVat() {
-        System.out.print("Nhập tên động vật: ");
-        String ten = scanner.nextLine();
-        System.out.print("Nhập tuổi động vật: ");
-        int tuoi = Integer.parseInt(scanner.nextLine());
-        System.out.print("Nhập loại động vật: ");
-        String loai = scanner.nextLine();
+        try {
+            System.out.print("Nhập tên động vật: ");
+            String ten = scanner.nextLine();
 
-        DongVat dongVat = new DongVat(ten, tuoi, loai);
-        danhSachDongVat.add(dongVat);
-        System.out.println("Đã thêm động vật thành công");
+            System.out.print("Nhập tuổi động vật: ");
+            int tuoi = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Nhập loại động vật: ");
+            String loai = scanner.nextLine();
+
+            DongVat dongVat = new DongVat(ten, tuoi, loai);
+            danhSachDongVat.add(dongVat);
+            System.out.println("Đã thêm động vật thành công");
+        } catch (NumberFormatException e) {
+            System.out.println("Lỗi: Tuổi phải là một số nguyên hợp lệ.");
+        }
     }
 
     public void hienThiTatCaDongVat() {
         if (danhSachDongVat.isEmpty()) {
             System.out.println("Danh sách động vật trống");
+            return;
         }
 
         for (DongVat dv : danhSachDongVat) {
@@ -36,8 +43,11 @@ public class DongVatManager {
         System.out.print("Nhập tên động vật cần sửa: ");
         String ten = scanner.nextLine();
 
+        boolean found = false;
+
         for (DongVat dv : danhSachDongVat) {
             if (dv.getTen().equalsIgnoreCase(ten)) {
+                found = true;
                 System.out.println("Đã tìm thấy động vật: " + ten);
                 System.out.println("Thông tin hiện tại:");
                 dv.hienThiThongTin();
@@ -46,9 +56,11 @@ public class DongVatManager {
                 String confirm = scanner.nextLine();
                 if (confirm.equalsIgnoreCase("n") || confirm.isEmpty()) {
                     System.out.println("Đã hủy thao tác sửa");
+                    return;
                 }
 
                 System.out.println("→ Để trống hoặc nhập 'n' nếu không muốn thay đổi một trường nào đó");
+
                 System.out.print("Tên mới: ");
                 String tenMoi = scanner.nextLine();
                 if (!tenMoi.isEmpty() && !tenMoi.equalsIgnoreCase("n")) {
@@ -58,7 +70,11 @@ public class DongVatManager {
                 System.out.print("Tuổi mới: ");
                 String tuoiMoi = scanner.nextLine();
                 if (!tuoiMoi.isEmpty() && !tuoiMoi.equalsIgnoreCase("n")) {
-                    dv.setTuoi(Integer.parseInt(tuoiMoi));
+                    try {
+                        dv.setTuoi(Integer.parseInt(tuoiMoi));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Lỗi: Tuổi không hợp lệ, giữ nguyên giá trị cũ.");
+                    }
                 }
 
                 System.out.print("Loại mới: ");
@@ -68,10 +84,13 @@ public class DongVatManager {
                 }
 
                 System.out.println("Đã cập nhật thông tin động vật");
+                break;
             }
         }
 
-        System.out.println("❌ Không tìm thấy động vật có tên '" + ten + "'");
+        if (!found) {
+            System.out.println("❌ Không tìm thấy động vật có tên '" + ten + "'");
+        }
     }
 
     public void xoaDongVat() {
@@ -80,15 +99,21 @@ public class DongVatManager {
 
         if (ten.equalsIgnoreCase("n") || ten.isEmpty()) {
             System.out.println("Đã hủy thao tác xóa");
+            return;
         }
 
-        for (DongVat dv : danhSachDongVat) {
-            if (dv.getTen().equalsIgnoreCase(ten)) {
-                danhSachDongVat.remove(dv);
+        boolean found = false;
+        for (int i = danhSachDongVat.size() - 1; i >= 0; i--) {
+            if (danhSachDongVat.get(i).getTen().equalsIgnoreCase(ten)) {
+                danhSachDongVat.remove(i);
                 System.out.println("Đã xóa động vật thành công");
+                found = true;
+                break; // Xóa 1 con, nếu muốn xóa tất cả con trùng tên thì bỏ break
             }
         }
 
-        System.out.println("Không tìm thấy động vật có tên '" + ten + "'");
+        if (!found) {
+            System.out.println("Không tìm thấy động vật có tên '" + ten + "'");
+        }
     }
 }

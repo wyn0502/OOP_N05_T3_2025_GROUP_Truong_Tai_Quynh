@@ -1,6 +1,11 @@
 package src;
 
 public class testDongVatManager {
+    public static void main(String[] args) {
+        testDongVatManager test = new testDongVatManager();
+        test.chayThu();
+    }
+
     public void chayThu() {
         DongVatManager manager = new DongVatManager();
 
