@@ -1,5 +1,5 @@
-package src;
 
+import src.TestLichChoAn;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -35,11 +35,12 @@ public class App {
 //        testDongVatManager test1 = new testDongVatManager();
 //        test.chayThu();
 //
-        TestTH5_CellPhone test2 = new TestTH5_CellPhone();
-        test2.testTune();
+        // TestTH5_CellPhone test2 = new TestTH5_CellPhone();
+        // test2.testTune();
 
-        TestGiaVeManager test = new TestGiaVeManager();
-        test.chạyThu();
+        // TestGiaVeManager test = new TestGiaVeManager();
+        // test.chạyThu();
+        TestLichChoAn.runTest(); 
 
     // }
 }

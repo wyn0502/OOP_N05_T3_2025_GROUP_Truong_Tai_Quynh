@@ -1,85 +1,102 @@
-package src;
+package manager;
 
+import model.LichChoAn;
+import interfaces.IManager;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class LichChoAnManager {
+public class LichChoAnManager implements IManager {
+    private final List<LichChoAn> danhSachLich = new ArrayList<>();
+    private final Scanner scanner = new Scanner(System.in);
 
-    public List<LichChoAn> danhSach;
+    @Override
+    public void them() {
+        System.out.print("Nhập mã lịch: ");
+        String maLich = scanner.nextLine();
 
-    public LichChoAnManager(List<LichChoAn> ds) {
-        this.danhSach = ds;
+        System.out.print("Nhập tên động vật: ");
+        String dongVat = scanner.nextLine();
+
+        System.out.print("Nhập tên thức ăn: ");
+        String thucAn = scanner.nextLine();
+
+        System.out.print("Nhập tên nhân viên: ");
+        String nhanVien = scanner.nextLine();
+
+        System.out.print("Nhập thời gian cho ăn: ");
+        String thoiGian = scanner.nextLine();
+
+        LichChoAn lich = new LichChoAn(maLich, dongVat, thucAn, nhanVien, thoiGian);
+        danhSachLich.add(lich);
+        System.out.println("✅ Thêm lịch cho ăn thành công");
     }
 
-    public List<LichChoAn> getList() {
-        return danhSach;
-    }
-
-    public List<LichChoAn> Create(LichChoAn lca) {
-        try {
-            danhSach.add(lca);
-            System.out.println("Lịch cho ăn đã được thêm.");
-        } catch (Exception e) {
-            System.out.println("Lỗi khi thêm Lịch Cho Ăn: " + e.getMessage());
+    @Override
+    public void hienThi() {
+        if (danhSachLich.isEmpty()) {
+            System.out.println("Danh sách lịch cho ăn trống.");
+        } else {
+            for (LichChoAn lich : danhSachLich) {
+                lich.hienThiThongTin();
+                System.out.println("----------");
+            }
         }
-        return danhSach;
     }
 
-    public List<LichChoAn> Delete(String ma) {
-        try {
-            boolean found = false;
-            for (int i = 0; i < danhSach.size(); i++) {
-                if (danhSach.get(i).getMaLich().equals(ma)) {
-                    danhSach.remove(i);
-                    found = true;
-                    System.out.println("Lịch cho ăn có mã " + ma + " đã bị xóa.");
-                    break;
+    @Override
+    public void sua() {
+        System.out.print("Nhập mã lịch cần sửa: ");
+        String ma = scanner.nextLine();
+
+        for (LichChoAn lich : danhSachLich) {
+            if (lich.getMaLich().equals(ma)) {
+                System.out.print("Tên động vật mới (Enter để giữ nguyên): ");
+                String dongVat = scanner.nextLine();
+                if (!dongVat.isEmpty()) {
+                    lich.setDongVat(dongVat);
                 }
+
+                System.out.print("Tên thức ăn mới (Enter để giữ nguyên): ");
+                String thucAn = scanner.nextLine();
+                if (!thucAn.isEmpty()) {
+                    lich.setThucAn(thucAn);
+                }
+
+                System.out.print("Tên nhân viên mới (Enter để giữ nguyên): ");
+                String nhanVien = scanner.nextLine();
+                if (!nhanVien.isEmpty()) {
+                    lich.setNhanVien(nhanVien);
+                }
+
+                System.out.print("Thời gian mới (Enter để giữ nguyên): ");
+                String thoiGian = scanner.nextLine();
+                if (!thoiGian.isEmpty()) {
+                    lich.setThoiGian(thoiGian);
+                }
+
+                System.out.println("✅ Đã cập nhật lịch cho ăn");
+                return;
             }
-            if (!found) {
-                System.out.println("Không tìm thấy Lịch Cho Ăn với mã: " + ma);
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi khi xóa Lịch Cho Ăn: " + e.getMessage());
         }
-        return danhSach;
+
+        System.out.println("❌ Không tìm thấy lịch cho ăn");
     }
 
-    public List<LichChoAn> Edit(String ma) {
-        try {
-            boolean found = false;
-            for (int i = 0; i < danhSach.size(); i++) {
-                if (danhSach.get(i).getMaLich().equals(ma)) {
-                    Scanner scan = new Scanner(System.in);
-                    System.out.print("Nhập thời gian mới: ");
-                    String tgMoi = scan.nextLine();
-                    danhSach.get(i).setThoiGian(tgMoi);
-                    System.out.println("Thời gian của Lịch Cho Ăn có mã " + ma + " đã được sửa.");
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                System.out.println("Không tìm thấy Lịch Cho Ăn với mã: " + ma);
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi khi chỉnh sửa Lịch Cho Ăn: " + e.getMessage());
-        }
-        return danhSach;
-    }
+    @Override
+    public void xoa() {
+        System.out.print("Nhập mã lịch cần xóa: ");
+        String ma = scanner.nextLine();
 
-    public void printLichChoAn() {
-        try {
-            if (danhSach.isEmpty()) {
-                System.out.println("Danh sách Lịch Cho Ăn hiện tại rỗng.");
-            } else {
-                for (int i = 0; i < danhSach.size(); i++) {
-                    LichChoAn l = danhSach.get(i);
-                    System.out.println("Lịch: " + l.getMaLich() + " | " + l.getDongVat() + " | " + l.getThucAn() + " | " + l.getNhanVien() + " | " + l.getThoiGian());
-                }
+        for (int i = 0; i < danhSachLich.size(); i++) {
+            if (danhSachLich.get(i).getMaLich().equals(ma)) {
+                danhSachLich.remove(i);
+                System.out.println("✅ Đã xóa lịch cho ăn");
+                return;
             }
-        } catch (Exception e) {
-            System.out.println("Lỗi khi in danh sách Lịch Cho Ăn: " + e.getMessage());
         }
+
+        System.out.println("❌ Không tìm thấy lịch cho ăn");
     }
 }
