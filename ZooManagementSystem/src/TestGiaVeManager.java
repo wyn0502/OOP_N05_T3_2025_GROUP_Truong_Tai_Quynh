@@ -1,7 +1,9 @@
+package src;
+
 import java.util.Scanner;
 
 public class TestGiaVeManager {
-    public static void main(String[] args) {
+    public static void chayThu(String[] args) {
         GiaVeManager giaVeManager = new GiaVeManager();
         Scanner scanner = new Scanner(System.in);
         int choice;
