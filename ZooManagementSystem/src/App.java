@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    //    public static void main(String[] args) throws Exception {
+        public static void main(String[] args) throws Exception {
     //        List<LichChoAn> ds = new ArrayList<>();
     //        Scanner scan = new Scanner(System.in);
     //        LichChoAnManager manager = testLichChoAnManager.getManager();
@@ -28,14 +28,14 @@ public class App {
     //
     //
     //
-    //        testChuongManager test = new testChuongManager();
-    //        test.chayThu();
+           // testChuongManager test = new testChuongManager();
+           // test.chayThu();
     //
-    //        testDongVatManager test1 = new testDongVatManager();
-    //        test.chayThu();
+           TestDongVatManager test = new TestDongVatManager();
+           test.chayThu();
     //
     // TestTH5_CellPhone test2 = new TestTH5_CellPhone();
     // test2.testTune();
 
-    // }
+    }
 }
