@@ -1,3 +1,5 @@
+package src;
+
 public class GiaVe {
     private String loaiVe;
     private double giaCoBan;
