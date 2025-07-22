@@ -1,8 +1,8 @@
 package src;
 
-public class testDongVatManager {
+public class TestDongVatManager {
     public static void main(String[] args) {
-        testDongVatManager test = new testDongVatManager();
+        TestDongVatManager test = new TestDongVatManager();
         test.chayThu();
     }
 

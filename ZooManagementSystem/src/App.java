@@ -34,8 +34,8 @@ public class App {
     //        testDongVatManager test1 = new testDongVatManager();
     //        test.chayThu();
     //
-    TestTH5_CellPhone test2 = new TestTH5_CellPhone();
-    test2.testTune();
+    // TestTH5_CellPhone test2 = new TestTH5_CellPhone();
+    // test2.testTune();
 
     // }
 }

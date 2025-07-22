@@ -1,7 +1,5 @@
 package src;
 
-import src.Chuong;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,7 +18,7 @@ public class LichChoAnManager {
     public List<LichChoAn> Create(LichChoAn lca) {
         try {
             danhSach.add(lca);
-            System.out.println("Lich cho an da duoc them.");
+            System.out.println("Lịch cho ăn đã được thêm.");
         } catch (Exception e) {
             System.out.println("Lỗi khi thêm Lịch Cho Ăn: " + e.getMessage());
         }
@@ -31,7 +29,7 @@ public class LichChoAnManager {
         try {
             boolean found = false;
             for (int i = 0; i < danhSach.size(); i++) {
-                if (danhSach.get(i).maLich.equals(ma)) {
+                if (danhSach.get(i).getMaLich().equals(ma)) {
                     danhSach.remove(i);
                     found = true;
                     System.out.println("Lịch cho ăn có mã " + ma + " đã bị xóa.");
@@ -51,11 +49,11 @@ public class LichChoAnManager {
         try {
             boolean found = false;
             for (int i = 0; i < danhSach.size(); i++) {
-                if (danhSach.get(i).maLich.equals(ma)) {
+                if (danhSach.get(i).getMaLich().equals(ma)) {
                     Scanner scan = new Scanner(System.in);
                     System.out.print("Nhập thời gian mới: ");
                     String tgMoi = scan.nextLine();
-                    danhSach.get(i).thoiGian = tgMoi;
+                    danhSach.get(i).setThoiGian(tgMoi);
                     System.out.println("Thời gian của Lịch Cho Ăn có mã " + ma + " đã được sửa.");
                     found = true;
                     break;
@@ -77,7 +75,7 @@ public class LichChoAnManager {
             } else {
                 for (int i = 0; i < danhSach.size(); i++) {
                     LichChoAn l = danhSach.get(i);
-                    System.out.println("Lịch: " + l.maLich + " | " + l.dongVat + " | " + l.thucAn + " | " + l.nhanVien + " | " + l.thoiGian);
+                    System.out.println("Lịch: " + l.getMaLich() + " | " + l.getDongVat() + " | " + l.getThucAn() + " | " + l.getNhanVien() + " | " + l.getThoiGian());
                 }
             }
         } catch (Exception e) {
