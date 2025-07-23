@@ -23,6 +23,7 @@ public class App {
 //        manager.Create(newLich);
 //        manager.printLichChoAn();
 //
+        \
 //        System.out.println("\nXóa lịch có mã '002'");
 //        manager.Delete("002");
 //        manager.printLichChoAn();
