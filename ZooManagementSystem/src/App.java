@@ -1,14 +1,4 @@
-
-
-
-import test.TestLichChoAnManager;
-
-import src.TestLichChoAn;
-import test.TestChuongManager;
-
-import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
+// package src;
 
 public class App {
 
@@ -25,7 +15,6 @@ public class App {
 //        manager.Create(newLich);
 //        manager.printLichChoAn();
 //
-        \
 //        System.out.println("\nXóa lịch có mã '002'");
 //        manager.Delete("002");
 //        manager.printLichChoAn();
@@ -48,7 +37,11 @@ public class App {
 
         // TestGiaVeManager test = new TestGiaVeManager();
         // test.chạyThu();
-        TestLichChoAn.runTest();
+
+        // TestLichChoAn.runTest();
+
+        test_TH6_Student test = new test_TH6_Student();
+        test.runTest();
     }
 }
     
