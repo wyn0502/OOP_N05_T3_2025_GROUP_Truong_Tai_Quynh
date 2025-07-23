@@ -15,7 +15,7 @@ public class TestLichChoAn {
 
         for (int i = 0; i < n; i++) {
             System.out.println("Nhập thông tin cho bản ghi thứ " + (i + 1));
-            
+
             System.out.print("Mã lịch: ");
             String maLich = scanner.nextLine();
 
@@ -34,8 +34,6 @@ public class TestLichChoAn {
             danhSach.add(new LichChoAn(MaLich, tenDongVat, ngay, thoiGian, nguoiPhuTrach));
         }
 
-        
         LichChoAn.hienThiLichChoAnTrongNgay(danhSach);
     }
 }
-

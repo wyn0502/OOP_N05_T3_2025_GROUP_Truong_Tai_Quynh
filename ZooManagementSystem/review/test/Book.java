@@ -1,4 +1,4 @@
-package src;
+package review.test;
 
 public class Book {
     private String title;

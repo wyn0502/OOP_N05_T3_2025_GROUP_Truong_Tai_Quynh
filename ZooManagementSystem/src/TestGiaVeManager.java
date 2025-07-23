@@ -16,7 +16,7 @@ public class TestGiaVeManager {
             System.out.println("4. Xóa vé");
             System.out.println("0. Thoát");
             System.out.print("→ Chọn chức năng: ");
-            
+
             while (!scanner.hasNextInt()) {
                 System.out.print("Vui lòng nhập số hợp lệ: ");
                 scanner.next();

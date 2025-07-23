@@ -12,8 +12,11 @@ public class TH6_Student implements Comparable<TH6_Student> {
 
     @Override
     public int compareTo(TH6_Student other) {
-        if (this.gpa < other.gpa) return 1;
-        else if (this.gpa > other.gpa) return -1;
-        else return 0;
+        if (this.gpa < other.gpa)
+            return 1;
+        else if (this.gpa > other.gpa)
+            return -1;
+        else
+            return 0;
     }
 }

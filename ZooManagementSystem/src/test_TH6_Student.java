@@ -9,7 +9,7 @@ public class test_TH6_Student {
         TH6_Student TH6_Student3 = new TH6_Student("Charlie", 3.9f);
         TH6_Student TH6_Student4 = new TH6_Student("David", 3.7f);
 
-        TH6_Student[] TH6_Students = {TH6_Student1, TH6_Student2, TH6_Student3, TH6_Student4};
+        TH6_Student[] TH6_Students = { TH6_Student1, TH6_Student2, TH6_Student3, TH6_Student4 };
 
         System.out.println("Before sorting:");
         for (TH6_Student TH6_Student : TH6_Students) {
