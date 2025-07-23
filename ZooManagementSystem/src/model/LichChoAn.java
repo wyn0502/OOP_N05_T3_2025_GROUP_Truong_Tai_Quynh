@@ -1,4 +1,4 @@
-package src;
+package model;
 
 public class LichChoAn {
     private String maLich;
@@ -7,7 +7,6 @@ public class LichChoAn {
     private String nhanVien;
     private String thoiGian;
 
-    // Constructor đầy đủ tham số
     public LichChoAn(String maLich, String dongVat, String thucAn, String nhanVien, String thoiGian) {
         this.maLich = maLich;
         this.dongVat = dongVat;
@@ -16,7 +15,6 @@ public class LichChoAn {
         this.thoiGian = thoiGian;
     }
 
-    // Getter & Setter như đã thêm trước đó
     public String getMaLich() {
         return maLich;
     }
@@ -25,12 +23,24 @@ public class LichChoAn {
         return dongVat;
     }
 
+    public void setDongVat(String dongVat) {
+        this.dongVat = dongVat;
+    }
+
     public String getThucAn() {
         return thucAn;
     }
 
+    public void setThucAn(String thucAn) {
+        this.thucAn = thucAn;
+    }
+
     public String getNhanVien() {
         return nhanVien;
+    }
+
+    public void setNhanVien(String nhanVien) {
+        this.nhanVien = nhanVien;
     }
 
     public String getThoiGian() {
@@ -39,5 +49,13 @@ public class LichChoAn {
 
     public void setThoiGian(String thoiGian) {
         this.thoiGian = thoiGian;
+    }
+
+    public void hienThiThongTin() {
+        System.out.println("Mã lịch: " + maLich);
+        System.out.println("Động vật: " + dongVat);
+        System.out.println("Thức ăn: " + thucAn);
+        System.out.println("Nhân viên: " + nhanVien);
+        System.out.println("Thời gian: " + thoiGian);
     }
 }

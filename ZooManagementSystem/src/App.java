@@ -1,6 +1,7 @@
-package src;
 
-import test.TestChuongManager;
+
+// import test.TestChuongManager;
+import test.TestLichChoAnManager;
 
 import java.util.List;
 import java.util.Scanner;
@@ -43,7 +44,8 @@ public class App {
         // TestGiaVeManager test3 = new TestGiaVeManager();
         // test3.chayThu(new String[] {});
 
-        TestChuongManager.runTest();
+        // TestChuongManager.runTest();
+        TestLichChoAnManager.runTest();
     }
 
 }
