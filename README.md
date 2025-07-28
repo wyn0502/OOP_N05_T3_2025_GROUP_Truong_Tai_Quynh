@@ -2,7 +2,7 @@
 
 <p align="center">
   📚 <strong>Java OOP Project</strong> – Nhóm: <code>OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh</code><br>
-  🎓 Môn học: Lập trình Hướng Đối Tượng – Năm nhất – Khoa CNTT
+  🎓 Môn học: Lập trình Hướng Đối Tượng
 </p>
 
 ---
