@@ -3,6 +3,7 @@
 import test.TestLichChoAnManager;
 
 import src.TestLichChoAn;
+import src.TestNhanVienManager;
 import test.TestChuongManager;
 
 import java.util.List;
@@ -49,7 +50,11 @@ public class App {
 
         // TestLichChoAn.runTest();
 
-        test_TH6_Student test = new test_TH6_Student();
-        test.runTest();
+        // test_TH6_Student test = new test_TH6_Student();
+        // test.runTest();
+
+
+        TestNhanVienManager test1 = new TestNhanVienManager();
+        test1.test(); 
     }
 }
