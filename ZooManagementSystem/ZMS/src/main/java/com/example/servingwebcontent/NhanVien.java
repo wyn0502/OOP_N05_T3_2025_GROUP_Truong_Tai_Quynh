@@ -1,4 +1,4 @@
-package src;
+package com.example.servingwebcontent;
 
 public class NhanVien {
     private String maNhanVien;

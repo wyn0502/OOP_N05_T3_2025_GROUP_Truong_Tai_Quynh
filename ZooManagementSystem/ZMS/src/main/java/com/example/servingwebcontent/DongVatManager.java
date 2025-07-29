@@ -1,4 +1,4 @@
-package src;
+package com.example.servingwebcontent;
 
 import java.util.ArrayList;
 import java.util.List;
