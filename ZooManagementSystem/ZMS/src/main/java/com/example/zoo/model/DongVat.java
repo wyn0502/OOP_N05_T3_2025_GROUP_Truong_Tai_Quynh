@@ -1,9 +1,13 @@
-package com.example.servingwebcontent;
+package com.example.zoo.model;
+
+/**
+ * @author TRUONG
+ */
 
 public class DongVat {
-    String ten;
-    int tuoi;
-    String loai;
+    private String ten;
+    private int tuoi;
+    private String loai;
 
     public DongVat(String ten, int tuoi, String loai) {
         this.ten = ten;
@@ -41,11 +45,16 @@ public class DongVat {
         System.out.println("Loai: " + loai);
     }
 
-    public void keu(String loai) {
-        if (loai.equalsIgnoreCase("khi")) {
-            System.out.println("Khi: ec ec!");
-        } else if (loai.equalsIgnoreCase("su tu")) {
-            System.out.println("Su tu: Gam gu!");
+    public void keu() {
+        switch (loai.toLowerCase()) {
+            case "khi":
+                System.out.println("Khi: ec ec!");
+                break;
+            case "su tu":
+                System.out.println("Su tu: Gam gu!");
+                break;
+            default:
+                System.out.println("Dong vat: ...");
         }
     }
 }

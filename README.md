@@ -31,12 +31,6 @@
 | `NhanVien`             | Lưu thông tin nhân viên chăm sóc: mã, họ tên, tuổi, danh sách thú phụ trách. |
 | `GiaVe`                | Tính giá vé theo loại khách: trẻ em, sinh viên, người lớn, người già. |
 | `LichChoAn`            | Quản lý lịch cho ăn: ngày giờ, loại thức ăn, mã thú. |
-| `DanhSachDongVat`      | Quản lý danh sách động vật: thêm, tìm, xóa, in danh sách, sắp xếp. |
-| `DanhSachChuong`       | Quản lý danh sách chuồng: kiểm tra chuồng trống, tìm theo mã, cập nhật. |
-| `DanhSachNhanVien`     | Quản lý nhân viên: gán thú, tìm kiếm, hiển thị danh sách. |
-| `DanhSachLichChoAn`    | Quản lý lịch ăn: thêm mới, tìm theo mã, thống kê. |
-| `DanhSachGiaVe`        | Quản lý vé vào cửa: tính tiền, in hóa đơn, thống kê số lượt. |
-| `Main`                 | Lớp khởi động chương trình: hiện menu, điều hướng chức năng. |
 
 ---
 

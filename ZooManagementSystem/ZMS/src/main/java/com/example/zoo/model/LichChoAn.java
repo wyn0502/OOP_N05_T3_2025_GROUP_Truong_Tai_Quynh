@@ -1,4 +1,4 @@
-package model;
+package com.example.zoo.model;
 
 public class LichChoAn {
     private String maLich;
@@ -6,6 +6,9 @@ public class LichChoAn {
     private String thucAn;
     private String nhanVien;
     private String thoiGian;
+
+    public LichChoAn() {
+    }
 
     public LichChoAn(String maLich, String dongVat, String thucAn, String nhanVien, String thoiGian) {
         this.maLich = maLich;
@@ -17,6 +20,10 @@ public class LichChoAn {
 
     public String getMaLich() {
         return maLich;
+    }
+
+    public void setMaLich(String maLich) {
+        this.maLich = maLich;
     }
 
     public String getDongVat() {

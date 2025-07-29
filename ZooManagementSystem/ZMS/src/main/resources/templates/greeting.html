@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Thông tin động vật & vé</title>
 </head>
+
 <body>
     <h1>Chào <span th:text="${name}">bạn</span>!</h1>
 
@@ -17,8 +19,16 @@
     <h2>🎫 Vé:</h2>
     <ul>
         <li>Loại: <span th:text="${giaVe.loaiVe}">---</span></li>
-        <li>Giá gốc: <span th:text="${giaVe.giaCoBan}">---</span></li>
-        <li>Giá trẻ em: <span th:text="${giaVeTreEm}">---</span> VND</li>
+        <li>
+            Giá gốc:
+            <span th:text="${#numbers.formatDecimal(giaVe.giaCoBan, 0, 'COMMA', 0, 'POINT')}">---</span> VND
+        </li>
+        <li>
+            Giá trẻ em:
+            <span th:text="${#numbers.formatDecimal(giaVeTreEm, 0, 'COMMA', 0, 'POINT')}">---</span> VND
+        </li>
     </ul>
+
 </body>
+
 </html>

@@ -1,12 +1,12 @@
-package com.example.servingwebcontent;
+package com.example.zoo;
+
+/**
+ * @author TRUONG
+ */
 
 public class GiaVe {
     private String loaiVe;
     private double giaCoBan;
-
-    /**
-     * @author TRUONG
-     */
 
     // Constructor default
     public GiaVe() {
