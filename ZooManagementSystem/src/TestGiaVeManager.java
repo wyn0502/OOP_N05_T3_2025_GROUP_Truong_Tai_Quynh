@@ -2,6 +2,8 @@ package src;
 
 import java.util.Scanner;
 
+import com.example.servingwebcontent.GiaVeManager;
+
 public class TestGiaVeManager {
     public static void chayThu(String[] args) {
         GiaVeManager giaVeManager = new GiaVeManager();
