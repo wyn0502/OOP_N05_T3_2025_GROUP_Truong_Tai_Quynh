@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chỉnh Sửa Vé</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <style>
+        /* Giữ nguyên toàn bộ style cũ bạn đã cung cấp */
         * {
             margin: 0;
             padding: 0;
@@ -125,18 +126,30 @@
         </div>
 
         <form th:action="@{/giave/edit}" th:object="${ve}" method="post">
+            <!-- ẩn id để gửi về -->
             <input type="hidden" th:field="*{id}" />
 
             <div class="form-group">
-                <label for="loaiVe"><i class="fas fa-tag"></i>Loại Vé</label>
-                <input type="text" id="loaiVe" th:field="*{loaiVe}" placeholder="Ví dụ: Vé người lớn, Vé sinh viên..."
-                    required>
+                <label for="loaiVe"><i class="fas fa-tag"></i> Loại Vé</label>
+                <input type="text" id="loaiVe" th:field="*{loaiVe}" placeholder="Ví dụ: Vé người lớn, Vé sinh viên..." required />
             </div>
 
             <div class="form-group">
-                <label for="giaCoBan"><i class="fas fa-dollar-sign"></i>Giá Cơ Bản</label>
-                <input type="number" id="giaCoBan" name="giaCoBan" th:value="${#numbers.formatInteger(ve.giaCoBan, 0)}"
-                    placeholder="Nhập giá vé cơ bản (VNĐ)" required min="1000">
+                <label for="giaCoBan"><i class="fas fa-dollar-sign"></i> Giá Cơ Bản</label>
+                <input type="number" id="giaCoBan" th:field="*{giaCoBan}" placeholder="Nhập giá vé cơ bản (VNĐ)" required min="1000" />
+            </div>
+
+            <!-- Thêm trường Lý do giảm giá -->
+            <div class="form-group">
+                <label for="lyDoGiamGia"><i class="fas fa-info-circle"></i> Lý do giảm giá</label>
+                <input type="text" id="lyDoGiamGia" th:field="*{lyDoGiamGia}" placeholder="Nhập lý do giảm giá (nếu có)" />
+            </div>
+
+            <!-- Thêm trường Phần trăm giảm giá -->
+            <div class="form-group">
+                <label for="phanTramGiamGia"><i class="fas fa-percent"></i> Phần trăm giảm giá (%)</label>
+                <input type="number" id="phanTramGiamGia" th:field="*{phanTramGiamGia}" placeholder="Nhập phần trăm giảm giá"
+                    min="0" max="100" step="0.1" />
             </div>
 
             <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Cập Nhật</button>

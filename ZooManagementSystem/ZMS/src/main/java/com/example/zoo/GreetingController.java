@@ -17,7 +17,7 @@ public class GreetingController {
             Model model) {
 
         DongVat dv = new DongVat("Gà Tre daden", 2, "Gà");
-        GiaVe gv = new GiaVe("ve1612", "Vé Người Lớn", 150_000);
+        GiaVe gv = new GiaVe("ve1612", "Vé Người Lớn", 150_000, "Vui hè" , 50);
 
         model.addAttribute("name", name);
         model.addAttribute("dongVat", dv);

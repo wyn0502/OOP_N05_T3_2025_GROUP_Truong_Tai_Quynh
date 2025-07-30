@@ -5,8 +5,10 @@ import com.example.zoo.service.GiaVeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.UUID;
 
 @Controller
@@ -29,7 +31,17 @@ public class GiaVeController {
     }
 
     @PostMapping("/add")
-    public String xuLyThemVe(@ModelAttribute GiaVe ve) {
+    public String xuLyThemVe(@Valid @ModelAttribute("ve") GiaVe ve, BindingResult result, Model model) {
+        // Kiểm tra thêm logic nghiệp vụ
+        if (ve.getLoaiVe() == null || ve.getLoaiVe().trim().isEmpty()) {
+            result.rejectValue("loaiVe", "error.ve", "Vui lòng chọn loại vé");
+        }
+        
+        if (result.hasErrors()) {
+            model.addAttribute("ve", ve);
+            return "giave/add";
+        }
+        
         ve.setId(UUID.randomUUID().toString());
         giaVeService.themVe(ve);
         return "redirect:/giave";
@@ -44,7 +56,11 @@ public class GiaVeController {
     }
 
     @PostMapping("/edit")
-    public String xuLySuaVe(@ModelAttribute GiaVe ve) {
+    public String xuLySuaVe(@Valid @ModelAttribute("ve") GiaVe ve, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("ve", ve);
+            return "giave/edit";
+        }
         giaVeService.capNhatVe(ve);
         return "redirect:/giave";
     }
