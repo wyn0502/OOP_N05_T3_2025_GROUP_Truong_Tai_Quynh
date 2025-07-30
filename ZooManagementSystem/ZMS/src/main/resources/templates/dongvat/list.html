@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh Sách Động Vật</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      color: white;
+      font-size: 3rem;
+      font-weight: 300;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .btn-add {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn-add:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+      background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+    }
+
+    .btn-add i {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(20px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: linear-gradient(135deg, #4834d4, #686de0);
+      color: white;
+      padding: 20px 15px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    td {
+      padding: 20px 15px;
+      text-align: center;
+      color: #2c3e50;
+      font-size: 1rem;
+      border-bottom: 1px solid #ecf0f1;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #e3f2fd;
+      transform: scale(1.01);
+      transition: all 0.2s ease;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 16px;
+    }
+
+    .edit-btn {
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      color: white;
+      box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    }
+
+    .edit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(243, 156, 18, 0.5);
+    }
+
+    .delete-btn {
+      background: linear-gradient(45deg, #e74c3c, #c0392b);
+      color: white;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .delete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #7f8c8d;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .btn-add {
+        padding: 12px 24px;
+        font-size: 14px;
+      }
+      
+      th, td {
+        padding: 15px 10px;
+        font-size: 0.9rem;
+      }
+      
+      .actions {
+        gap: 10px;
+      }
+      
+      .action-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-paw"></i> Quản Lý Sở Thú</h1>
+      <a href="/dongvat/them" class="btn-add">
+        <i class="fas fa-plus"></i>
+        Thêm Động Vật Mới
+      </a>
+    </div>
+
+    <div class="table-container">
+      <table th:if="${not #lists.isEmpty(danhSach)}">
+        <thead>
+          <tr>
+            <th><i class="fas fa-signature"></i> Tên</th>
+            <th><i class="fas fa-birthday-cake"></i> Tuổi</th>
+            <th><i class="fas fa-dna"></i> Loài</th>
+            <th><i class="fas fa-cogs"></i> Thao Tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="dv : ${danhSach}">
+            <td th:text="${dv.ten}">Tên động vật</td>
+            <td>
+              <span th:text="${dv.tuoi}">0</span>
+              <small style="color: #7f8c8d;"> tuổi</small>
+            </td>
+            <td th:text="${dv.loai}">Loài</td>
+            <td>
+              <div class="actions">
+                <a th:href="@{/dongvat/sua/{ten}(ten=${dv.ten})}" 
+                   class="action-btn edit-btn" 
+                   title="Chỉnh sửa thông tin">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a th:href="@{/dongvat/xoa/{ten}(ten=${dv.ten})}" 
+                   class="action-btn delete-btn" 
+                   title="Xóa động vật"
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa động vật này không?')">
+                  <i class="fas fa-trash-alt"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div th:if="${#lists.isEmpty(danhSach)}" class="empty-state">
+        <i class="fas fa-hippo"></i>
+        <h3>Chưa có động vật nào</h3>
+        <p>Hãy thêm động vật đầu tiên vào sở thú của bạn!</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

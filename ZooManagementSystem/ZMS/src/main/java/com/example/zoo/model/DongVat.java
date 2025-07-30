@@ -9,6 +9,9 @@ public class DongVat {
     private int tuoi;
     private String loai;
 
+    public DongVat() {
+    }
+
     public DongVat(String ten, int tuoi, String loai) {
         this.ten = ten;
         this.tuoi = tuoi;

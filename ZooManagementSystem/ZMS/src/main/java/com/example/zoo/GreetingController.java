@@ -16,14 +16,18 @@ public class GreetingController {
             @RequestParam(name = "name", required = false, defaultValue = "Xuân Trường") String name,
             Model model) {
 
-        DongVat dv = new DongVat("Con Gà", 2, "gà");
-        GiaVe ve = new GiaVe("VIP", 200_000);
+        // Chỉ test DongVat trước
+        DongVat dv = new DongVat("Gà Tre daden", 2, "Gà");
 
         model.addAttribute("name", name);
         model.addAttribute("dongVat", dv);
-        model.addAttribute("giaVe", ve);
-        model.addAttribute("giaVeTreEm", ve.tinhGiaTheoDoiTuong("tre em"));
 
-        return "greeting";
+        return "greeting"; // Test DongVat only
+    }
+    
+    // Redirect root to animal list
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/dongvat";
     }
 }

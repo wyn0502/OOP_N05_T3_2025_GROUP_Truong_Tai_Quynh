@@ -1,34 +1,180 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Thông tin động vật & vé</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Động Vật</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: #00b894;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            color: #2d3436;
+            font-weight: 700;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #636e72;
+            min-width: 120px;
+            margin-right: 15px;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            color: #2d3436;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px 30px;
+            margin: 0 10px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .test-info {
+            background: #dff0d8;
+            border: 1px solid #d6e9c6;
+            color: #3c763d;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Chào <span th:text="${name}">bạn</span>!</h1>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-paw"></i> Test Động Vật</h1>
+            <div class="welcome-text">Chào mừng <span th:text="${name}" style="color: #ffeaa7; font-weight: bold;">Xuân Trường</span>!</div>
+        </div>
 
-    <h2>🐾 Động vật:</h2>
-    <ul>
-        <li>Tên: <span th:text="${dongVat.ten}">---</span></li>
-        <li>Tuổi: <span th:text="${dongVat.tuoi}">---</span></li>
-        <li>Loài: <span th:text="${dongVat.loai}">---</span></li>
-    </ul>
+        <div class="test-info">
+            <strong><i class="fas fa-info-circle"></i> Thông tin test:</strong> 
+            Đây là trang test để kiểm tra object DongVat từ GreetingController
+        </div>
 
-    <h2>🎫 Vé:</h2>
-    <ul>
-        <li>Loại: <span th:text="${giaVe.loaiVe}">---</span></li>
-        <li>
-            Giá gốc:
-            <span th:text="${#numbers.formatDecimal(giaVe.giaCoBan, 0, 'COMMA', 0, 'POINT')}">---</span> VND
-        </li>
-        <li>
-            Giá trẻ em:
-            <span th:text="${#numbers.formatDecimal(giaVeTreEm, 0, 'COMMA', 0, 'POINT')}">---</span> VND
-        </li>
-    </ul>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-dog"></i>
+                </div>
+                <div class="card-title">Thông Tin Động Vật Test</div>
+            </div>
 
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-label"><i class="fas fa-tag"></i> Tên:</span>
+                    <span class="info-value" th:text="${dongVat.ten}">Tên động vật</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label"><i class="fas fa-birthday-cake"></i> Tuổi:</span>
+                    <span class="info-value" th:text="${dongVat.tuoi + ' tuổi'}">Tuổi</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label"><i class="fas fa-dna"></i> Loài:</span>
+                    <span class="info-value" th:text="${dongVat.loai}">Loài</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-links">
+            <a href="/dongvat" class="nav-link">
+                <i class="fas fa-list"></i> Xem Danh Sách Động Vật
+            </a>
+            <a href="/dongvat/them" class="nav-link">
+                <i class="fas fa-plus"></i> Thêm Động Vật Mới
+            </a>
+        </div>
+    </div>
 </body>
-
 </html>
