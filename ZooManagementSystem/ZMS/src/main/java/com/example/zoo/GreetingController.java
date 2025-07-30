@@ -17,8 +17,8 @@ public class GreetingController {
             Model model) {
 
         DongVat dv = new DongVat("Gà Tre daden", 2, "Gà");
-        GiaVe gv = new GiaVe("ve1612", "Vé Người Lớn", 150_000); 
-        
+        GiaVe gv = new GiaVe("ve1612", "Vé Người Lớn", 150_000);
+
         model.addAttribute("name", name);
         model.addAttribute("dongVat", dv);
         model.addAttribute("giaVe", gv);
@@ -29,6 +29,6 @@ public class GreetingController {
     // đây là gọi riêng dongvat/
     // @GetMapping("/")
     // public String home() {
-    //     return "redirect:/dongvat";
+    // return "redirect:/dongvat";
     // }
 }

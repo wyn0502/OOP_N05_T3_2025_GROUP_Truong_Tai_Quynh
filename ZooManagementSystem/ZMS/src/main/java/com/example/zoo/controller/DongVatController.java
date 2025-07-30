@@ -20,7 +20,6 @@ public class DongVatController {
         return "dongvat/list";
     }
 
-    // Hiển thị form để thêm mới
     @GetMapping("/them")
     public String themForm(Model model) {
         model.addAttribute("dongVat", new DongVat());
@@ -28,7 +27,6 @@ public class DongVatController {
         return "dongvat/form";
     }
 
-    // Hiển thị form để sửa, gửi kèm "originalTen" (tên gốc)
     @GetMapping("/sua/{ten}")
     public String suaForm(@PathVariable String ten, Model model) {
         DongVat dv = service.timTheoTen(ten);
@@ -36,21 +34,17 @@ public class DongVatController {
             return "redirect:/dongvat";
         }
         model.addAttribute("dongVat", dv);
-        // Gửi tên gốc sang view để lưu vào một trường ẩn
         model.addAttribute("originalTen", ten);
         return "dongvat/form";
     }
 
-    // Xử lý việc lưu (cho cả thêm mới và sửa)
     @PostMapping("/luu")
     public String luu(@ModelAttribute DongVat dongVat,
-                      @RequestParam(name = "originalTen", required = false) String originalTen) {
+            @RequestParam(name = "originalTen", required = false) String originalTen) {
 
-        // Nếu có originalTen, nghĩa là đây là hành động SỬA
         if (originalTen != null && !originalTen.isEmpty()) {
             service.sua(originalTen, dongVat);
-        } else { // Ngược lại, đây là hành động THÊM MỚI
-            // Kiểm tra xem tên đã tồn tại chưa để tránh trùng lặp
+        } else {
             if (service.timTheoTen(dongVat.getTen()) == null) {
                 service.them(dongVat);
             }
@@ -58,7 +52,6 @@ public class DongVatController {
         return "redirect:/dongvat";
     }
 
-    // Xử lý xóa động vật
     @GetMapping("/xoa/{ten}")
     public String xoa(@PathVariable String ten) {
         service.xoa(ten);
