@@ -1,31 +1,30 @@
 package com.example.zoo.service;
 
-import com.example.zoo.interfaces.IManager;
 import com.example.zoo.model.DongVat;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author TRUONG
- */
-
 @Service
 public class DongVatService {
     private final List<DongVat> danhSach = new ArrayList<>();
 
     public void them(DongVat dv) {
-        xoa(dv.getTen());
         danhSach.add(dv);
+    }
+
+    public void sua(String tenGoc, DongVat dongVatMoi) {
+        xoa(tenGoc);
+        them(dongVatMoi);
     }
 
     public List<DongVat> layTatCa() {
         return danhSach;
     }
 
-    public void xoa(String ten) {
-        danhSach.removeIf(dv -> dv.getTen().equalsIgnoreCase(ten));
+    public boolean xoa(String ten) {
+        return danhSach.removeIf(dv -> dv.getTen().equalsIgnoreCase(ten));
     }
 
     public DongVat timTheoTen(String ten) {

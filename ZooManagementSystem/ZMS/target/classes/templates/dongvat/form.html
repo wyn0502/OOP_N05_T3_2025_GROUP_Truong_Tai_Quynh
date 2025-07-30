@@ -82,7 +82,7 @@
       width: 20px;
     }
 
-    input[type="text"], 
+    input[type="text"],
     input[type="number"] {
       width: 100%;
       padding: 15px 20px;
@@ -162,7 +162,6 @@
       margin-top: 30px;
     }
 
-    /* Input validation styling */
     input:required:invalid {
       border-color: #e17055;
     }
@@ -172,7 +171,6 @@
       box-shadow: 0 0 20px rgba(209, 48, 49, 0.1);
     }
 
-    /* Animation for form appearance */
     .form-container {
       animation: slideUp 0.6s ease-out;
     }
@@ -188,29 +186,27 @@
       }
     }
 
-    /* Responsive design */
     @media (max-width: 600px) {
       .form-container {
         padding: 30px 25px;
         margin: 10px;
       }
-      
+
       .form-header h2 {
         font-size: 1.8rem;
       }
-      
-      input[type="text"], 
+
+      input[type="text"],
       input[type="number"] {
         padding: 12px 15px;
       }
-      
+
       .submit-btn {
         padding: 15px;
         font-size: 1rem;
       }
     }
 
-    /* Custom number input styling */
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -220,109 +216,102 @@
     input[type="number"] {
       -moz-appearance: textfield;
     }
-
-    .debug-info {
-      background: #e8f4fd;
-      border: 1px solid #b3d9ff;
-      color: #0066cc;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 0.9rem;
-    }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <div class="form-header">
-      <h2><i class="fas fa-paw"></i> Thông Tin Động Vật</h2>
-      <p>Vui lòng nhập đầy đủ thông tin về động vật</p>
-    </div>
-
-    <form th:action="@{/dongvat/luu}" th:object="${dongVat}" method="post">
-      <div class="form-group">
-        <label for="ten">
-          <i class="fas fa-signature"></i>
-          Tên động vật
-        </label>
-        <input type="text" 
-               id="ten" 
-               th:field="*{ten}" 
-               placeholder="Nhập tên động vật..."
-               required
-               maxlength="50">
-      </div>
-
-      <div class="form-group">
-        <label for="tuoi">
-          <i class="fas fa-birthday-cake"></i>
-          Tuổi
-        </label>
-        <input type="number" 
-               id="tuoi" 
-               th:field="*{tuoi}" 
-               placeholder="Nhập tuổi..."
-               min="0" 
-               max="200"
-               required>
-      </div>
-
-      <div class="form-group">
-        <label for="loai">
-          <i class="fas fa-dna"></i>
-          Loài
-        </label>
-        <input type="text" 
-               id="loai" 
-               th:field="*{loai}" 
-               placeholder="Nhập loài động vật..."
-               required
-               maxlength="50">
-      </div>
-
-      <button type="submit" class="submit-btn">
-        <i class="fas fa-save"></i>
-        Lưu Thông Tin
-      </button>
-    </form>
-
-    <div class="form-footer">
-      <a href="/dongvat" class="back-link">
-        <i class="fas fa-arrow-left"></i>
-        Quay lại danh sách
-      </a>
-    </div>
+<div class="form-container">
+  <div class="form-header">
+    <h2><i class="fas fa-paw"></i> Thông Tin Động Vật</h2>
+    <p>Vui lòng nhập đầy đủ thông tin về động vật</p>
   </div>
 
-  <script>
-    // Add some interactive feedback
-    document.querySelectorAll('input').forEach(input => {
-      input.addEventListener('focus', function() {
-        this.parentElement.style.transform = 'scale(1.02)';
-      });
-      
-      input.addEventListener('blur', function() {
-        this.parentElement.style.transform = 'scale(1)';
-      });
+  <form th:action="@{/dongvat/luu}" th:object="${dongVat}" method="post">
+
+    <input type="hidden" name="originalTen" th:if="${originalTen}" th:value="${originalTen}" />
+
+    <div class="form-group">
+      <label for="ten">
+        <i class="fas fa-signature"></i>
+        Tên động vật
+      </label>
+      <input type="text"
+             id="ten"
+             th:field="*{ten}"
+             placeholder="Nhập tên động vật..."
+             required
+             maxlength="50">
+    </div>
+
+    <div class="form-group">
+      <label for="tuoi">
+        <i class="fas fa-birthday-cake"></i>
+        Tuổi
+      </label>
+      <input type="number"
+             id="tuoi"
+             th:field="*{tuoi}"
+             placeholder="Nhập tuổi..."
+             min="0"
+             max="200"
+             required>
+    </div>
+
+    <div class="form-group">
+      <label for="loai">
+        <i class="fas fa-dna"></i>
+        Loài
+      </label>
+      <input type="text"
+             id="loai"
+             th:field="*{loai}"
+             placeholder="Nhập loài động vật..."
+             required
+             maxlength="50">
+    </div>
+
+    <button type="submit" class="submit-btn">
+      <i class="fas fa-save"></i>
+      Lưu Thông Tin
+    </button>
+  </form>
+
+  <div class="form-footer">
+    <a href="/dongvat" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      Quay lại danh sách
+    </a>
+  </div>
+</div>
+
+<script>
+  // Add some interactive feedback
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('focus', function() {
+      this.parentElement.style.transform = 'scale(1.02)';
     });
 
-    // Form validation feedback
-    document.querySelector('form').addEventListener('submit', function(e) {
-      const submitBtn = document.querySelector('.submit-btn');
-      const originalText = submitBtn.innerHTML;
-      
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
-      submitBtn.disabled = true;
-      
-      // Re-enable after a short delay (in case of validation errors)
-      setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      }, 2000);
+    input.addEventListener('blur', function() {
+      this.parentElement.style.transform = 'scale(1)';
     });
+  });
 
-    // Debug log
-    console.log('Form loaded successfully');
-  </script>
+  // Form validation feedback
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const submitBtn = document.querySelector('.submit-btn');
+    const originalText = submitBtn.innerHTML;
+
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+    submitBtn.disabled = true;
+
+    // Re-enable after a short delay (in case of validation errors)
+    setTimeout(() => {
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }, 2000);
+  });
+
+  // Debug log
+  console.log('Form loaded successfully');
+</script>
 </body>
 </html>

@@ -14,50 +14,54 @@ public class DongVatController {
     @Autowired
     private DongVatService service;
 
-    // Hiển thị danh sách động vật
     @GetMapping
     public String list(Model model) {
         model.addAttribute("danhSach", service.layTatCa());
-        model.addAttribute("dongVat", new DongVat()); // Thêm object rỗng để tránh lỗi binding
-        return "dongvat/list"; // Trả về dongvat/list.html
+        return "dongvat/list";
     }
 
-    // Hiển thị form thêm động vật
+    // Hiển thị form để thêm mới
     @GetMapping("/them")
     public String themForm(Model model) {
-        System.out.println("Accessing themForm method"); // Debug log
         model.addAttribute("dongVat", new DongVat());
-        System.out.println("Returning dongvat/form"); // Debug log
-        return "dongvat/form"; // Trả về dongvat/form.html
+        // Không cần thêm originalTen vì đây là form thêm mới
+        return "dongvat/form";
     }
 
-    // Xử lý lưu động vật
-    @PostMapping("/luu")
-    public String luu(@ModelAttribute DongVat dongVat) {
-        System.out.println("Saving animal: " + dongVat); // Debug log
-        service.them(dongVat);
-        return "redirect:/dongvat"; // Redirect về danh sách
-    }
-
-    // Hiển thị form sửa động vật
+    // Hiển thị form để sửa, gửi kèm "originalTen" (tên gốc)
     @GetMapping("/sua/{ten}")
-    public String sua(@PathVariable String ten, Model model) {
-        System.out.println("Editing animal: " + ten); // Debug log
+    public String suaForm(@PathVariable String ten, Model model) {
         DongVat dv = service.timTheoTen(ten);
         if (dv == null) {
-            System.out.println("Animal not found: " + ten);
-            return "redirect:/dongvat"; // Nếu không tìm thấy, quay về danh sách
+            return "redirect:/dongvat";
         }
         model.addAttribute("dongVat", dv);
-        return "dongvat/form"; // Trả về form để sửa
+        // Gửi tên gốc sang view để lưu vào một trường ẩn
+        model.addAttribute("originalTen", ten);
+        return "dongvat/form";
+    }
+
+    // Xử lý việc lưu (cho cả thêm mới và sửa)
+    @PostMapping("/luu")
+    public String luu(@ModelAttribute DongVat dongVat,
+                      @RequestParam(name = "originalTen", required = false) String originalTen) {
+
+        // Nếu có originalTen, nghĩa là đây là hành động SỬA
+        if (originalTen != null && !originalTen.isEmpty()) {
+            service.sua(originalTen, dongVat);
+        } else { // Ngược lại, đây là hành động THÊM MỚI
+            // Kiểm tra xem tên đã tồn tại chưa để tránh trùng lặp
+            if (service.timTheoTen(dongVat.getTen()) == null) {
+                service.them(dongVat);
+            }
+        }
+        return "redirect:/dongvat";
     }
 
     // Xử lý xóa động vật
     @GetMapping("/xoa/{ten}")
     public String xoa(@PathVariable String ten) {
-        System.out.println("Deleting animal: " + ten); // Debug log
-        boolean deleted = service.xoa(ten);
-        System.out.println("Delete result: " + deleted);
-        return "redirect:/dongvat"; // Redirect về danh sách
+        service.xoa(ten);
+        return "redirect:/dongvat";
     }
 }

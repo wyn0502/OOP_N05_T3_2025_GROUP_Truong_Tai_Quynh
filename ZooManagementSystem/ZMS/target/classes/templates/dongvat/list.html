@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -165,21 +166,22 @@
       h1 {
         font-size: 2rem;
       }
-      
+
       .btn-add {
         padding: 12px 24px;
         font-size: 14px;
       }
-      
-      th, td {
+
+      th,
+      td {
         padding: 15px 10px;
         font-size: 0.9rem;
       }
-      
+
       .actions {
         gap: 10px;
       }
-      
+
       .action-btn {
         width: 35px;
         height: 35px;
@@ -188,6 +190,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <div class="header">
@@ -218,15 +221,12 @@
             <td th:text="${dv.loai}">Loài</td>
             <td>
               <div class="actions">
-                <a th:href="@{/dongvat/sua/{ten}(ten=${dv.ten})}" 
-                   class="action-btn edit-btn" 
-                   title="Chỉnh sửa thông tin">
+                <a th:href="@{/dongvat/sua/{ten}(ten=${dv.ten})}" class="action-btn edit-btn"
+                  title="Chỉnh sửa thông tin">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a th:href="@{/dongvat/xoa/{ten}(ten=${dv.ten})}" 
-                   class="action-btn delete-btn" 
-                   title="Xóa động vật"
-                   onclick="return confirm('Bạn có chắc chắn muốn xóa động vật này không?')">
+                <a th:href="@{/dongvat/xoa/{ten}(ten=${dv.ten})}" class="action-btn delete-btn" title="Xóa động vật"
+                  onclick="return confirm('Bạn có chắc chắn muốn xóa động vật này không?')">
                   <i class="fas fa-trash-alt"></i>
                 </a>
               </div>
@@ -234,7 +234,7 @@
           </tr>
         </tbody>
       </table>
-      
+
       <div th:if="${#lists.isEmpty(danhSach)}" class="empty-state">
         <i class="fas fa-hippo"></i>
         <h3>Chưa có động vật nào</h3>
@@ -243,4 +243,5 @@
     </div>
   </div>
 </body>
+
 </html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Giá Vé</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 3rem;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #2ed573, #1e90ff);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 213, 115, 0.6);
+        }
+
+        .btn-add i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #4834d4, #686de0);
+            color: white;
+            padding: 20px 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 20px 15px;
+            text-align: center;
+            color: #2c3e50;
+            font-size: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e3f2fd;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .edit-btn {
+            background: linear-gradient(45deg, #f39c12, #f1c40f);
+            color: white;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.5);
+        }
+
+        .delete-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-ticket-alt"></i> Quản Lý Giá Vé</h1>
+            <a href="/giave/add" class="btn-add">
+                <i class="fas fa-plus"></i>
+                Thêm Loại Vé Mới
+            </a>
+        </div>
+
+        <div class="table-container">
+            <table th:if="${not #lists.isEmpty(danhSachVe)}">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-tag"></i> Loại Vé</th>
+                        <th><i class="fas fa-dollar-sign"></i> Giá Cơ Bản</th>
+                        <th><i class="fas fa-cogs"></i> Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="ve : ${danhSachVe}">
+                        <td th:text="${ve.loaiVe}">Vé người lớn</td>
+                        <td>
+                            <span
+                                th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')}">100,000</span>
+                            <small style="color: #7f8c8d;"> VNĐ</small>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <a th:href="@{/giave/edit/{id}(id=${ve.id})}" class="action-btn edit-btn"
+                                    title="Chỉnh sửa thông tin">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:href="@{/giave/delete/{id}(id=${ve.id})}" class="action-btn delete-btn"
+                                    title="Xóa loại vé"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa loại vé này không?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(danhSachVe)}" class="empty-state">
+                <i class="fas fa-folder-open"></i>
+                <h3>Chưa có loại vé nào</h3>
+                <p>Hãy thêm loại vé đầu tiên vào hệ thống!</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

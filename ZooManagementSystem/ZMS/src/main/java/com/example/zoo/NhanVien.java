@@ -17,23 +17,53 @@ public class NhanVien {
         this.chuongPhuTrach = chuong;
     }
 
-    public String getMaNhanVien() { return maNhanVien; }
-    public void setMaNhanVien(String ma) { this.maNhanVien = ma; }
+    public String getMaNhanVien() {
+        return maNhanVien;
+    }
 
-    public String getTenNhanVien() { return tenNhanVien; }
-    public void setTenNhanVien(String ten) { this.tenNhanVien = ten; }
+    public void setMaNhanVien(String ma) {
+        this.maNhanVien = ma;
+    }
 
-    public String getCapBac() { return capBac; }
-    public void setCapBac(String capBac) { this.capBac = capBac; }
+    public String getTenNhanVien() {
+        return tenNhanVien;
+    }
 
-    public String getThongTinCaNhan() { return thongTinCaNhan; }
-    public void setThongTinCaNhan(String thongTinCaNhan) { this.thongTinCaNhan = thongTinCaNhan; }
+    public void setTenNhanVien(String ten) {
+        this.tenNhanVien = ten;
+    }
 
-    public String getSoDienThoai() { return soDienThoai; }
-    public void setSoDienThoai(String soDienThoai) { this.soDienThoai = soDienThoai; }
+    public String getCapBac() {
+        return capBac;
+    }
 
-    public String getChuongPhuTrach() { return chuongPhuTrach; }
-    public void setChuongPhuTrach(String chuongPhuTrach) { this.chuongPhuTrach = chuongPhuTrach; }
+    public void setCapBac(String capBac) {
+        this.capBac = capBac;
+    }
+
+    public String getThongTinCaNhan() {
+        return thongTinCaNhan;
+    }
+
+    public void setThongTinCaNhan(String thongTinCaNhan) {
+        this.thongTinCaNhan = thongTinCaNhan;
+    }
+
+    public String getSoDienThoai() {
+        return soDienThoai;
+    }
+
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
+    }
+
+    public String getChuongPhuTrach() {
+        return chuongPhuTrach;
+    }
+
+    public void setChuongPhuTrach(String chuongPhuTrach) {
+        this.chuongPhuTrach = chuongPhuTrach;
+    }
 
     @Override
     public String toString() {
