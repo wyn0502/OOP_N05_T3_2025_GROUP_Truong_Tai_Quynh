@@ -32,7 +32,6 @@ public class GiaVeController {
 
     @PostMapping("/add")
     public String xuLyThemVe(@Valid @ModelAttribute("ve") GiaVe ve, BindingResult result, Model model) {
-        // Kiểm tra thêm logic nghiệp vụ
         if (ve.getLoaiVe() == null || ve.getLoaiVe().trim().isEmpty()) {
             result.rejectValue("loaiVe", "error.ve", "Vui lòng chọn loại vé");
         }

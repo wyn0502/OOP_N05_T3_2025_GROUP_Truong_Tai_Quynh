@@ -83,4 +83,5 @@ public class GiaVe {
                 + ", Lý do giảm giá: " + lyDoGiamGia
                 + ", % Giảm giá: " + phanTramGiamGia + "%";
     }
+    
 }

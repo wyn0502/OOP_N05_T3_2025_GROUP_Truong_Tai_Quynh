@@ -132,7 +132,7 @@
                         <th><i class="fas fa-tag"></i> Loại Vé</th>
                         <th><i class="fas fa-dollar-sign"></i> Giá Cơ Bản</th>
                         <th><i class="fas fa-info-circle"></i> Lý Do Giảm Giá</th>
-                        <th><i class="fas fa-percent"></i> Giảm Giá</th>
+                        <th><i class="fas fa-percent"></i> Giảm Giá (%)</th>
                         <th><i class="fas fa-money-bill-wave"></i> Giá Sau Giảm</th>
                         <th><i class="fas fa-cogs"></i> Thao Tác</th>
                     </tr>
@@ -144,8 +144,14 @@
                             <span th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')}">100,000</span>
                             <small style="color: #7f8c8d;">VNĐ</small>
                         </td>
-                        <td th:text="${ve.lyDoGiamGia}">Không có</td>
-                        <td th:text="${ve.phanTramGiamGia}">0</td>
+                        <td>
+                            <span th:if="${!#strings.isEmpty(ve.lyDoGiamGia)}" th:text="${ve.lyDoGiamGia}"></span>
+                            <span th:if="${#strings.isEmpty(ve.lyDoGiamGia)}" style="color: #bdc3c7; font-style: italic;">Không có</span>
+                        </td>
+                        <td>
+                            <span th:text="${ve.phanTramGiamGia != null ? ve.phanTramGiamGia : 0}">0</span>
+                            <small style="color: #7f8c8d;">%</small>
+                        </td>
                         <td>
                             <span th:text="${#numbers.formatDecimal(ve.apDungKhuyenMai(), 0, 'POINT', 0, 'COMMA')}">100,000</span>
                             <small style="color: #7f8c8d;">VNĐ</small>

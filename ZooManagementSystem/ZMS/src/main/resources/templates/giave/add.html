@@ -63,15 +63,48 @@
         .error-input {
             border-color: #e74c3c !important;
             background-color: #fdf2f2;
+            animation: shake 0.5s ease-in-out;
         }
         
         .error-message {
             color: #e74c3c;
             font-size: 0.9rem;
-            margin-top: 5px;
-            display: block;
-            font-weight: 500;
-            min-height: 20px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background-color: #fdf2f2;
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .error-message i {
+            color: #e74c3c;
+            font-size: 0.8rem;
+        }
+        
+        .error-message.hidden {
+            display: none;
+        }
+        
+        /* Animation cho error message */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
         
         .submit-btn {
@@ -90,6 +123,12 @@
         .submit-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 35px rgba(102,126,234,0.4);
+        }
+        .submit-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         .back-link {
             display: inline-flex;
@@ -110,12 +149,38 @@
             padding-top: 25px;
             margin-top: 30px;
         }
+        
+        /* Alert box cho tổng thể validation */
+        .alert-box {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .alert-error {
+            background-color: #fdf2f2;
+            border: 1px solid #e74c3c;
+            color: #c0392b;
+        }
+        
+        .alert-success {
+            background-color: #f8fff8;
+            border: 1px solid #27ae60;
+            color: #27ae60;
+        }
     </style>
 </head>
 <body>
     <div class="form-container">
         <div class="form-header">
             <h2><i class="fas fa-plus-circle"></i> Thêm Loại Vé Mới</h2>
+        </div>
+
+        <!-- Alert box tổng thể -->
+        <div id="alertBox" class="alert-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="alertMessage"></span>
         </div>
 
         <form th:action="@{/giave/add}" th:object="${ve}" method="post" id="addVeForm" novalidate>
@@ -129,20 +194,41 @@
                     <option th:value="'Vé Sinh Viên'">Sinh Viên</option>
                     <option th:value="'Vé Trẻ Em'">Trẻ Em</option>
                 </select>
-                <span class="error-message" id="loaiVeError"
-                      th:if="${#fields.hasErrors('loaiVe')}"
-                      th:errors="*{loaiVe}"></span>
+                
+                <!-- Server-side error message -->
+                <div class="error-message" th:if="${#fields.hasErrors('loaiVe')}" th:errors="*{loaiVe}">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span th:text="${#fields.errors('loaiVe')[0]}"></span>
+                </div>
+                
+                <!-- Client-side error message -->
+                <div id="loaiVeError" class="error-message hidden">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="loaiVeErrorText"></span>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="giaCoBan"><i class="fas fa-dollar-sign"></i> Giá Vé</label>
-                <input type="number" id="giaCoBan" th:field="*{giaCoBan}" 
+                <input type="text" id="giaCoBan" th:field="*{giaCoBan}" 
                        th:class="${#fields.hasErrors('giaCoBan')} ? 'error-input' : ''"
                        placeholder="Nhập giá vé (VNĐ)"
-                       min="1000" step="1000" required />
-                <span class="error-message" id="giaCoBanError"
-                      th:if="${#fields.hasErrors('giaCoBan')}" 
-                      th:errors="*{giaCoBan}"></span>
+                       pattern="[0-9]+" 
+                       inputmode="numeric"
+                       title="Vui lòng chỉ nhập số"
+                       required />
+                
+                <!-- Server-side error message -->
+                <div class="error-message" th:if="${#fields.hasErrors('giaCoBan')}" th:errors="*{giaCoBan}">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span th:text="${#fields.errors('giaCoBan')[0]}"></span>
+                </div>
+                
+                <!-- Client-side error message -->
+                <div id="giaCoBanError" class="error-message hidden">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="giaCoBanErrorText"></span>
+                </div>
             </div>
 
             <div class="form-group">
@@ -152,15 +238,28 @@
 
             <div class="form-group">
                 <label for="phanTramGiamGia"><i class="fas fa-percent"></i> Phần trăm giảm giá (%)</label>
-                <input type="number" id="phanTramGiamGia" th:field="*{phanTramGiamGia}" 
+                <input type="text" id="phanTramGiamGia" th:field="*{phanTramGiamGia}" 
                        th:class="${#fields.hasErrors('phanTramGiamGia')} ? 'error-input' : ''"
-                       placeholder="Nhập % giảm giá" min="0" max="100" step="0.1" />
-                <span class="error-message"
-                      th:if="${#fields.hasErrors('phanTramGiamGia')}"
-                      th:errors="*{phanTramGiamGia}"></span>
+                       placeholder="Nhập % giảm giá" 
+                       pattern="[0-9]+(\.[0-9]+)?"
+                       inputmode="decimal" />
+                
+                <!-- Server-side error message -->
+                <div class="error-message" th:if="${#fields.hasErrors('phanTramGiamGia')}" th:errors="*{phanTramGiamGia}">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span th:text="${#fields.errors('phanTramGiamGia')[0]}"></span>
+                </div>
+                
+                <!-- Client-side error message -->
+                <div id="phanTramGiamGiaError" class="error-message hidden">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="phanTramGiamGiaErrorText"></span>
+                </div>
             </div>
 
-            <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Lưu Lại</button>
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-save"></i> Lưu Lại
+            </button>
         </form>
 
         <div class="form-footer">
@@ -175,87 +274,164 @@
         const loaiVeSelect = document.getElementById('loaiVe');
         const giaCoBanInput = document.getElementById('giaCoBan');
         const phanTramGiamGiaInput = document.getElementById('phanTramGiamGia');
+        const submitBtn = document.getElementById('submitBtn');
+        const alertBox = document.getElementById('alertBox');
+        const alertMessage = document.getElementById('alertMessage');
 
-        // Real-time validation
+        // Function để hiển thị alert tổng thể
+        function showAlert(message, type = 'error') {
+            alertBox.className = `alert-box alert-${type}`;
+            alertMessage.textContent = message;
+            alertBox.style.display = 'flex';
+            alertBox.style.alignItems = 'center';
+            alertBox.style.gap = '10px';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // Real-time validation cho loại vé
         loaiVeSelect.addEventListener('change', function() {
+            const value = this.value.trim();
             clearError('loaiVe');
-            if (!this.value) {
-                showError('loaiVe', 'Vui lòng chọn loại vé');
+            
+            if (!value) {
+                showError('loaiVe', 'Vui lòng chọn loại vé!');
             }
+            updateSubmitButton();
         });
 
-        giaCoBanInput.addEventListener('blur', function() {
+        // Real-time validation cho giá vé - CHỈ CHO PHÉP NHẬP SỐ
+        giaCoBanInput.addEventListener('input', function() {
+            // Loại bỏ tất cả ký tự không phải số
+            this.value = this.value.replace(/[^\d]/g, '');
+            
+            const value = parseFloat(this.value);
             clearError('giaCoBan');
-            if (!this.value || this.value < 1000) {
-                showError('giaCoBan', 'Vui lòng nhập giá vé ít nhất 1,000 VNĐ');
+            
+            if (!this.value) {
+                showError('giaCoBan', 'Vui lòng nhập giá vé!');
+            } else if (value < 1000) {
+                showError('giaCoBan', 'Giá vé phải ít nhất 1,000 VNĐ!');
             }
+            updateSubmitButton();
         });
 
-        phanTramGiamGiaInput.addEventListener('blur', function() {
+        // Real-time validation cho phần trăm giảm giá - CHO PHÉP NHẬP SỐ VÀ DẤU CHẤM
+        phanTramGiamGiaInput.addEventListener('input', function() {
+            // Chỉ cho phép số và 1 dấu chấm
+            this.value = this.value.replace(/[^\d.]/g, '');
+            
+            // Chỉ cho phép 1 dấu chấm
+            const parts = this.value.split('.');
+            if (parts.length > 2) {
+                this.value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            
+            const value = parseFloat(this.value);
             clearError('phanTramGiamGia');
-            if (this.value && (this.value < 0 || this.value > 100)) {
-                showError('phanTramGiamGia', 'Phần trăm giảm giá phải từ 0 đến 100');
+            
+            if (this.value && (isNaN(value) || value < 0 || value > 100)) {
+                showError('phanTramGiamGia', 'Phần trăm giảm giá phải từ 0 đến 100!');
             }
+            updateSubmitButton();
         });
 
+        // Submit form validation
         form.addEventListener('submit', function(event) {
             let hasError = false;
+            let errorMessages = [];
             
-            // Validate loại vé
-            if (!loaiVeSelect.value) {
-                showError('loaiVe', 'Vui lòng chọn loại vé');
+            clearAllMessages();
+            
+            if (!loaiVeSelect.value.trim()) {
+                showError('loaiVe', 'Vui lòng chọn loại vé!');
+                errorMessages.push('Chưa chọn loại vé');
                 hasError = true;
             }
             
-            // Validate giá vé
-            if (!giaCoBanInput.value || giaCoBanInput.value < 1000) {
-                showError('giaCoBan', 'Vui lòng nhập giá vé ít nhất 1,000 VNĐ');
+            if (!giaCoBanInput.value) {
+                showError('giaCoBan', 'Vui lòng nhập giá vé!');
+                errorMessages.push('Chưa nhập giá vé');
+                hasError = true;
+            } else if (parseFloat(giaCoBanInput.value) < 1000) {
+                showError('giaCoBan', 'Giá vé phải ít nhất 1,000 VNĐ!');
+                errorMessages.push('Giá vé không hợp lệ');
                 hasError = true;
             }
             
-            // Validate phần trăm giảm giá
-            if (phanTramGiamGiaInput.value && (phanTramGiamGiaInput.value < 0 || phanTramGiamGiaInput.value > 100)) {
-                showError('phanTramGiamGia', 'Phần trăm giảm giá phải từ 0 đến 100');
-                hasError = true;
+            if (phanTramGiamGiaInput.value) {
+                const phanTram = parseFloat(phanTramGiamGiaInput.value);
+                if (isNaN(phanTram) || phanTram < 0 || phanTram > 100) {
+                    showError('phanTramGiamGia', 'Phần trăm giảm giá phải từ 0 đến 100!');
+                    errorMessages.push('Phần trăm giảm giá không hợp lệ');
+                    hasError = true;
+                }
             }
             
             if (hasError) {
                 event.preventDefault();
+                showAlert(`Có ${errorMessages.length} lỗi: ${errorMessages.join(', ')}`, 'error');
+                
+                if (!loaiVeSelect.value.trim()) {
+                    loaiVeSelect.focus();
+                } else if (!giaCoBanInput.value || parseFloat(giaCoBanInput.value) < 1000) {
+                    giaCoBanInput.focus();
+                }
+                
                 return false;
+            } else {
+                showAlert('Đang lưu dữ liệu...', 'success');
             }
         });
 
         function showError(fieldName, message) {
             const field = document.getElementById(fieldName);
-            let errorSpan = document.getElementById(fieldName + 'Error');
+            const errorDiv = document.getElementById(fieldName + 'Error');
+            const errorText = document.getElementById(fieldName + 'ErrorText');
             
             field.classList.add('error-input');
             
-            if (!errorSpan) {
-                errorSpan = field.parentNode.querySelector('.error-message');
-            }
-            
-            if (errorSpan) {
-                errorSpan.textContent = message;
-                errorSpan.style.display = 'block';
+            if (errorDiv && errorText) {
+                errorText.textContent = message;
+                errorDiv.classList.remove('hidden');
             }
         }
 
         function clearError(fieldName) {
             const field = document.getElementById(fieldName);
-            let errorSpan = document.getElementById(fieldName + 'Error');
+            const errorDiv = document.getElementById(fieldName + 'Error');
             
             field.classList.remove('error-input');
-            
-            if (!errorSpan) {
-                errorSpan = field.parentNode.querySelector('.error-message');
-            }
-            
-            if (errorSpan) {
-                errorSpan.style.display = 'none';
-                errorSpan.textContent = '';
+            if (errorDiv) {
+                errorDiv.classList.add('hidden');
             }
         }
+
+        function clearAllMessages() {
+            const fields = ['loaiVe', 'giaCoBan', 'phanTramGiamGia'];
+            fields.forEach(field => {
+                clearError(field);
+            });
+        }
+
+        function updateSubmitButton() {
+            const isLoaiVeValid = loaiVeSelect.value.trim() !== '';
+            const isGiaValid = giaCoBanInput.value && parseFloat(giaCoBanInput.value) >= 1000;
+            const isPhanTramValid = !phanTramGiamGiaInput.value || 
+                                   (parseFloat(phanTramGiamGiaInput.value) >= 0 && parseFloat(phanTramGiamGiaInput.value) <= 100);
+            
+            if (isLoaiVeValid && isGiaValid && isPhanTramValid) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
+            }
+        }
+
+        updateSubmitButton();
     </script>
 </body>
 </html>
