@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Động Vật</title>
+    <title>Test Dữ Liệu</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* CSS của anh giữ nguyên */
         * {
             margin: 0;
             padding: 0;
@@ -62,7 +64,6 @@
         .card-icon {
             font-size: 2.5rem;
             margin-right: 15px;
-            color: #00b894;
         }
 
         .card-title {
@@ -120,37 +121,22 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
         }
-
-        .test-info {
-            background: #dff0d8;
-            border: 1px solid #d6e9c6;
-            color: #3c763d;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-paw"></i> Test Động Vật</h1>
-            <div class="welcome-text">Chào mừng <span th:text="${name}" style="color: #ffeaa7; font-weight: bold;">Xuân Trường</span>!</div>
-        </div>
-
-        <div class="test-info">
-            <strong><i class="fas fa-info-circle"></i> Thông tin test:</strong> 
-            Đây là trang test để kiểm tra object DongVat từ GreetingController
+            <h1><i class="fas fa-vial"></i> Test Dữ Liệu Controller</h1>
+            <div class="welcome-text">Chào mừng <span th:text="${name}" style="color: #ffeaa7; font-weight: bold;">Xuân
+                    Trường</span>!</div>
         </div>
 
         <div class="card">
             <div class="card-header">
-                <div class="card-icon">
-                    <i class="fas fa-dog"></i>
-                </div>
-                <div class="card-title">Thông Tin Động Vật Test</div>
+                <div class="card-icon" style="color: #6c5ce7;"><i class="fas fa-dog"></i></div>
+                <div class="card-title">Thông Tin Động Vật</div>
             </div>
-
             <ul class="info-list">
                 <li class="info-item">
                     <span class="info-label"><i class="fas fa-tag"></i> Tên:</span>
@@ -167,14 +153,32 @@
             </ul>
         </div>
 
+        <div class="card" th:if="${giaVe != null}">
+            <div class="card-header">
+                <div class="card-icon" style="color: #00b894;"><i class="fas fa-ticket-alt"></i></div>
+                <div class="card-title">Thông Tin Giá Vé</div>
+            </div>
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-label"><i class="fas fa-id-card"></i> ID Vé:</span>
+                    <span class="info-value" th:text="${giaVe.id}">ID</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label"><i class="fas fa-tag"></i> Loại vé:</span>
+                    <span class="info-value" th:text="${giaVe.loaiVe}">Loại vé</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label"><i class="fas fa-dollar-sign"></i> Giá cơ bản:</span>
+                    <span th:text="${#numbers.formatDecimal(giaVe.giaCoBan, 0, 'POINT', 0, 'COMMA')}"></span>
+                </li>
+            </ul>
+        </div>
         <div class="nav-links">
-            <a href="/dongvat" class="nav-link">
-                <i class="fas fa-list"></i> Xem Danh Sách Động Vật
-            </a>
-            <a href="/dongvat/them" class="nav-link">
-                <i class="fas fa-plus"></i> Thêm Động Vật Mới
-            </a>
+            <a href="/dongvat" class="nav-link"><i class="fas fa-list"></i> Xem Động Vật</a>
+            <a href="/giave" class="nav-link" style="background: linear-gradient(45deg, #2ed573, #1e90ff);"><i
+                    class="fas fa-ticket-alt"></i> Xem Giá Vé</a>
         </div>
     </div>
 </body>
+
 </html>
