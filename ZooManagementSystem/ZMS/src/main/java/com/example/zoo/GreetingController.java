@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @Controller
 public class GreetingController {
 
-    @GetMapping("/greeting")
+    @GetMapping("/lichchoan")
     public String greeting(
             @RequestParam(name = "name", required = false, defaultValue = "User") String name,
             Model model) {
@@ -33,7 +33,7 @@ public class GreetingController {
         model.addAttribute("currentTime", now.format(formatter));
         model.addAttribute("timezone", "GMT+7 (Việt Nam)");
         
-        return "greeting";
+        return "form";
     }
 
     // Uncomment nếu muốn redirect root về dongvat
