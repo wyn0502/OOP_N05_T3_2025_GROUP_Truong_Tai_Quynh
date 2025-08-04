@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Quản lý Lịch cho ăn</title>
+
+    <!-- Bootstrap & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.css">
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Thanh điều hướng -->
+    <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
+        <div class="bg-dark p-4">
+            <h5 class="text-body-emphasis h4">Trường Đại học Phenikaa</h5>
+            <span class="text-body-secondary">Ứng dụng quản lý sở thú</span>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                aria-expanded="false" aria-label="Chuyển đổi điều hướng">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Nút điều hướng -->
+    <a href="/greeting">
+        <button type="button" class="btn btn-outline-info mt-3 ms-3">Trang chào</button>
+    </a>
+
+    <!-- Bảng danh sách lịch cho ăn -->
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <td colspan="6">
+                    <p style="font-size:xx-large; color:darkcyan; text-align: center;">Danh sách lịch cho ăn</p>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="bi bi-person-vcard"></i> Mã lịch</th>
+                <th><i class="bi bi-person-circle"></i> Tên động vật</th>
+                <th><i class="bi bi-clock-history"></i> Ngày giờ cho ăn</th>
+                <th><i class="bi bi-basket"></i> Thức ăn</th>
+                <th><i class="bi bi-brush"></i> Sửa</th>
+                <th><i class="bi bi-calendar2-x"></i> Xóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="lich : ${listLichChoAn}">
+                <td th:text="${lich.id}">Mã lịch</td>
+                <td th:text="${lich.tenDongVat}">Tên động vật</td>
+                <td th:text="${lich.ngayGioChoAn}">Ngày giờ</td>
+                <td th:text="${lich.thucAn}">Thức ăn</td>
+                <td><button type="button" class="btn btn-success bi bi-brush"></button></td>
+                <td><button type="button" class="btn btn-danger bi bi-calendar2-x"></button></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
