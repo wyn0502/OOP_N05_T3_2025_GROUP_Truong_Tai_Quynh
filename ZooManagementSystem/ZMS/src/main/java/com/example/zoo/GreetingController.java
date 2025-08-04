@@ -17,7 +17,7 @@ public class GreetingController {
 
     @GetMapping("/greeting")
     public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "Xuân Trường") String name,
+            @RequestParam(name = "name", required = false, defaultValue = "User") String name,
             Model model) {
 
         DongVat dv = new DongVat("Gà Tre daden", 2, "Gà");
