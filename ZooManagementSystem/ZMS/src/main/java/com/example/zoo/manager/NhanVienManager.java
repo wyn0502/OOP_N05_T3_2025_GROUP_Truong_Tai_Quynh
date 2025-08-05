@@ -1,8 +1,10 @@
-package com.example.zoo;
+package com.example.zoo.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import com.example.zoo.model.NhanVien;
 
 public class NhanVienManager {
     private List<NhanVien> danhSachNhanVien = new ArrayList<>();
