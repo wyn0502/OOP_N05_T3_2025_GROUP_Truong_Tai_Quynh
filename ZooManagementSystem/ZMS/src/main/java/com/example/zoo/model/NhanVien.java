@@ -1,4 +1,4 @@
-package com.example.zoo;
+package com.example.zoo.model;
 
 public class NhanVien {
     private String maNhanVien;
