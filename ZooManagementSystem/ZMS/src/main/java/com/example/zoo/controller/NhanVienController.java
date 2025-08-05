@@ -15,8 +15,9 @@ public class NhanVienController {
 
     public NhanVienController() {
         // Dữ liệu mẫu ban đầu
-        danhSachNhanVien.add(new NhanVien("NV01", "Nguyễn Văn A", "Quản lý", "10 năm kinh nghiệm", "0909123456", "Chuồng Hổ"));
-        danhSachNhanVien.add(new NhanVien("NV02", "Trần Thị B", "Nhân viên", "Yêu động vật", "0912345678", "Chuồng Gấu"));
+        danhSachNhanVien.add(new NhanVien("NV01", "Lò Tuấn Quỳnh", "Quản lý", "10 năm kinh nghiệm", "0342135006", "Capybara"));
+        
+
     }
 
     // Hiển thị danh sách nhân viên
