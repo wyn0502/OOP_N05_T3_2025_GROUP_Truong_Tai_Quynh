@@ -1,44 +1,129 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Thêm / Sửa Lịch Cho Ăn</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Quản lý Lịch cho ăn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container mt-4">
-    <h2 th:text="${lichChoAn.maLich == null} ? 'Thêm Lịch Cho Ăn' : 'Sửa Lịch Cho Ăn'"></h2>
+<body class="bg-light">
 
-    <form th:action="@{/lichchoan/luu}" method="post">
-        <input type="hidden" name="maLich" th:value="${lichChoAn.maLich}"/>
+<div class="container py-5">
+  <h2 class="mb-4 text-center">📅 Quản lý Lịch cho ăn</h2>
 
-        <div class="mb-3">
-            <label for="dongVat" class="form-label">Động vật</label>
-            <input type="text" class="form-control" id="dongVat" name="dongVat" th:value="${lichChoAn.dongVat}" required>
-        </div>
+  <!-- Form thêm/sửa -->
+  <form id="lichForm" class="row g-3">
+    <div class="col-md-2">
+      <label for="maLich" class="form-label">Mã lịch</label>
+      <input type="text" class="form-control" id="maLich" required>
+    </div>
+    <div class="col-md-2">
+      <label for="dongVat" class="form-label">Động vật</label>
+      <input type="text" class="form-control" id="dongVat" required>
+    </div>
+    <div class="col-md-2">
+      <label for="thucAn" class="form-label">Thức ăn</label>
+      <input type="text" class="form-control" id="thucAn" required>
+    </div>
+    <div class="col-md-2">
+      <label for="nhanVien" class="form-label">Nhân viên</label>
+      <input type="text" class="form-control" id="nhanVien" required>
+    </div>
+    <div class="col-md-2">
+      <label for="thoiGian" class="form-label">Thời gian</label>
+      <input type="datetime-local" class="form-control" id="thoiGian" required>
+    </div>
+    <div class="col-md-2 d-grid">
+      <label class="form-label invisible">Nút</label>
+      <button type="submit" class="btn btn-primary">💾 Lưu</button>
+    </div>
+  </form>
 
-        <div class="mb-3">
-            <label for="thucAn" class="form-label">Thức ăn</label>
-            <input type="text" class="form-control" id="thucAn" name="thucAn" th:value="${lichChoAn.thucAn}" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="nhanVien" class="form-label">Nhân viên</label>
-            <input type="text" class="form-control" id="nhanVien" name="nhanVien" th:value="${lichChoAn.nhanVien}" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="thoiGian" class="form-label">Thời gian cho ăn</label>
-            <input type="datetime-local" class="form-control" id="thoiGian" name="thoiGian" th:value="${lichChoAn.thoiGian}" required>
-        </div>
-
-        <div class="mb-3">
-            <button type="submit" class="btn btn-success">Lưu</button>
-            <a href="/lichchoan" class="btn btn-secondary">Hủy</a>
-            <a href="/greeting" class="btn btn-info">Quay lại Greeting</a>
-        </div>
-    </form>
+  <!-- Bảng danh sách -->
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered table-striped align-middle text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Mã lịch</th>
+          <th>Động vật</th>
+          <th>Thức ăn</th>
+          <th>Nhân viên</th>
+          <th>Thời gian</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="lichTableBody">
+        <!-- Dữ liệu được thêm động ở đây -->
+      </tbody>
+    </table>
+  </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap + Script -->
+<script>
+  const form = document.getElementById('lichForm');
+  const tbody = document.getElementById('lichTableBody');
+  let lichList = [];
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const maLich = document.getElementById('maLich').value.trim();
+    const dongVat = document.getElementById('dongVat').value.trim();
+    const thucAn = document.getElementById('thucAn').value.trim();
+    const nhanVien = document.getElementById('nhanVien').value.trim();
+    const thoiGian = document.getElementById('thoiGian').value;
+
+    const existing = lichList.find(l => l.maLich === maLich);
+    if (existing) {
+      existing.dongVat = dongVat;
+      existing.thucAn = thucAn;
+      existing.nhanVien = nhanVien;
+      existing.thoiGian = thoiGian;
+    } else {
+      lichList.push({ maLich, dongVat, thucAn, nhanVien, thoiGian });
+    }
+
+    form.reset();
+    renderTable();
+  });
+
+  function renderTable() {
+    tbody.innerHTML = '';
+    lichList.forEach((lich, index) => {
+      const row = `
+        <tr>
+          <td>${lich.maLich}</td>
+          <td>${lich.dongVat}</td>
+          <td>${lich.thucAn}</td>
+          <td>${lich.nhanVien}</td>
+          <td>${lich.thoiGian}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" onclick="editLich(${index})">✏️ Sửa</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteLich(${index})">🗑️ Xóa</button>
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML += row;
+    });
+  }
+
+  function editLich(index) {
+    const lich = lichList[index];
+    document.getElementById('maLich').value = lich.maLich;
+    document.getElementById('dongVat').value = lich.dongVat;
+    document.getElementById('thucAn').value = lich.thucAn;
+    document.getElementById('nhanVien').value = lich.nhanVien;
+    document.getElementById('thoiGian').value = lich.thoiGian;
+  }
+
+  function deleteLich(index) {
+    if (confirm("Bạn có chắc muốn xóa lịch này không?")) {
+      lichList.splice(index, 1);
+      renderTable();
+    }
+  }
+</script>
 </body>
 </html>

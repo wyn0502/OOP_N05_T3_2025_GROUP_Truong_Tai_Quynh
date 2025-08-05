@@ -16,11 +16,11 @@ public class LichChoAnController {
     @Autowired
     private LichChoAnService lichChoAnService;
 
-    // Danh sách
+    // Trang danh sách
     @GetMapping
     public String hienThiDanhSach(Model model) {
         model.addAttribute("dsLich", lichChoAnService.layTatCa());
-        return "lichchoan/list";
+        return "lichchoan/list"; // bạn cần có file list.html
     }
 
     // Hiển thị form thêm mới
@@ -30,7 +30,7 @@ public class LichChoAnController {
         return "lichchoan/form";
     }
 
-    // Xử lý thêm
+    // Xử lý thêm mới
     @PostMapping("/them")
     public String xuLyThem(@Valid @ModelAttribute("lichChoAn") LichChoAn lich,
                            BindingResult result) {
@@ -70,3 +70,10 @@ public class LichChoAnController {
         return "redirect:/lichchoan";
     }
 }
+
+    
+    
+
+
+    
+
