@@ -5,3 +5,4 @@
 *.class
 out/
 .fake
+**/application.properties

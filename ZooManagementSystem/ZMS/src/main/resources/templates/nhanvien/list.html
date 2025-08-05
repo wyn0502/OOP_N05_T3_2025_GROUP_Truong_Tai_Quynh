@@ -8,15 +8,16 @@
 <body class="container mt-4">
     <h2>📋 Danh sách nhân viên</h2>
 
-    <a href="/nhanvien/them" class="btn btn-primary mb-3">➕ Thêm nhân viên</a>
+    <a href="/nhanvien/add" class="btn btn-primary mb-3">➕ Thêm nhân viên</a>
 
     <table class="table table-bordered table-hover">
         <thead class="table-secondary">
             <tr>
                 <th>Mã NV</th>
-                <th>Tên</th>
+                <th>Họ tên</th>
+                <th>Tài khoản</th>
                 <th>Cấp bậc</th>
-                <th>Thông tin cá nhân</th>
+                <th>Ngày vào làm</th>
                 <th>SĐT</th>
                 <th>Chuồng phụ trách</th>
                 <th>Hành động</th>
@@ -24,15 +25,16 @@
         </thead>
         <tbody>
             <tr th:each="nv : ${danhSach}">
-                <td th:text="${nv.maNhanVien}"></td>
-                <td th:text="${nv.tenNhanVien}"></td>
-                <td th:text="${nv.capBac}"></td>
-                <td th:text="${nv.thongTinCaNhan}"></td>
-                <td th:text="${nv.soDienThoai}"></td>
-                <td th:text="${nv.chuongPhuTrach}"></td>
+                <td th:text="${nv.id}">1</td>
+                <td th:text="${nv.fullname}">Lò Tuấn Quỳnh</td>
+                <td th:text="${nv.username}">admin</td>
+                <td th:text="${nv.role == 'admin' ? 'Quản lý' : 'Nhân viên'}"></td>
+                <td th:text="${#temporals.format(nv.datework, 'dd/MM/yyyy')}"></td>
+                <td th:text="${nv.phone}"></td>
+                <td th:text="${nv.chuong}"></td>
                 <td>
-                    <a th:href="@{/nhanvien/sua/{ma}(ma=${nv.maNhanVien})}" class="btn btn-sm btn-warning">✏️ Sửa</a>
-                    <a th:href="@{/nhanvien/xoa/{ma}(ma=${nv.maNhanVien})}" class="btn btn-sm btn-danger"
+                    <a th:href="@{/nhanvien/edit/{id}(id=${nv.id})}" class="btn btn-sm btn-warning">✏️ Sửa</a>
+                    <a th:href="@{/nhanvien/delete/{id}(id=${nv.id})}" class="btn btn-sm btn-danger"
                        onclick="return confirm('Bạn có chắc muốn xóa?')">🗑️ Xóa</a>
                 </td>
             </tr>
