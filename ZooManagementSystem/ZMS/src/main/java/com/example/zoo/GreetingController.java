@@ -20,8 +20,6 @@ import java.util.List;
 
 @Controller
 public class GreetingController {
-
-    // Trang demo Greeting (hiển thị thông tin mẫu)
     @GetMapping("/greeting")
     public String greeting(
             @RequestParam(name = "name", required = false, defaultValue = "Xuân Trường") String name,
