@@ -23,7 +23,6 @@ public class DongVatController {
     @GetMapping("/them")
     public String themForm(Model model) {
         model.addAttribute("dongVat", new DongVat());
-        // Không cần thêm originalTen vì đây là form thêm mới
         return "dongvat/form";
     }
 
