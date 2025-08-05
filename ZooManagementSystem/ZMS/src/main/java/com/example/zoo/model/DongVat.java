@@ -5,6 +5,7 @@ import java.util.Random;
 /**
  * @author TRUONG
  */
+
 public class DongVat {
     private String id;
     private String ten;
@@ -22,7 +23,6 @@ public class DongVat {
         this.loai = loai;
     }
 
-    // Tạo ID ngẫu nhiên 6 ký tự (chữ và số)
     private String generateRandomId() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder result = new StringBuilder();
