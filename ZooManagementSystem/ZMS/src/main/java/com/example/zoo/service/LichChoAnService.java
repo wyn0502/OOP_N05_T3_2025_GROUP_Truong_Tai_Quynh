@@ -1,49 +1,63 @@
 package com.example.zoo.service;
 
 import com.example.zoo.model.LichChoAn;
+import com.example.zoo.interfaces.IManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LichChoAnService {
-    private final List<LichChoAn> danhSachLich = new ArrayList<>();
+public class LichChoAnService implements IManager<LichChoAn> {
+    private List<LichChoAn> danhSachLich = new ArrayList<>();
 
-    public void themLich(LichChoAn lich) {
+    @Override
+    public void them(LichChoAn lich) {
         danhSachLich.add(lich);
-        System.out.println("✅ Thêm lịch cho ăn thành công");
     }
 
-    public List<LichChoAn> layTatCa() {
+    @Override
+    public List<LichChoAn> hienThi() {
         return danhSachLich;
     }
 
-    public void capNhatLich(String maLich, LichChoAn lichMoi) {
-        for (LichChoAn lich : danhSachLich) {
-            if (lich.getMaLich().equals(maLich)) {
-                lich.setDongVat(lichMoi.getDongVat());
-                lich.setThucAn(lichMoi.getThucAn());
-                lich.setNhanVien(lichMoi.getNhanVien());
-                lich.setThoiGian(lichMoi.getThoiGian());
-                System.out.println("✅ Cập nhật thành công.");
+    @Override
+    public void sua(String id, LichChoAn lichMoi) {
+        for (int i = 0; i < danhSachLich.size(); i++) {
+            if (danhSachLich.get(i).getMaLich().equals(id)) {
+                danhSachLich.set(i, lichMoi);
                 return;
             }
         }
-        System.out.println("❌ Không tìm thấy lịch cho ăn cần sửa.");
     }
 
-    public void xoaLich(String maLich) {
-        danhSachLich.removeIf(lich -> lich.getMaLich().equals(maLich));
-        System.out.println("✅ Đã xóa lịch nếu có.");
+    @Override
+    public void xoa(String id) {
+        danhSachLich.removeIf(lich -> lich.getMaLich().equals(id));
     }
 
-    public LichChoAn timTheoMa(String maLich) {
+    public List<LichChoAn> getAll() {
+        return hienThi();
+    }
+
+    public void themLich(LichChoAn lich) {
+        them(lich);
+    }
+
+    public LichChoAn timTheoId(String id) {
         for (LichChoAn lich : danhSachLich) {
-            if (lich.getMaLich().equals(maLich)) {
+            if (lich.getMaLich().equals(id)) {
                 return lich;
             }
         }
         return null;
+    }
+
+    public void capNhatLich(LichChoAn lichMoi) {
+        sua(lichMoi.getMaLich(), lichMoi);
+    }
+
+    public void xoaLich(String id) {
+        xoa(id);
     }
 }

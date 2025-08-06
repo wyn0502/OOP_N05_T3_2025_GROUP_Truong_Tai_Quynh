@@ -8,9 +8,8 @@
 <body>
 <div class="container mt-4">
     <h2>Danh sách Lịch Cho Ăn</h2>
-    <a href="/lichchoan/them" class="btn btn-primary mb-3">➕ Thêm lịch mới</a>
-
-    <table class="table table-bordered table-striped">
+    <a class="btn btn-primary mb-3" th:href="@{/lichchoan/add}">Thêm mới</a>
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Mã lịch</th>
@@ -22,18 +21,18 @@
             </tr>
         </thead>
         <tbody>
-        <tr th:each="lich : ${dsLich}">
-            <td th:text="${lich.maLich}"></td>
-            <td th:text="${lich.dongVat}"></td>
-            <td th:text="${lich.thucAn}"></td>
-            <td th:text="${lich.nhanVien}"></td>
-            <td th:text="${lich.thoiGian}"></td>
-            <td>
-                <a th:href="@{/lichchoan/sua(maLich=${lich.maLich})}" class="btn btn-warning btn-sm">Sửa</a>
-                <a th:href="@{/lichchoan/xoa(maLich=${lich.maLich})}" class="btn btn-danger btn-sm"
-                   onclick="return confirm('Bạn có chắc chắn muốn xoá không?')">Xoá</a>
-            </td>
-        </tr>
+            <tr th:each="lich : ${danhSachLich}">
+                <td th:text="${lich.maLich}"></td>
+                <td th:text="${lich.dongVat}"></td>
+                <td th:text="${lich.thucAn}"></td>
+                <td th:text="${lich.nhanVien}"></td>
+                <td th:text="${lich.thoiGian}"></td>
+                <td>
+                    <a th:href="@{/lichchoan/edit/{id}(id=${lich.maLich})}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a th:href="@{/lichchoan/delete/{id}(id=${lich.maLich})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
