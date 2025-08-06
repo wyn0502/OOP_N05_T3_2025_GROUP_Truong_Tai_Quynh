@@ -1,3 +1,5 @@
+package com.example.zoo.interfaces;
+
 import java.util.List;
 
 /**

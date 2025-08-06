@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.zoo.model.DongVat;
-import com.example.zoo.model.GiaVe;
 
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
@@ -22,7 +20,7 @@ import java.util.List;
 public class GreetingController {
     @GetMapping("/greeting")
     public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "Xuân Trường") String name,
+            @RequestParam(name = "name", required = false, defaultValue = "Tài gay") String name,
             Model model) {
 
         DongVat dv = new DongVat("Gà Tre daden", 2, "Gà");

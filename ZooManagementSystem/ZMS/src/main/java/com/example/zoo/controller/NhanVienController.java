@@ -1,6 +1,7 @@
 package com.example.zoo.controller;
 
 import com.example.zoo.model.NhanVien;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,34 +15,29 @@ public class NhanVienController {
     private List<NhanVien> danhSachNhanVien = new ArrayList<>();
 
     public NhanVienController() {
-        // Dữ liệu mẫu ban đầu
         danhSachNhanVien.add(new NhanVien("NV01", "Lò Tuấn Quỳnh", "Quản lý", "10 năm kinh nghiệm", "0342135006", "Capybara"));
         
 
     }
 
-    // Hiển thị danh sách nhân viên
     @GetMapping
     public String hienThiDanhSach(Model model) {
         model.addAttribute("danhSach", danhSachNhanVien);
         return "nhanvien/list";  // ==> tạo file nhanvien/list.html
     }
 
-    // Hiển thị form thêm nhân viên
     @GetMapping("/them")
     public String hienThiFormThem(Model model) {
         model.addAttribute("nhanVien", new NhanVien("", "", "", "", "", ""));
         return "nhanvien/add";  // ==> tạo file nhanvien/add.html
     }
 
-    // Xử lý lưu nhân viên mới
     @PostMapping("/luu")
     public String luuNhanVien(@ModelAttribute NhanVien nv) {
         danhSachNhanVien.add(nv);
         return "redirect:/nhanvien";
     }
 
-    // Hiển thị form sửa nhân viên
     @GetMapping("/sua/{ma}")
     public String hienThiFormSua(@PathVariable("ma") String ma, Model model) {
         for (NhanVien nv : danhSachNhanVien) {
@@ -53,7 +49,6 @@ public class NhanVienController {
         return "redirect:/nhanvien";
     }
 
-    // Xử lý cập nhật thông tin nhân viên
     @PostMapping("/capnhat")
     public String capNhatNhanVien(@ModelAttribute NhanVien nvCapNhat) {
         for (int i = 0; i < danhSachNhanVien.size(); i++) {
@@ -65,7 +60,6 @@ public class NhanVienController {
         return "redirect:/nhanvien";
     }
 
-    // Xóa nhân viên
     @GetMapping("/xoa/{ma}")
     public String xoaNhanVien(@PathVariable("ma") String ma) {
         danhSachNhanVien.removeIf(nv -> nv.getMaNhanVien().equalsIgnoreCase(ma));
