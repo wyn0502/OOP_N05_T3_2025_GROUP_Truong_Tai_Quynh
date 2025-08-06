@@ -1,6 +1,7 @@
 package com.example.zoo.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class LichChoAn {
 
     @NotBlank(message = "Vui lòng nhập mã lịch")
+    @Pattern(regexp = "^L\\d{3}$", message = "Mã lịch phải có định dạng L + 3 chữ số, ví dụ: L001")
     private String maLich;
 
     @NotBlank(message = "Vui lòng nhập động vật cho ăn")
@@ -22,14 +24,15 @@ public class LichChoAn {
     @NotBlank(message = "Vui lòng nhập thời gian cho ăn")
     private String thoiGian; // ISO 8601 format: "2025-08-05T10:30"
 
+    // Constructor mặc định
     public LichChoAn() {
-        this.maLich = java.util.UUID.randomUUID().toString();
         this.dongVat = "";
         this.thucAn = "";
         this.nhanVien = "";
         this.thoiGian = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
+    // Constructor đầy đủ
     public LichChoAn(String maLich, String dongVat, String thucAn, String nhanVien, String thoiGian) {
         this.maLich = maLich;
         this.dongVat = dongVat;
