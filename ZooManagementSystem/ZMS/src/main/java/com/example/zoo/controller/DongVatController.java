@@ -2,7 +2,6 @@ package com.example.zoo.controller;
 
 import com.example.zoo.model.DongVat;
 import com.example.zoo.service.DongVatService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +39,7 @@ public class DongVatController {
 
     @PostMapping("/luu")
     public String luu(@ModelAttribute DongVat dongVat,
-            @RequestParam(name = "originalTen", required = false) String originalTen) {
-
+                      @RequestParam(name = "originalTen", required = false) String originalTen) {
         if (originalTen != null && !originalTen.isEmpty()) {
             service.sua(originalTen, dongVat);
         } else {
