@@ -1,73 +1,92 @@
 package com.example.zoo.model;
 
+import java.time.LocalDate;
+
 public class NhanVien {
-    private String maNhanVien;
-    private String tenNhanVien;
-    private String capBac;
-    private String thongTinCaNhan;
-    private String soDienThoai;
-    private String chuongPhuTrach;
+    private String id;
+    private String fullname;
+    private String username;
+    private String role;
+    private String datework;
+    private String phone;
+    private String chuong;
 
-    public NhanVien(String ma, String ten, String capBac, String thongTin, String sdt, String chuong) {
-        this.maNhanVien = ma;
-        this.tenNhanVien = ten;
-        this.capBac = capBac;
-        this.thongTinCaNhan = thongTin;
-        this.soDienThoai = sdt;
-        this.chuongPhuTrach = chuong;
+    public NhanVien() {
     }
 
-    public String getMaNhanVien() {
-        return maNhanVien;
+    public NhanVien(String id, String fullname, String username, String role, LocalDate datework, String phone, String chuong) {
+    this.id = id;
+    this.fullname = fullname;
+    this.username = username;
+    this.role = role;
+    this.datework = datework.toString(); 
+    this.phone = phone;
+    this.chuong = chuong;
+}
+    public String getId() {
+        return id;
     }
 
-    public void setMaNhanVien(String ma) {
-        this.maNhanVien = ma;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getTenNhanVien() {
-        return tenNhanVien;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setTenNhanVien(String ten) {
-        this.tenNhanVien = ten;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
-    public String getCapBac() {
-        return capBac;
+    public String getUsername() {
+        return username;
     }
 
-    public void setCapBac(String capBac) {
-        this.capBac = capBac;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getThongTinCaNhan() {
-        return thongTinCaNhan;
+    public String getRole() {
+        return role;
     }
 
-    public void setThongTinCaNhan(String thongTinCaNhan) {
-        this.thongTinCaNhan = thongTinCaNhan;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getSoDienThoai() {
-        return soDienThoai;
+    public String getDatework() {
+        return datework;
     }
 
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
+    public void setDatework(String datework) {
+        this.datework = datework;
     }
 
-    public String getChuongPhuTrach() {
-        return chuongPhuTrach;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setChuongPhuTrach(String chuongPhuTrach) {
-        this.chuongPhuTrach = chuongPhuTrach;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getChuong() {
+        return chuong;
+    }
+
+    public void setChuong(String chuong) {
+        this.chuong = chuong;
     }
 
     @Override
     public String toString() {
-        return "Mã NV: " + maNhanVien + "\nTên: " + tenNhanVien + "\nCấp bậc: " + capBac +
-                "\nThông tin: " + thongTinCaNhan + "\nSĐT: " + soDienThoai + "\nChuồng phụ trách: " + chuongPhuTrach;
+        return "Mã nhân viên: " + id +
+                "\nTên: " + fullname +
+                "\nUsername: " + username +
+                "\nCấp bậc: " + role +
+                "\nNgày vào làm: " + datework +
+                "\nSĐT: " + phone +
+                "\nChuồng phụ trách: " + chuong;
     }
 }
