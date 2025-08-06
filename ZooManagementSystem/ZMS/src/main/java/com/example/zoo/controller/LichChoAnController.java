@@ -2,11 +2,6 @@ package com.example.zoo.controller;
 
 import com.example.zoo.model.LichChoAn;
 import com.example.zoo.service.LichChoAnService;
-<<<<<<< HEAD
-=======
-
-import jakarta.validation.Valid;
->>>>>>> 7fb57aae781acb4f754761413b810b090e6a1515
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,41 +18,26 @@ public class LichChoAnController {
     @Autowired
     private LichChoAnService lichChoAnService;
 
-<<<<<<< HEAD
     // Hiển thị danh sách
-=======
->>>>>>> 7fb57aae781acb4f754761413b810b090e6a1515
     @GetMapping
     public String danhSach(Model model) {
         model.addAttribute("danhSachLich", lichChoAnService.getAll());
         return "lichchoan/list";
     }
 
-<<<<<<< HEAD
     // Hiển thị form thêm
     @GetMapping("/add")
-=======
-    @GetMapping("/them")
->>>>>>> 7fb57aae781acb4f754761413b810b090e6a1515
     public String hienThiFormThem(Model model) {
         model.addAttribute("lich", new LichChoAn());
         return "lichchoan/add";
     }
 
-<<<<<<< HEAD
     // Xử lý thêm lịch
     @PostMapping("/add")
     public String xuLyThem(@Valid @ModelAttribute("lich") LichChoAn lich, BindingResult result, Model model) {
         // Kiểm tra định dạng mã lịch
         if (!lich.getMaLich().matches("^L00\\d+$")) {
             result.rejectValue("maLich", "error.lich", "Mã lịch phải có định dạng L00 + số");
-=======
-    @PostMapping("/them")
-    public String xuLyThem(@Valid @ModelAttribute("lichChoAn") LichChoAn lich,
-                           BindingResult result) {
-        if (result.hasErrors()) {
-            return "lichchoan/form";
->>>>>>> 7fb57aae781acb4f754761413b810b090e6a1515
         }
 
         // Kiểm tra mã lịch trùng
@@ -85,7 +65,6 @@ public class LichChoAnController {
         return "redirect:/lichchoan";
     }
 
-<<<<<<< HEAD
     // Hiển thị form sửa
     @GetMapping("/edit/{id}")
     public String hienThiFormSua(@PathVariable String id, Model model) {
@@ -106,23 +85,6 @@ public class LichChoAnController {
             }
         } catch (Exception e) {
             result.rejectValue("thoiGian", "error.lich", "Thời gian không hợp lệ");
-=======
-    @GetMapping("/sua/{maLich}")
-    public String hienThiFormSua(@PathVariable String maLich, Model model) {
-        LichChoAn lich = lichChoAnService.timTheoMa(maLich);
-        if (lich == null) {
-            return "redirect:/lichchoan";
-        }
-        model.addAttribute("lichChoAn", lich);
-        return "lichchoan/form";
-    }
-
-    @PostMapping("/sua")
-    public String xuLySua(@Valid @ModelAttribute("lichChoAn") LichChoAn lich,
-                          BindingResult result) {
-        if (result.hasErrors()) {
-            return "lichchoan/form";
->>>>>>> 7fb57aae781acb4f754761413b810b090e6a1515
         }
 
         // Trả lại form nếu có lỗi
@@ -139,16 +101,10 @@ public class LichChoAnController {
         return "redirect:/lichchoan";
     }
 
-<<<<<<< HEAD
     // Xóa lịch
     @GetMapping("/delete/{id}")
     public String xoa(@PathVariable String id) {
         lichChoAnService.xoaLich(id);
-=======
-    @GetMapping("/xoa/{maLich}")
-    public String xoa(@PathVariable String maLich) {
-        lichChoAnService.xoaLich(maLich);
->>>>>>> 7fb57aae781acb4f754761413b810b090e6a1515
         return "redirect:/lichchoan";
     }
 }
