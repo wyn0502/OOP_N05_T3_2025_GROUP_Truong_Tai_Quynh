@@ -3,110 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Danh Sách Giá Vé - Zoo Management System</title>
-
-  <!-- Bootstrap 5 CSS -->
+  <title>Quản Lý Giá Vé - Zoo System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- FontAwesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body class="bg-light">
+<div class="container my-5">
 
-  <div class="container my-5">
-    <!-- Nút quay lại -->
-    <a href="/greeting" class="btn btn-outline-primary mb-4">
-      <i class="fas fa-arrow-left me-2"></i> Quay lại Dashboard
-    </a>
+  <!-- Quay lại -->
+  <a href="/greeting" class="btn btn-outline-primary mb-4">
+    <i class="fas fa-arrow-left me-2"></i> Quay lại Dashboard
+  </a>
 
-    <!-- Tiêu đề và mô tả -->
-    <div class="mb-4 text-center">
-      <h1 class="display-4"><i class="fas fa-ticket-alt me-2"></i>Quản Lý Giá Vé</h1>
-      <p class="lead text-muted">Hệ thống quản lý zoo - Danh sách tất cả loại vé</p>
-    </div>
-
-    <!-- Controls -->
-    <div class="d-flex justify-content-center mb-4 gap-3 flex-wrap">
-      <a href="/giave/add" class="btn btn-primary btn-lg shadow-sm">
-        <i class="fas fa-plus me-2"></i> Thêm Loại Vé Mới
-      </a>
-      <button type="button" onclick="refreshData()" class="btn btn-outline-danger btn-lg shadow-sm">
-        <i class="fas fa-sync-alt me-2"></i> Làm mới dữ liệu
-      </button>
-    </div>
-
-    <!-- Bảng danh sách -->
-    <div class="table-responsive shadow-sm rounded">
-      <table th:if="${not #lists.isEmpty(danhSachVe)}" class="table table-striped table-hover align-middle text-center mb-0 bg-white rounded">
-        <thead class="table-primary">
-          <tr>
-            <th>ID</th>
-            <th>Loại Vé</th>
-            <th>Giá Cơ Bản</th>
-            <th>Lý Do Giảm Giá</th>
-            <th>Giảm Giá (%)</th>
-            <th>Giá Cuối</th>
-            <th>Thao Tác</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="ve, iterStat : ${danhSachVe}">
-            <td>
-              <span class="badge bg-info text-dark" th:text="${ve.id}">ID123456</span>
-            </td>
-            <td th:text="${ve.loaiVe}">Vé Người Lớn</td>
-            <td th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">100,000 VNĐ</td>
-            <td>
-              <span th:if="${ve.lyDoGiamGia != null and ve.lyDoGiamGia != ''}" class="badge bg-warning text-dark" th:text="${ve.lyDoGiamGia}">Ưu Đãi Sinh Viên</span>
-              <span th:if="${ve.lyDoGiamGia == null or ve.lyDoGiamGia == ''}" class="text-muted fst-italic">Không có</span>
-            </td>
-            <td>
-              <span th:if="${ve.phanTramGiamGia != null and ve.phanTramGiamGia > 0}" class="text-danger fw-bold" th:text="${ve.phanTramGiamGia + '%'}">10%</span>
-              <span th:if="${ve.phanTramGiamGia == null or ve.phanTramGiamGia == 0}" class="text-muted">0%</span>
-            </td>
-            <td th:text="${#numbers.formatDecimal(ve.apDungKhuyenMai(), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">90,000 VNĐ</td>
-            <td>
-              <div class="btn-group" role="group" aria-label="Thao tác">
-                <a th:href="@{/giave/edit/{id}(id=${ve.id})}" class="btn btn-sm btn-warning" title="Chỉnh sửa">
-                  <i class="fas fa-edit"></i>
-                </a>
-                <a th:href="@{/giave/delete/{id}(id=${ve.id})}" class="btn btn-sm btn-danger" title="Xóa" onclick="return confirmDelete(event)">
-                  <i class="fas fa-trash-alt"></i>
-                </a>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Khi không có vé -->
-      <div th:if="${#lists.isEmpty(danhSachVe)}" class="text-center py-5 bg-white shadow-sm rounded">
-        <i class="fas fa-ticket-alt display-1 text-muted mb-3"></i>
-        <h3 class="text-muted mb-2">Chưa có loại vé nào trong hệ thống</h3>
-        <p class="text-muted">Hãy thêm loại vé đầu tiên để bắt đầu quản lý!</p>
-      </div>
-    </div>
+  <!-- Tiêu đề -->
+  <div class="text-center mb-4">
+    <h1 class="display-5 fw-bold"><i class="fas fa-ticket-alt me-2"></i>Quản Lý Vé - Ticket Management</h1>
+    <p class="text-muted">Danh sách các loại vé hiện có trong hệ thống</p>
   </div>
 
-  <!-- Bootstrap 5 JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Nút thao tác -->
+  <div class="d-flex justify-content-center mb-4 gap-3 flex-wrap">
+    <a href="/giave/add" class="btn btn-primary btn-lg"><i class="fas fa-plus me-2"></i> Thêm Loại Vé</a>
+    <button onclick="refreshData()" class="btn btn-outline-danger btn-lg"><i class="fas fa-sync-alt me-2"></i> Làm mới</button>
+  </div>
 
-  <script>
-    function refreshData() {
-      const btn = event.target.closest('button');
-      if (!btn) return;
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tải...';
-      setTimeout(() => location.reload(), 800);
-    }
+  <!-- Danh sách vé -->
+  <div class="table-responsive shadow-sm rounded">
+    <table th:if="${not #lists.isEmpty(danhSachVe)}" class="table table-bordered table-hover align-middle text-center bg-white">
+      <thead class="table-primary">
+      <tr>
+        <th>Loại Vé</th>
+        <th>Giá Cơ Bản</th>
+        <th>Lý Do Giảm</th>
+        <th>Giảm (%)</th>
+        <th>Giá Sau KM</th>
+        <th>Thao Tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="ve : ${danhSachVe}">
+        <td th:text="${ve.loaiVe}">Vé Người Lớn</td>
+        <td th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</td>
+        <td>
+          <span th:if="${ve.lyDoGiamGia != null and ve.lyDoGiamGia != ''}" class="badge bg-warning text-dark" th:text="${ve.lyDoGiamGia}">Ưu đãi</span>
+          <span th:unless="${ve.lyDoGiamGia != null and ve.lyDoGiamGia != ''}" class="text-muted fst-italic">Không có</span>
+        </td>
+        <td>
+          <span th:if="${ve.phanTramGiamGia > 0}" class="text-danger fw-bold" th:text="${ve.phanTramGiamGia + '%'}">10%</span>
+          <span th:unless="${ve.phanTramGiamGia > 0}" class="text-muted">0%</span>
+        </td>
+        <td th:text="${#numbers.formatDecimal(ve.apDungKhuyenMai(), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+            <a th:href="@{/giave/edit/{id}(id=${ve.id})}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+            <a th:href="@{/giave/delete/{id}(id=${ve.id})}" class="btn btn-danger" onclick="return confirmDelete(event)"><i class="fas fa-trash-alt"></i></a>
+            <a th:href="@{'/giave/inve/' + ${ve.id}}" class="btn btn-secondary"><i class="fas fa-print"></i></a>
+            <a th:href="@{'/giave/print-pdf/' + ${ve.id}}" class="btn btn-outline-primary"><i class="fas fa-file-pdf"></i></a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-    function confirmDelete(event) {
-      event.preventDefault();
-      if (confirm('Bạn chắc chắn muốn xóa loại vé này? Hành động không thể hoàn tác.')) {
-        window.location.href = event.target.closest('a').href;
-      }
-      return false;
+    <!-- Không có vé -->
+    <div th:if="${#lists.isEmpty(danhSachVe)}" class="text-center p-5 bg-white rounded shadow-sm">
+      <i class="fas fa-ticket-alt display-1 text-muted mb-3"></i>
+      <h4 class="text-muted">Chưa có vé nào</h4>
+      <p>Hãy thêm vé đầu tiên để bắt đầu quản lý.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function refreshData() {
+    const btn = event.target.closest('button');
+    if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tải...';
+    setTimeout(() => location.reload(), 800);
+  }
+
+  function confirmDelete(event) {
+    event.preventDefault();
+    if (confirm('Bạn chắc chắn muốn xóa vé này?')) {
+      window.location.href = event.target.closest('a').href;
     }
-  </script>
+    return false;
+  }
+</script>
 </body>
 </html>

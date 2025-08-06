@@ -14,45 +14,42 @@ public class DongVatController {
     @Autowired
     private DongVatService service;
 
+    // Hiển thị danh sách động vật
     @GetMapping
-    public String list(Model model) {
+    public String hienThiDanhSach(Model model) {
         model.addAttribute("danhSach", service.layTatCa());
         return "dongvat/list";
     }
 
+    // Form thêm mới
     @GetMapping("/them")
-    public String themForm(Model model) {
+    public String hienThiFormThem(Model model) {
         model.addAttribute("dongVat", new DongVat());
         return "dongvat/form";
     }
 
-    @GetMapping("/sua/{ten}")
-    public String suaForm(@PathVariable String ten, Model model) {
-        DongVat dv = service.timTheoTen(ten);
+    // Form sửa
+    @GetMapping("/sua/{id}")
+    public String hienThiFormSua(@PathVariable Long id, Model model) {
+        DongVat dv = service.timTheoId(id);
         if (dv == null) {
-            return "redirect:/dongvat";
+            return "redirect:/dongvat?notfound";
         }
         model.addAttribute("dongVat", dv);
-        model.addAttribute("originalTen", ten);
         return "dongvat/form";
     }
 
+    // Xử lý thêm/sửa
     @PostMapping("/luu")
-    public String luu(@ModelAttribute DongVat dongVat,
-                      @RequestParam(name = "originalTen", required = false) String originalTen) {
-        if (originalTen != null && !originalTen.isEmpty()) {
-            service.sua(originalTen, dongVat);
-        } else {
-            if (service.timTheoTen(dongVat.getTen()) == null) {
-                service.them(dongVat);
-            }
-        }
-        return "redirect:/dongvat";
+    public String xuLyLuu(@ModelAttribute DongVat dongVat) {
+        service.luuHoacCapNhat(dongVat);
+        return "redirect:/dongvat?success";
     }
 
-    @GetMapping("/xoa/{ten}")
-    public String xoa(@PathVariable String ten) {
-        service.xoa(ten);
-        return "redirect:/dongvat";
+    // Xử lý xóa
+    @GetMapping("/xoa/{id}")
+    public String xoaDongVat(@PathVariable Long id) {
+        service.xoaTheoId(id);
+        return "redirect:/dongvat?deleted";
     }
 }

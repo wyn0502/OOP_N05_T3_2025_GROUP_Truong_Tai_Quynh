@@ -1,43 +1,41 @@
 package com.example.zoo.model;
 
-import java.util.Random;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "dongvat") // tên bảng trong database
 public class DongVat {
-    private String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // Đổi sang Long để thuận tiện với auto increment
+
     private String ten;
     private int tuoi;
     private String loai;
-    private String sucKhoe;  // Thuộc tính mới
 
-    public DongVat() {
-        this.id = generateRandomId();
-    }
+    @Column(name = "suc_khoe") // ánh xạ cột nếu tên khác
+    private String sucKhoe;
 
-    public DongVat(String ten, int tuoi, String loai, String sucKhoe) {
-        this.id = generateRandomId();
+    private String khuVuc; // thêm khu vực nếu muốn hiển thị như trang chủ
+
+    public DongVat() {}
+
+    public DongVat(String ten, int tuoi, String loai, String sucKhoe, String khuVuc) {
         this.ten = ten;
         this.tuoi = tuoi;
         this.loai = loai;
         this.sucKhoe = sucKhoe;
+        this.khuVuc = khuVuc;
     }
 
-    private String generateRandomId() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuilder result = new StringBuilder();
-        Random random = new Random();
+    // GETTERS & SETTERS
 
-        for (int i = 0; i < 6; i++) {
-            result.append(chars.charAt(random.nextInt(chars.length())));
-        }
-
-        return result.toString();
-    }
-
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -73,44 +71,23 @@ public class DongVat {
         this.sucKhoe = sucKhoe;
     }
 
-    public void hienThiThongTin() {
-        System.out.println("ID: " + id);
-        System.out.println("Ten: " + ten);
-        System.out.println("Tuoi: " + tuoi);
-        System.out.println("Loai: " + loai);
-        System.out.println("Sức khỏe: " + sucKhoe);
+    public String getKhuVuc() {
+        return khuVuc;
     }
 
-    public void keu() {
-        switch (loai.toLowerCase()) {
-            case "khi":
-                System.out.println("Khi: ec ec!");
-                break;
-            case "su tu":
-                System.out.println("Su tu: Gam gu!");
-                break;
-            case "voi":
-                System.out.println("Voi: Pawoo!");
-                break;
-            case "cop":
-                System.out.println("Cop: Roar roar!");
-                break;
-            case "gau":
-                System.out.println("Gau: Groooowl!");
-                break;
-            default:
-                System.out.println("Dong vat: ...");
-        }
+    public void setKhuVuc(String khuVuc) {
+        this.khuVuc = khuVuc;
     }
 
     @Override
     public String toString() {
         return "DongVat{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", ten='" + ten + '\'' +
                 ", tuoi=" + tuoi +
                 ", loai='" + loai + '\'' +
                 ", sucKhoe='" + sucKhoe + '\'' +
+                ", khuVuc='" + khuVuc + '\'' +
                 '}';
     }
 }
