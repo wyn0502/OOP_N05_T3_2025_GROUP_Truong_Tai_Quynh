@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Danh Sách Nhân Viên - Zoo Management</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+
+<div class="container my-5">
+  <!-- Quay lại -->
+  <a href="/greeting" class="btn btn-outline-primary mb-4">
+    <i class="fas fa-arrow-left me-2"></i> Quay lại Dashboard
+  </a>
+
+  <!-- Tiêu đề -->
+  <div class="mb-4 text-center">
+    <h1 class="display-5"><i class="fas fa-user-tie me-2"></i>Danh Sách Nhân Viên</h1>
+    <p class="lead text-muted">Tất cả nhân viên đang làm việc tại sở thú</p>
+  </div>
+
+  <!-- Hành động -->
+  <div class="d-flex justify-content-center mb-4 gap-3 flex-wrap">
+    <a href="/nhanvien/add" class="btn btn-primary btn-lg shadow-sm">
+      <i class="fas fa-user-plus me-2"></i> Thêm nhân viên mới
+    </a>
+    <button onclick="refreshData()" class="btn btn-outline-secondary btn-lg shadow-sm">
+      <i class="fas fa-sync-alt me-2"></i> Làm mới
+    </button>
+  </div>
+
+  <!-- Danh sách -->
+  <div class="table-responsive shadow-sm rounded">
+    <table th:if="${not #lists.isEmpty(danhSach)}" class="table table-striped table-hover align-middle text-center mb-0 bg-white">
+      <thead class="table-info">
+        <tr>
+          <th>ID</th>
+          <th>Họ tên</th>
+          <th>Tài khoản</th>
+          <th>Vai trò</th>
+          <th>Ngày vào làm</th>
+          <th>SĐT</th>
+          <th>Chuồng phụ trách</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="nv : ${danhSach}">
+          <td th:text="${nv.id}">1</td>
+          <td th:text="${nv.fullname}">Lò Tuấn Quỳnh</td>
+          <td th:text="${nv.username}">admin</td>
+          <td>
+            <span th:text="${nv.role == 'admin' ? 'Quản lý' : 'Nhân viên'}"
+                  th:classappend="${nv.role == 'admin'} ? 'badge bg-success' : 'badge bg-secondary'">
+              Vai trò
+            </span>
+          </td>
+          <td th:text="${#temporals.format(nv.datework, 'dd/MM/yyyy')}">01/01/2025</td>
+          <td th:text="${nv.phone}">0123456789</td>
+          <td th:text="${nv.chuong}">Capybara</td>
+          <td>
+            <div class="btn-group" role="group">
+              <a th:href="@{/nhanvien/edit/{id}(id=${nv.id})}" class="btn btn-warning btn-sm" title="Sửa">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a th:href="@{/nhanvien/delete/{id}(id=${nv.id})}" class="btn btn-danger btn-sm" title="Xóa"
+                 onclick="return confirmDelete(event)">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Nếu không có dữ liệu -->
+    <div th:if="${#lists.isEmpty(danhSach)}" class="text-center py-5 bg-white shadow-sm rounded">
+      <i class="fas fa-user-times display-1 text-muted mb-3"></i>
+      <h3 class="text-muted mb-2">Chưa có nhân viên nào</h3>
+      <p class="text-muted">Hãy thêm nhân viên đầu tiên để bắt đầu quản lý!</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap & Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function refreshData() {
+    const btn = event.target.closest('button');
+    if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tải...';
+    setTimeout(() => location.reload(), 800);
+  }
+
+  function confirmDelete(event) {
+    event.preventDefault();
+    if (confirm("Bạn có chắc chắn muốn xóa nhân viên này?")) {
+      window.location.href = event.target.closest('a').href;
+    }
+    return false;
+  }
+</script>
+
+</body>
+</html>
