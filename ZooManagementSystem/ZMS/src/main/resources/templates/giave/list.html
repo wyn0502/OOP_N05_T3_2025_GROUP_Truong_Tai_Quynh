@@ -32,6 +32,7 @@
     <table th:if="${not #lists.isEmpty(danhSachVe)}" class="table table-bordered table-hover align-middle text-center bg-white">
       <thead class="table-primary">
       <tr>
+        <th>ID</th>
         <th>Loại Vé</th>
         <th>Giá Cơ Bản</th>
         <th>Lý Do Giảm</th>
@@ -42,6 +43,7 @@
       </thead>
       <tbody>
       <tr th:each="ve : ${danhSachVe}">
+        <td th:text="${ve.id}">1</td>
         <td th:text="${ve.loaiVe}">Vé Người Lớn</td>
         <td th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</td>
         <td>

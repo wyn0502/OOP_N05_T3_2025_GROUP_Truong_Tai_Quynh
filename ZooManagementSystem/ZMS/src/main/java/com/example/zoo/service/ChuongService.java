@@ -1,4 +1,4 @@
-package com.example.zoo.service; // đổi package cho đúng ý nghĩa
+package com.example.zoo.service;
 
 import com.example.zoo.model.Chuong;
 import com.example.zoo.interfaces.IManager;

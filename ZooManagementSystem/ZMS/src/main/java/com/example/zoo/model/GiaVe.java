@@ -2,10 +2,11 @@ package com.example.zoo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import com.example.zoo.interfaces.IHasId;
 
 @Entity
 @Table(name = "giave")
-public class GiaVe {
+public class GiaVe implements IHasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +29,6 @@ public class GiaVe {
     @Column(name = "phan_tram_giam_gia")
     private Double phanTramGiamGia;
 
-    // ----- Constructors -----
     public GiaVe() {
         this.loaiVe = "";
         this.giaCoBan = 100000.0;
@@ -43,8 +43,15 @@ public class GiaVe {
         this.phanTramGiamGia = phanTramGiamGia;
     }
 
-    // ----- Getters & Setters -----
-    public Long getId() { return id; }
+    @Override
+    public String getId() {
+        return id == null ? null : id.toString();
+    }
+
+    public Long getIdRaw() {  // Nếu cần lấy giá trị Long cho repo
+        return id;
+    }
+
     public void setId(Long id) { this.id = id; }
 
     public String getLoaiVe() { return loaiVe; }
@@ -59,7 +66,6 @@ public class GiaVe {
     public Double getPhanTramGiamGia() { return phanTramGiamGia; }
     public void setPhanTramGiamGia(Double phanTramGiamGia) { this.phanTramGiamGia = phanTramGiamGia; }
 
-   
     public double tinhGiaTheoDoiTuong(String doiTuong) {
         double gia = giaCoBan != null ? giaCoBan : 0;
         return switch (doiTuong.toLowerCase()) {

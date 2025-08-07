@@ -21,7 +21,7 @@
     </div>
 
     <form th:action="@{/giave/edit}" th:object="${ve}" method="post" id="editVeForm" novalidate>
-      <input type="hidden" th:field="*{id}" />
+      <input type="hidden" th:name="id" th:value="${ve.id}" />
 
       <!-- Loại vé -->
       <div class="mb-3">
