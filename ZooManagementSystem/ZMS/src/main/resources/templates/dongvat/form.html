@@ -3,80 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title th:text="${dongVat.ten == null} ? 'Thêm Động vật' : 'Sửa Động vật'">Thêm Động vật</title>
-
-  <!-- Bootstrap CSS -->
+  <title th:text="${dongVat.id == null} ? 'Thêm Động Vật' : 'Chỉnh Sửa Động Vật'">Động Vật</title>
+  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  
-  <!-- FontAwesome -->
+  <!-- FontAwesome Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body class="bg-light">
-  <div class="container my-5" style="max-width: 600px;">
-    <!-- Nút quay lại danh sách -->
-    <a href="/dongvat" class="btn btn-outline-secondary mb-4">
-      <i class="fas fa-arrow-left me-2"></i> Quay lại danh sách Động vật
-    </a>
 
-    <h2 class="mb-4 text-center text-primary" th:text="${dongVat.ten == null} ? 'Thêm Động vật' : 'Sửa Động vật'"></h2>
-    
-    <form th:action="@{/dongvat/luu}" th:object="${dongVat}" method="post" novalidate>
+  <div class="container my-5" style="max-width: 520px;">
+
+    <h2 class="text-center text-success mb-4">
+      <i class="fas fa-paw fa-lg me-2"></i>
+      <span th:text="${dongVat.id == null} ? 'Thêm Động Vật Mới' : 'Chỉnh Sửa Động Vật'">Thêm Động Vật Mới</span>
+    </h2>
+
+    <!-- Alert báo lỗi dữ liệu -->
+    <div th:if="${error}" class="alert alert-danger mb-4" th:text="${error}"></div>
+
+    <form th:action="@{/dongvat/luu}" th:object="${dongVat}" method="post" id="dongVatForm" novalidate>
       <input type="hidden" th:field="*{id}" />
 
+      <!-- Tên -->
       <div class="mb-3">
-        <label for="ten" class="form-label fw-semibold"><i class="fas fa-paw me-2"></i> Tên</label>
+        <label for="ten" class="form-label fw-semibold">
+          <i class="fas fa-signature me-2"></i>Tên
+        </label>
         <input type="text" class="form-control" id="ten" th:field="*{ten}" placeholder="Nhập tên động vật" required />
         <div class="invalid-feedback">Vui lòng nhập tên động vật.</div>
       </div>
 
+      <!-- Tuổi -->
       <div class="mb-3">
-        <label for="tuoi" class="form-label fw-semibold"><i class="fas fa-birthday-cake me-2"></i> Tuổi</label>
+        <label for="tuoi" class="form-label fw-semibold">
+          <i class="fas fa-birthday-cake me-2"></i>Tuổi
+        </label>
         <input type="number" class="form-control" id="tuoi" th:field="*{tuoi}" min="0" placeholder="Nhập tuổi" required />
         <div class="invalid-feedback">Vui lòng nhập tuổi hợp lệ (0 trở lên).</div>
       </div>
 
+      <!-- Loài -->
       <div class="mb-3">
-        <label for="loai" class="form-label fw-semibold"><i class="fas fa-dog me-2"></i> Loại</label>
-        <input type="text" class="form-control" id="loai" th:field="*{loai}" placeholder="Nhập loại động vật" required />
-        <div class="invalid-feedback">Vui lòng nhập loại động vật.</div>
+        <label for="loai" class="form-label fw-semibold">
+          <i class="fas fa-dog me-2"></i>Loài
+        </label>
+        <input type="text" class="form-control" id="loai" th:field="*{loai}" placeholder="Nhập loài động vật" required />
+        <div class="invalid-feedback">Vui lòng nhập loài động vật.</div>
       </div>
 
+      <!-- Sức khỏe -->
       <div class="mb-3">
-        <label for="sucKhoe" class="form-label fw-semibold"><i class="fas fa-heartbeat me-2"></i> Sức khỏe</label>
+        <label for="sucKhoe" class="form-label fw-semibold">
+          <i class="fas fa-heartbeat me-2"></i>Sức khỏe
+        </label>
         <input type="text" class="form-control" id="sucKhoe" th:field="*{sucKhoe}" placeholder="Nhập tình trạng sức khỏe" required />
         <div class="invalid-feedback">Vui lòng nhập thông tin sức khỏe.</div>
       </div>
 
-      <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-success">
-          <i class="fas fa-save me-2"></i> Lưu
-        </button>
-        <a href="/dongvat" class="btn btn-secondary">
-          <i class="fas fa-times me-2"></i> Hủy
+      <!-- Khu vực -->
+      <div class="mb-3">
+        <label for="khuVuc" class="form-label fw-semibold">
+          <i class="fas fa-map-marker-alt me-2"></i>Khu vực
+        </label>
+        <input type="text" class="form-control" id="khuVuc" th:field="*{khuVuc}" placeholder="Nhập khu vực chuồng nuôi" required />
+        <div class="invalid-feedback">Vui lòng nhập khu vực.</div>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 fw-semibold mb-2" id="submitBtn">
+        <i class="fas fa-save me-2"></i>Lưu Lại
+      </button>
+      <div class="text-center">
+        <a href="/dongvat" class="text-success text-decoration-none fw-semibold">
+          <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
         </a>
       </div>
     </form>
   </div>
 
-  <!-- Bootstrap JS Bundle -->
+  <!-- Bootstrap 5 JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
-    // Bootstrap 5 form validation
     (() => {
       'use strict';
-      const forms = document.querySelectorAll('form');
-
-      Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-
-          form.classList.add('was-validated');
-        }, false);
-      });
+      const form = document.getElementById('dongVatForm');
+      form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
     })();
   </script>
 </body>

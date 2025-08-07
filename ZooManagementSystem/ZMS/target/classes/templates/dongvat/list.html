@@ -4,40 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Danh Sách Động Vật - Zoo Management</title>
-
-  <!-- Bootstrap 5 & FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body class="bg-light">
-
 <div class="container my-5">
-  <!-- Nút quay lại -->
   <a href="/greeting" class="btn btn-outline-primary mb-4">
     <i class="fas fa-arrow-left me-2"></i> Quay lại Dashboard
   </a>
 
-  <div class="mb-4 text-center">
-    <h1 class="display-5"><i class="fas fa-paw me-2"></i>Danh Sách Động Vật</h1>
-    <p class="lead text-muted">Tất cả động vật đang quản lý trong hệ thống</p>
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+  <div class="text-center mb-4">
+    <h1 class="display-5 fw-bold"><i class="fas fa-paw me-2"></i>Quản Lý Động Vật</h1>
+    <p class="text-muted">Tất cả động vật đang quản lý</p>
   </div>
 
-  <!-- Controls -->
   <div class="d-flex justify-content-center mb-4 gap-3 flex-wrap">
-    <a href="/dongvat/them" class="btn btn-primary btn-lg shadow-sm">
+    <a href="/dongvat/them" class="btn btn-success btn-lg shadow-sm">
       <i class="fas fa-plus me-2"></i> Thêm động vật mới
     </a>
-    <button type="button" onclick="refreshData()" class="btn btn-outline-secondary btn-lg shadow-sm">
+    <button type="button" onclick="refreshData()" class="btn btn-outline-danger btn-lg shadow-sm">
       <i class="fas fa-sync-alt me-2"></i> Làm mới
     </button>
   </div>
 
-  <!-- Bảng danh sách -->
   <div class="table-responsive shadow-sm rounded">
-    <table th:if="${not #lists.isEmpty(danhSach)}" class="table table-striped table-hover align-middle text-center mb-0 bg-white">
+    <table th:if="${not #lists.isEmpty(danhSach)}" class="table table-bordered table-hover align-middle text-center bg-white">
       <thead class="table-success">
         <tr>
-          <th>ID</th>
+          <th>Mã</th>
           <th>Tên</th>
           <th>Tuổi</th>
           <th>Loài</th>
@@ -54,18 +50,18 @@
           <td th:text="${dv.loai}">Loài</td>
           <td>
             <span th:text="${dv.sucKhoe}"
-                  th:classappend="${dv.sucKhoe == 'Tốt'} ? 'badge bg-success' :
-                                  (${dv.sucKhoe == 'Yếu'} ? 'badge bg-danger' : 'badge bg-warning text-dark')">
+                th:classappend="${dv.sucKhoe == 'Tốt'} ? 'badge bg-success' :
+                                (${dv.sucKhoe == 'Yếu'} ? 'badge bg-danger' : 'badge bg-warning text-dark')">
               Trạng thái
             </span>
           </td>
           <td th:text="${dv.khuVuc}">Khu vực</td>
           <td>
-            <div class="btn-group" role="group">
-              <a th:href="@{'/dongvat/sua/' + ${dv.id}}" class="btn btn-warning btn-sm" title="Sửa">
+            <div class="btn-group btn-group-sm" role="group">
+              <a th:href="@{'/dongvat/sua/' + ${dv.id}}" class="btn btn-warning" title="Sửa">
                 <i class="fas fa-edit"></i>
               </a>
-              <a th:href="@{'/dongvat/xoa/' + ${dv.id}}" class="btn btn-danger btn-sm" title="Xóa"
+              <a th:href="@{'/dongvat/xoa/' + ${dv.id}}" class="btn btn-danger" title="Xóa"
                  onclick="return confirmDelete(event)">
                 <i class="fas fa-trash-alt"></i>
               </a>
@@ -75,16 +71,14 @@
       </tbody>
     </table>
 
-    <!-- Khi không có dữ liệu -->
-    <div th:if="${#lists.isEmpty(danhSach)}" class="text-center py-5 bg-white shadow-sm rounded">
+    <div th:if="${#lists.isEmpty(danhSach)}" class="text-center p-5 bg-white rounded shadow-sm">
       <i class="fas fa-paw display-1 text-muted mb-3"></i>
-      <h3 class="text-muted mb-2">Chưa có động vật nào</h3>
-      <p class="text-muted">Hãy thêm động vật đầu tiên để bắt đầu quản lý!</p>
+      <h4 class="text-muted">Chưa có động vật nào</h4>
+      <p>Hãy thêm động vật đầu tiên để bắt đầu quản lý.</p>
     </div>
   </div>
 </div>
 
-<!-- Bootstrap & Script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function refreshData() {
@@ -94,7 +88,6 @@
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tải...';
     setTimeout(() => location.reload(), 800);
   }
-
   function confirmDelete(event) {
     event.preventDefault();
     if (confirm('Bạn chắc chắn muốn xóa động vật này?')) {
@@ -103,6 +96,5 @@
     return false;
   }
 </script>
-
 </body>
 </html>

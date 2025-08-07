@@ -28,14 +28,19 @@
         <label for="loaiVe" class="form-label fw-semibold">
           <i class="fas fa-tag me-2"></i>Loại Vé
         </label>
-        <select id="loaiVe" th:field="*{loaiVe}" class="form-select" required>
-          <option value="">-- Chọn Loại Vé --</option>
-          <option th:value="'Vé Người Cao Tuổi'" th:selected="${ve.loaiVe == 'Vé Người Cao Tuổi'}">Người Cao Tuổi</option>
-          <option th:value="'Vé Người Lớn'" th:selected="${ve.loaiVe == 'Vé Người Lớn'}">Người Lớn</option>
-          <option th:value="'Vé Sinh Viên'" th:selected="${ve.loaiVe == 'Vé Sinh Viên'}">Sinh Viên</option>
-          <option th:value="'Vé Trẻ Em'" th:selected="${ve.loaiVe == 'Vé Trẻ Em'}">Trẻ Em</option>
-        </select>
-        <div class="invalid-feedback">Vui lòng chọn loại vé!</div>
+        <div class="input-group">
+          <input type="text" id="loaiVe" th:field="*{loaiVe}" class="form-control" placeholder="Nhập loại vé..." autocomplete="off" required />
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Chọn nhanh
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="setLoaiVe('Vé Trẻ Em');return false;">Vé Trẻ Em</a></li>
+            <li><a class="dropdown-item" href="#" onclick="setLoaiVe('Vé Sinh Viên');return false;">Vé Sinh Viên</a></li>
+            <li><a class="dropdown-item" href="#" onclick="setLoaiVe('Vé Người Lớn');return false;">Vé Người Lớn</a></li>
+            <li><a class="dropdown-item" href="#" onclick="setLoaiVe('Vé Người Cao Tuổi');return false;">Vé Người Cao Tuổi</a></li>
+          </ul>
+        </div>
+        <div class="invalid-feedback">Vui lòng nhập loại vé!</div>
       </div>
 
       <!-- Giá vé -->
@@ -43,7 +48,9 @@
         <label for="giaCoBan" class="form-label fw-semibold">
           <i class="fas fa-dollar-sign me-2"></i>Giá Vé (VNĐ)
         </label>
-        <input type="text" id="giaCoBan" th:field="*{giaCoBan}" class="form-control" placeholder="Nhập giá vé (VNĐ)" pattern="[0-9]+" inputmode="numeric" required />
+        <input type="text" id="giaCoBan" th:name="giaCoBan"
+          th:value="${ve.giaCoBan != null ? ve.giaCoBan.intValue() : ''}" class="form-control"
+          placeholder="Nhập giá vé (VNĐ)" pattern="[0-9]+" inputmode="numeric" required />
         <div class="invalid-feedback">Vui lòng nhập giá vé hợp lệ (chỉ số và ≥ 1000)!</div>
       </div>
 
@@ -52,7 +59,8 @@
         <label for="lyDoGiamGia" class="form-label fw-semibold">
           <i class="fas fa-info-circle me-2"></i>Lý do giảm giá
         </label>
-        <input type="text" id="lyDoGiamGia" th:field="*{lyDoGiamGia}" class="form-control" placeholder="Nhập lý do (nếu có)" />
+        <input type="text" id="lyDoGiamGia" th:field="*{lyDoGiamGia}" class="form-control"
+          placeholder="Nhập lý do (nếu có)" />
       </div>
 
       <!-- Phần trăm giảm giá -->
@@ -60,7 +68,9 @@
         <label for="phanTramGiamGia" class="form-label fw-semibold">
           <i class="fas fa-percent me-2"></i>Phần trăm giảm giá (%)
         </label>
-        <input type="text" id="phanTramGiamGia" th:field="*{phanTramGiamGia}" class="form-control" placeholder="Nhập phần trăm giảm giá" pattern="[0-9]+(\.[0-9]+)?" inputmode="decimal" />
+        <input type="text" id="phanTramGiamGia" th:name="phanTramGiamGia"
+          th:value="${ve.phanTramGiamGia != null ? ve.phanTramGiamGia.intValue() : ''}" class="form-control"
+          placeholder="Nhập phần trăm giảm giá" pattern="[0-9]+" inputmode="decimal" />
         <div class="invalid-feedback">Phần trăm giảm giá phải là số từ 0 đến 100!</div>
       </div>
 
@@ -80,8 +90,16 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
+    function setLoaiVe(val) {
+      const loaiVeInput = document.getElementById('loaiVe');
+      loaiVeInput.value = val;
+      loaiVeInput.classList.remove('is-invalid');
+      loaiVeInput.focus();
+      if (typeof updateSubmitButton === "function") updateSubmitButton();
+    }
+
     const form = document.getElementById('editVeForm');
-    const loaiVeSelect = document.getElementById('loaiVe');
+    const loaiVeInput = document.getElementById('loaiVe');
     const giaCoBanInput = document.getElementById('giaCoBan');
     const phanTramGiamGiaInput = document.getElementById('phanTramGiamGia');
     const submitBtn = document.getElementById('submitBtn');
@@ -100,7 +118,7 @@
     function showError(field, message) {
       field.classList.add('is-invalid');
       const feedback = field.nextElementSibling;
-      if(feedback) feedback.textContent = message;
+      if (feedback) feedback.textContent = message;
     }
 
     function clearError(field) {
@@ -111,25 +129,25 @@
       clearError(field);
       const val = field.value.trim();
 
-      switch(field.id) {
+      switch (field.id) {
         case 'loaiVe':
-          if(!val) showError(field, 'Vui lòng chọn loại vé!');
+          if (!val) showError(field, 'Vui lòng nhập loại vé!');
           break;
 
         case 'giaCoBan':
-          if(!val) {
+          if (!val) {
             showError(field, 'Vui lòng nhập giá vé!');
-          } else if(!/^\d+$/.test(val)) {
+          } else if (!/^\d+$/.test(val)) {
             showError(field, 'Giá vé chỉ được nhập số!');
-          } else if(parseInt(val) < 1000) {
+          } else if (parseInt(val) < 1000) {
             showError(field, 'Giá vé phải ít nhất 1,000 VNĐ!');
           }
           break;
 
         case 'phanTramGiamGia':
-          if(val) {
+          if (val) {
             const num = parseFloat(val);
-            if(isNaN(num) || num < 0 || num > 100) {
+            if (isNaN(num) || num < 0 || num > 100) {
               showError(field, 'Phần trăm giảm giá phải từ 0 đến 100!');
             }
           }
@@ -138,24 +156,26 @@
     }
 
     function updateSubmitButton() {
-      const noErrors = ![loaiVeSelect, giaCoBanInput, phanTramGiamGiaInput].some(f => f.classList.contains('is-invalid'));
-      const allRequiredFilled = loaiVeSelect.value.trim() !== '' && giaCoBanInput.value.trim() !== '';
+      const noErrors = ![loaiVeInput, giaCoBanInput, phanTramGiamGiaInput].some(f => f.classList.contains('is-invalid'));
+      const allRequiredFilled = loaiVeInput.value.trim() !== '' && giaCoBanInput.value.trim() !== '';
       submitBtn.disabled = !(noErrors && allRequiredFilled);
     }
 
-    loaiVeSelect.addEventListener('change', e => {
+    loaiVeInput.addEventListener('input', e => {
       validateField(e.target);
       updateSubmitButton();
     });
+
     giaCoBanInput.addEventListener('input', e => {
       e.target.value = e.target.value.replace(/[^\d]/g, '');
       validateField(e.target);
       updateSubmitButton();
     });
+
     phanTramGiamGiaInput.addEventListener('input', e => {
       e.target.value = e.target.value.replace(/[^\d.]/g, '');
       const parts = e.target.value.split('.');
-      if(parts.length > 2){
+      if (parts.length > 2) {
         e.target.value = parts[0] + '.' + parts.slice(1).join('');
       }
       validateField(e.target);
@@ -164,11 +184,10 @@
 
     form.addEventListener('submit', e => {
       e.preventDefault();
-
-      [loaiVeSelect, giaCoBanInput, phanTramGiamGiaInput].forEach(validateField);
+      [loaiVeInput, giaCoBanInput, phanTramGiamGiaInput].forEach(validateField);
 
       const hasErrors = [...form.elements].some(el => el.classList && el.classList.contains('is-invalid'));
-      if(hasErrors){
+      if (hasErrors) {
         showAlert('Vui lòng sửa các lỗi trước khi gửi.', 'danger');
         return false;
       }
