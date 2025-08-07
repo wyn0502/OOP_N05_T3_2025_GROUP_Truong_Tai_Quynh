@@ -21,7 +21,7 @@
     <h2 class="mb-4 text-center text-primary" th:text="${dongVat.ten == null} ? 'Thêm Động vật' : 'Sửa Động vật'"></h2>
     
     <form th:action="@{/dongvat/luu}" th:object="${dongVat}" method="post" novalidate>
-      <input type="hidden" name="originalTen" th:value="${originalTen}" />
+      <input type="hidden" th:field="*{id}" />
 
       <div class="mb-3">
         <label for="ten" class="form-label fw-semibold"><i class="fas fa-paw me-2"></i> Tên</label>

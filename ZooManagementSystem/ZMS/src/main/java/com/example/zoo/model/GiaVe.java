@@ -1,46 +1,51 @@
 package com.example.zoo.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
+@Entity
+@Table(name = "giave")
 public class GiaVe {
-    private String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank(message = "Vui lòng chọn loại vé")
+    @Column(name = "loai_ve", nullable = false)
     private String loaiVe;
 
     @NotNull(message = "Vui lòng nhập giá vé")
     @DecimalMin(value = "1000", message = "Giá vé phải ít nhất 1,000 VNĐ")
+    @Column(name = "gia_co_ban", nullable = false)
     private Double giaCoBan;
 
+    @Column(name = "ly_do_giam_gia")
     private String lyDoGiamGia;
-    
+
     @Min(value = 0, message = "Phần trăm giảm giá phải từ 0 đến 100")
     @Max(value = 100, message = "Phần trăm giảm giá phải từ 0 đến 100")
+    @Column(name = "phan_tram_giam_gia")
     private Double phanTramGiamGia;
 
+    // ----- Constructors -----
     public GiaVe() {
-        this.id = java.util.UUID.randomUUID().toString();
         this.loaiVe = "";
         this.giaCoBan = 100000.0;
         this.lyDoGiamGia = "";
         this.phanTramGiamGia = 0.0;
     }
 
-    public GiaVe(String id, String loaiVe, Double giaCoBan, String lyDoGiamGia, Double phanTramGiamGia) {
-        this.id = id;
+    public GiaVe(String loaiVe, Double giaCoBan, String lyDoGiamGia, Double phanTramGiamGia) {
         this.loaiVe = loaiVe;
         this.giaCoBan = giaCoBan;
         this.lyDoGiamGia = lyDoGiamGia;
         this.phanTramGiamGia = phanTramGiamGia;
     }
 
-    // Getter và Setter
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    // ----- Getters & Setters -----
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getLoaiVe() { return loaiVe; }
     public void setLoaiVe(String loaiVe) { this.loaiVe = loaiVe; }
@@ -54,14 +59,15 @@ public class GiaVe {
     public Double getPhanTramGiamGia() { return phanTramGiamGia; }
     public void setPhanTramGiamGia(Double phanTramGiamGia) { this.phanTramGiamGia = phanTramGiamGia; }
 
+   
     public double tinhGiaTheoDoiTuong(String doiTuong) {
         double gia = giaCoBan != null ? giaCoBan : 0;
-        switch (doiTuong.toLowerCase()) {
-            case "tre em": return gia * 0.5;
-            case "sinh vien": return gia * 0.7;
-            case "nguoi gia": return gia * 0.6;
-            default: return gia;
-        }
+        return switch (doiTuong.toLowerCase()) {
+            case "tre em" -> gia * 0.5;
+            case "sinh vien" -> gia * 0.7;
+            case "nguoi gia" -> gia * 0.6;
+            default -> gia;
+        };
     }
 
     public double tinhTongTien(int soLuong, String doiTuong) {
@@ -70,18 +76,18 @@ public class GiaVe {
 
     public double apDungKhuyenMai() {
         double gia = giaCoBan != null ? giaCoBan : 0;
-        double phanTram = phanTramGiamGia != null ? phanTramGiamGia : 0;
-        if (phanTram < 0 || phanTram > 100) return gia;
-        return gia * (1 - phanTram / 100.0);
+        double giam = phanTramGiamGia != null ? phanTramGiamGia : 0;
+        return (giam >= 0 && giam <= 100) ? gia * (1 - giam / 100.0) : gia;
     }
 
     @Override
     public String toString() {
-        return "ID: " + id
-                + ", Loại vé: " + loaiVe
-                + ", Giá cơ bản: " + giaCoBan + " VND"
-                + ", Lý do giảm giá: " + lyDoGiamGia
-                + ", % Giảm giá: " + phanTramGiamGia + "%";
+        return "GiaVe{" +
+                "id=" + id +
+                ", loaiVe='" + loaiVe + '\'' +
+                ", giaCoBan=" + giaCoBan +
+                ", lyDoGiamGia='" + lyDoGiamGia + '\'' +
+                ", phanTramGiamGia=" + phanTramGiamGia +
+                '}';
     }
-    
 }

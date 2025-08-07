@@ -1,36 +1,37 @@
 package com.example.zoo.service;
 
 import com.example.zoo.model.DongVat;
+import com.example.zoo.repository.DongVatRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DongVatService {
-    private final List<DongVat> danhSach = new ArrayList<>();
 
-    public void them(DongVat dv) {
-        danhSach.add(dv);
-    }
+    @Autowired
+    private DongVatRepository dongVatRepository;
 
-    public void sua(String tenGoc, DongVat dongVatMoi) {
-        xoa(tenGoc);
-        them(dongVatMoi);
-    }
-
+    // Lấy tất cả động vật từ database
     public List<DongVat> layTatCa() {
-        return danhSach;
+        return dongVatRepository.findAll();
     }
 
-    public boolean xoa(String ten) {
-        return danhSach.removeIf(dv -> dv.getTen().equalsIgnoreCase(ten));
+    // Thêm hoặc cập nhật
+    public void luuHoacCapNhat(DongVat dv) {
+        dongVatRepository.save(dv);
     }
 
-    public DongVat timTheoTen(String ten) {
-        return danhSach.stream()
-                .filter(dv -> dv.getTen().equalsIgnoreCase(ten))
-                .findFirst()
-                .orElse(null);
+    // Tìm theo ID
+    public DongVat timTheoId(Long id) {
+        Optional<DongVat> optional = dongVatRepository.findById(id);
+        return optional.orElse(null);
+    }
+
+    // Xóa theo ID
+    public void xoaTheoId(Long id) {
+        dongVatRepository.deleteById(id);
     }
 }

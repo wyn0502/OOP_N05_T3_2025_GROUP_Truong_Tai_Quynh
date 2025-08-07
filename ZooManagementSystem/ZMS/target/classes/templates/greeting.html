@@ -52,6 +52,7 @@
 
 <body>
     <div class="container py-4">
+        <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="text-white fw-bold">Zoo Management System</h2>
@@ -91,32 +92,40 @@
             </div>
             <div class="col-md-3">
                 <div class="card gradient-card p-3 text-center">
-                    <div class="card-header-icon bg-warning mb-2 mx-auto">
-                        <i class="fas fa-users"></i>
+                    <div class="card-header-icon bg-danger mb-2 mx-auto">
+                        <i class="fas fa-heart"></i>
                     </div>
-                    <h4 th:text="${khachHomNay}">0</h4>
-                    <small class="text-muted">Khách hôm nay</small>
+                    <h4 th:text="${tongNhanVien}">0</h4>
+                    <small class="text-muted">Tổng nhân viên</small>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card gradient-card p-3 text-center">
-                    <div class="card-header-icon bg-danger mb-2 mx-auto">
-                        <i class="fas fa-heart"></i>
+                    <div class="card-header-icon bg-info mb-2 mx-auto">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
-                    <h4 th:text="${tyLeHaiLong}">0%</h4>
-                    <small class="text-muted">Hài lòng (%)</small>
+                    <h4 th:text="${lichChoAnCount}">0</h4>
+                    <small class="text-muted">Lịch cho ăn hiện có</small>
                 </div>
             </div>
         </div>
 
-        <!-- Thông tin -->
+        <!-- Thông tin chi tiết -->
         <div class="row g-3">
-            <div class="col-md-4">
+            <!-- Thông tin động vật -->
+            <div class="col-md-3">
                 <div class="card gradient-card">
-                    <div class="card-header bg-light fw-bold">
-                        <i class="fas fa-paw me-2"></i>Thông tin động vật
+                    <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-paw me-2"></i>Thông tin động vật</span>
+                        <form method="get" action="/greeting" class="d-inline">
+                            <select name="dongVatId" class="form-select form-select-sm d-inline w-auto"
+                                onchange="this.form.submit()" th:if="${not #lists.isEmpty(danhSachDongVat)}">
+                                <option th:each="dv : ${danhSachDongVat}" th:value="${dv.id}" th:text="${dv.ten}"
+                                    th:selected="${dv.id == dongVat?.id}">Động vật</option>
+                            </select>
+                        </form>
                     </div>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush" th:if="${dongVat != null}">
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Tên</span><span th:text="${dongVat.ten}">...</span>
                         </li>
@@ -127,46 +136,53 @@
                             <span>Loài</span><span th:text="${dongVat.loai}">...</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Sức khỏe</span><span class="text-success">Khỏe mạnh</span>
+                            <span>Sức khỏe</span>
+                            <span th:text="${dongVat.sucKhoe}"
+                                th:classappend="${dongVat.sucKhoe.toLowerCase().contains('khỏe') ? 'text-success' : 'text-danger'}">...</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Khu vực</span><span>Khu A-12</span>
+                            <span>Khu vực</span><span
+                                th:text="${dongVat.khuVuc != null ? dongVat.khuVuc : 'Không xác định'}">...</span>
                         </li>
                     </ul>
+                    <div class="p-2 text-danger fw-bold" th:if="${dongVat == null}">
+                        Không có dữ liệu động vật trong hệ thống!
+                    </div>
                 </div>
             </div>
 
+            <!-- Danh sách giá vé -->
             <div class="col-md-4">
                 <div class="card gradient-card">
                     <div class="card-header bg-light fw-bold">
                         <i class="fas fa-ticket-alt me-2"></i>Thông tin giá vé
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Loại vé</span><span th:text="${giaVe.loaiVe}">...</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Giá gốc</span><span
-                                th:text="${#numbers.formatDecimal(giaVe.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">...</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between" th:if="${giaVe.phanTramGiamGia > 0}">
-                            <span>Giảm giá</span><span class="text-warning"
-                                th:text="${giaVe.phanTramGiamGia + '%'}">...</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between" th:if="${giaVe.phanTramGiamGia > 0}">
-                            <span>Giá cuối</span><span class="text-success"
-                                th:text="${#numbers.formatDecimal(giaVe.apDungKhuyenMai(), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">...</span>
+                    <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(danhSachGiaVe)}">
+                        <li class="list-group-item" th:each="ve : ${danhSachGiaVe}">
+                            <div class="fw-semibold mb-1" th:text="${ve.loaiVe}">Vé Loại</div>
+                            <div class="d-flex justify-content-between small">
+                                <span>Giá gốc:</span>
+                                <span th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</span>
+                            </div>
+                            <div class="d-flex justify-content-between small" th:if="${ve.phanTramGiamGia > 0}">
+                                <span>Giảm giá:</span>
+                                <span class="text-warning" th:text="${ve.phanTramGiamGia + '%'}">0%</span>
+                            </div>
+                            <div class="d-flex justify-content-between small" th:if="${ve.phanTramGiamGia > 0}">
+                                <span>Giá sau giảm:</span>
+                                <span class="text-success" th:text="${#numbers.formatDecimal(ve.giaCoBan * (1 - ve.phanTramGiamGia / 100), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</span>
+                            </div>
+                            <hr class="my-2">
                         </li>
                     </ul>
-                    <div class="card-footer bg-warning-subtle fw-bold text-center">
-                        Tổng 3 vé:
-                        <span
-                            th:text="${#numbers.formatDecimal(giaVe.apDungKhuyenMai() * 3, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">...</span>
+                    <div class="p-2 text-danger" th:if="${#lists.isEmpty(danhSachGiaVe)}">
+                        Không có vé nào trong hệ thống.
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <!-- Thông tin nhân viên -->
+            <div class="col-md-5">
                 <div class="card gradient-card">
                     <div class="card-header bg-light fw-bold">
                         <i class="fas fa-user-tie me-2"></i>Thông tin nhân viên
@@ -191,32 +207,32 @@
             <h5 class="text-center fw-bold mb-3"><i class="fas fa-rocket me-2"></i>Thao tác nhanh</h5>
             <div class="d-flex flex-wrap gap-2 justify-content-center">
                 <a href="/dongvat" class="btn btn-gradient"><i class="fas fa-paw me-1"></i> Quản lý động vật</a>
+<<<<<<< HEAD
                 <a href="/giave" class="btn btn-gradient"><i class="fas fa-ticket-alt me-1"></i> Quản lý giá vé</a>
                 <a href="/nhanvien" class="btn btn-gradient"><i class="fas fa-user-tie me-1"></i>Quản lý Nhân viên</a>
                 <a href="/lichchoan" class="btn btn-gradient"><i class="fas fa-calendar-check me-1"></i>Quản lý
                     Lịch cho ăn</a>
+=======
+                <a href="/giave" class="btn btn-gradient"><i class="fas fa-ticket-alt me-1"></i> Quản lý vé</a>
+                <a href="/nhanvien" class="btn btn-gradient"><i class="fas fa-user-tie me-1"></i> Quản lý Nhân viên</a>
+                <a href="/lichchoan" class="btn btn-outline-secondary"><i class="fas fa-calendar-check me-1"></i>Quản lý Lịch cho ăn</a>
+>>>>>>> 9fdafe0c4e45ecdd1750035d0c8f7ff9e1ad580e
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function updateTime() {
             const now = new Date();
             const options = {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
+                year: "numeric", month: "2-digit", day: "2-digit",
+                hour: "2-digit", minute: "2-digit", second: "2-digit",
                 hour12: false
             };
             const formatter = new Intl.DateTimeFormat("vi-VN", options);
             document.getElementById("liveTime").textContent = formatter.format(now).replace(",", "");
         }
 
-        // Gọi ngay khi load và sau đó mỗi giây
         updateTime();
         setInterval(updateTime, 1000);
     </script>
