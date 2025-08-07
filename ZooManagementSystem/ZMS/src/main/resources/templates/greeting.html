@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +14,6 @@
             min-height: 100vh;
             color: #333;
         }
-
         .gradient-card {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
@@ -23,43 +21,93 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
-
-        .gradient-card:hover {
-            transform: scale(1.02);
-        }
-
+        .gradient-card:hover { transform: scale(1.02);}
         .card-header-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: #fff;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; color: #fff;
         }
-
         .btn-gradient {
             background: linear-gradient(135deg, #5a4fcf, #3a6bb4, #1ca8a0);
-            color: white;
-            border: none;
+            color: white; border: none;
         }
-
-        .btn-gradient:hover {
-            filter: brightness(1.1);
+        .btn-gradient:hover { filter: brightness(1.1);}
+        .main-rectangle {
+            min-height: 650px;
+            display: flex;
+            flex-direction: column;
+        }
+        .header-bar {
+            margin-bottom: 1.5rem;
+        }
+        .top-area-A {
+            margin-bottom: 2rem;
+        }
+        .top-stat-card {
+            padding: 2rem 2.2rem 1.2rem 2.2rem;
+        }
+        .bottom-area {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .left-area-B {
+            flex: 2;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .right-area-C {
+            flex: 1;
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-b-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            gap: 0;
+        }
+        .b-row {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .pane-b1, .pane-b2 {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .b-info-nhanvien {
+            margin-top: 1rem;
+        }
+        .pane-b1 > .card,
+        .pane-b2 > .card {
+            height: auto;
+        }
+        @media (max-width: 992px) {
+            .main-rectangle {min-height: unset;}
+            .header-bar {margin-bottom: 1rem;}
+            .top-area-A {margin-bottom: 1rem;}
+            .top-stat-card {padding: 1rem !important;}
+            .bottom-area { flex-direction: column; gap: 1rem;}
+            .left-area-B, .right-area-C { flex: none;}
+            .b-row { flex-direction: column; gap: 1rem;}
         }
     </style>
 </head>
-
 <body>
-    <div class="container py-4">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container py-4">
+    <div class="main-rectangle mx-auto" style="max-width: 1280px;">
+        <!-- ======= HEADER đứng ngoài KHUNG KHU A ======= -->
+        <div class="header-bar d-flex justify-content-between align-items-center">
             <div>
                 <h2 class="text-white fw-bold">Zoo Management System</h2>
                 <small class="text-white-50">Hệ thống quản lý sở thú</small>
             </div>
             <div class="text-end">
-                <div class="badge bg-warning text-dark">
+                <div class="badge bg-warning text-dark mb-1">
                     <i class="fas fa-user"></i>
                     <span th:text="${name}">Tên nhân viên</span>
                 </div>
@@ -69,173 +117,169 @@
                 </div>
             </div>
         </div>
-
-        <!-- Thống kê -->
-        <div class="row g-3 mb-4">
-            <div class="col-md-3">
-                <div class="card gradient-card p-3 text-center">
-                    <div class="card-header-icon bg-primary mb-2 mx-auto">
-                        <i class="fas fa-paw"></i>
+        <!-- ======= KHU A: Card chứa CHỈ 4 Ô THỐNG KÊ ======= -->
+        <div class="top-area-A">
+            <div class="card gradient-card top-stat-card">
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <div class="card gradient-card p-3 text-center">
+                            <div class="card-header-icon bg-primary mb-2 mx-auto">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                            <h4 th:text="${dongVatCount}">0</h4>
+                            <small class="text-muted">Động vật</small>
+                        </div>
                     </div>
-                    <h4 th:text="${dongVatCount}">0</h4>
-                    <small class="text-muted">Động vật</small>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card gradient-card p-3 text-center">
-                    <div class="card-header-icon bg-success mb-2 mx-auto">
-                        <i class="fas fa-ticket-alt"></i>
+                    <div class="col-6 col-md-3">
+                        <div class="card gradient-card p-3 text-center">
+                            <div class="card-header-icon bg-success mb-2 mx-auto">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <h4 th:text="${loaiVeCount}">0</h4>
+                            <small class="text-muted">Loại vé</small>
+                        </div>
                     </div>
-                    <h4 th:text="${loaiVeCount}">0</h4>
-                    <small class="text-muted">Loại vé</small>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card gradient-card p-3 text-center">
-                    <div class="card-header-icon bg-danger mb-2 mx-auto">
-                        <i class="fas fa-heart"></i>
+                    <div class="col-6 col-md-3">
+                        <div class="card gradient-card p-3 text-center">
+                            <div class="card-header-icon bg-danger mb-2 mx-auto">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h4 th:text="${tongNhanVien}">0</h4>
+                            <small class="text-muted">Tổng nhân viên</small>
+                        </div>
                     </div>
-                    <h4 th:text="${tongNhanVien}">0</h4>
-                    <small class="text-muted">Tổng nhân viên</small>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card gradient-card p-3 text-center">
-                    <div class="card-header-icon bg-info mb-2 mx-auto">
-                        <i class="fas fa-calendar-alt"></i>
+                    <div class="col-6 col-md-3">
+                        <div class="card gradient-card p-3 text-center">
+                            <div class="card-header-icon bg-info mb-2 mx-auto">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h4 th:text="${lichChoAnCount}">0</h4>
+                            <small class="text-muted">Lịch cho ăn hiện có</small>
+                        </div>
                     </div>
-                    <h4 th:text="${lichChoAnCount}">0</h4>
-                    <small class="text-muted">Lịch cho ăn hiện có</small>
                 </div>
             </div>
         </div>
 
-        <!-- Thông tin chi tiết -->
-        <div class="row g-3">
-            <!-- Thông tin động vật -->
-            <div class="col-md-3">
-                <div class="card gradient-card">
-                    <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-paw me-2"></i>Thông tin động vật</span>
-                        <form method="get" action="/greeting" class="d-inline">
-                            <select name="dongVatId" class="form-select form-select-sm d-inline w-auto"
-                                onchange="this.form.submit()" th:if="${not #lists.isEmpty(danhSachDongVat)}">
-                                <option th:each="dv : ${danhSachDongVat}" th:value="${dv.id}" th:text="${dv.ten}"
-                                    th:selected="${dv.id == dongVat?.id}">Động vật</option>
-                            </select>
-                        </form>
+        <!-- === B, C: THÔNG TIN CHI TIẾT & THAO TÁC NHANH === -->
+        <div class="bottom-area">
+            <!-- LEFT/B: 1 card lớn chia 2 cột - ĐV | Vé -->
+            <div class="left-area-B">
+                <div class="card gradient-card card-b-wrapper p-3">
+                    <div class="b-row">
+                        <!-- Bên trái: Động vật -->
+                        <div class="pane-b1 me-0 me-md-2">
+                            <div class="card gradient-card mb-0">
+                                <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
+                                    <span><i class="fas fa-paw me-2"></i>Thông tin động vật</span>
+                                    <form method="get" action="/greeting" class="d-inline">
+                                        <select name="dongVatId" class="form-select form-select-sm d-inline w-auto"
+                                            onchange="this.form.submit()" th:if="${not #lists.isEmpty(danhSachDongVat)}">
+                                            <option th:each="dv : ${danhSachDongVat}" th:value="${dv.id}" th:text="${dv.ten}"
+                                                th:selected="${dv.id == dongVat?.id}">Động vật</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <ul class="list-group list-group-flush" th:if="${dongVat != null}">
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Tên</span><span th:text="${dongVat.ten}">...</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Tuổi</span><span th:text="${dongVat.tuoi + ' tuổi'}">...</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Loài</span><span th:text="${dongVat.loai}">...</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Sức khỏe</span>
+                                        <span th:text="${dongVat.sucKhoe}"
+                                            th:classappend="${dongVat.sucKhoe.toLowerCase().contains('khỏe') ? 'text-success' : 'text-danger'}">...</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Khu vực</span><span
+                                            th:text="${dongVat.khuVuc != null ? dongVat.khuVuc : 'Không xác định'}">...</span>
+                                    </li>
+                                </ul>
+                                <div class="p-2 text-danger fw-bold" th:if="${dongVat == null}">
+                                    Không có dữ liệu động vật trong hệ thống!
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bên phải: Giá vé -->
+                        <div class="pane-b2 ms-0 ms-md-2">
+                            <div class="card gradient-card mb-0">
+                                <div class="card-header bg-light fw-bold">
+                                    <i class="fas fa-ticket-alt me-2"></i>Thông tin giá vé
+                                </div>
+                                <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(danhSachGiaVe)}">
+                                    <li class="list-group-item" th:each="ve : ${danhSachGiaVe}">
+                                        <div class="fw-semibold mb-1" th:text="${ve.loaiVe}">Vé Loại</div>
+                                        <div class="d-flex justify-content-between small">
+                                            <span>Giá gốc:</span>
+                                            <span th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between small" th:if="${ve.phanTramGiamGia > 0}">
+                                            <span>Giảm giá:</span>
+                                            <span class="text-warning" th:text="${ve.phanTramGiamGia + '%'}">0%</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between small" th:if="${ve.phanTramGiamGia > 0}">
+                                            <span>Giá sau giảm:</span>
+                                            <span class="text-success" th:text="${#numbers.formatDecimal(ve.giaCoBan * (1 - ve.phanTramGiamGia / 100), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</span>
+                                        </div>
+                                        <hr class="my-2">
+                                    </li>
+                                </ul>
+                                <div class="p-2 text-danger" th:if="${#lists.isEmpty(danhSachGiaVe)}">
+                                    Không có vé nào trong hệ thống.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <ul class="list-group list-group-flush" th:if="${dongVat != null}">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Tên</span><span th:text="${dongVat.ten}">...</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Tuổi</span><span th:text="${dongVat.tuoi + ' tuổi'}">...</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Loài</span><span th:text="${dongVat.loai}">...</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Sức khỏe</span>
-                            <span th:text="${dongVat.sucKhoe}"
-                                th:classappend="${dongVat.sucKhoe.toLowerCase().contains('khỏe') ? 'text-success' : 'text-danger'}">...</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Khu vực</span><span
-                                th:text="${dongVat.khuVuc != null ? dongVat.khuVuc : 'Không xác định'}">...</span>
-                        </li>
-                    </ul>
-                    <div class="p-2 text-danger fw-bold" th:if="${dongVat == null}">
-                        Không có dữ liệu động vật trong hệ thống!
+                    <!-- Bên dưới: Thông tin nhân viên -->
+                    <div class="b-info-nhanvien">
+                        <div class="card gradient-card mb-0">
+                            <div class="card-header bg-light fw-bold">
+                                <i class="fas fa-user-tie me-2"></i>Thông tin nhân viên
+                            </div>
+                            <ul class="list-group list-group-flush" th:each="nv : ${danhSachNhanVien}">
+                                <li class="list-group-item">
+                                    <div class="fw-semibold" th:text="${nv.fullname}">Tên</div>
+                                    <div class="small text-muted">Mã nhân viên: <span th:text="${nv.id}">1</span></div>
+                                    <div class="small">Tài khoản nhân viên: <span th:text="${nv.username}">admin</span></div>
+                                    <div class="small">Ngày vào làm: <span th:text="${nv.datework}">2025-08-05</span></div>
+                                    <div class="small">SĐT: <span th:text="${nv.phone}">0341234567</span></div>
+                                    <div class="small">Chuồng: <span th:text="${nv.chuong}">Capybara</span></div>
+                                    <div class="small">Cấp bậc: <span th:text="${nv.role}">admin</span></div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Danh sách giá vé -->
-            <div class="col-md-4">
-                <div class="card gradient-card">
-                    <div class="card-header bg-light fw-bold">
-                        <i class="fas fa-ticket-alt me-2"></i>Thông tin giá vé
-                    </div>
-                    <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(danhSachGiaVe)}">
-                        <li class="list-group-item" th:each="ve : ${danhSachGiaVe}">
-                            <div class="fw-semibold mb-1" th:text="${ve.loaiVe}">Vé Loại</div>
-                            <div class="d-flex justify-content-between small">
-                                <span>Giá gốc:</span>
-                                <span th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</span>
-                            </div>
-                            <div class="d-flex justify-content-between small" th:if="${ve.phanTramGiamGia > 0}">
-                                <span>Giảm giá:</span>
-                                <span class="text-warning" th:text="${ve.phanTramGiamGia + '%'}">0%</span>
-                            </div>
-                            <div class="d-flex justify-content-between small" th:if="${ve.phanTramGiamGia > 0}">
-                                <span>Giá sau giảm:</span>
-                                <span class="text-success" th:text="${#numbers.formatDecimal(ve.giaCoBan * (1 - ve.phanTramGiamGia / 100), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</span>
-                            </div>
-                            <hr class="my-2">
-                        </li>
-                    </ul>
-                    <div class="p-2 text-danger" th:if="${#lists.isEmpty(danhSachGiaVe)}">
-                        Không có vé nào trong hệ thống.
+            <!-- RIGHT/C: THAO TÁC NHANH -->
+            <div class="right-area-C">
+                <div class="card gradient-card p-4 d-flex flex-column align-items-stretch">
+                    <h5 class="text-center fw-bold mb-3"><i class="fas fa-rocket me-2"></i>Thao tác nhanh</h5>
+                    <div class="d-flex flex-column gap-3">
+                        <a href="/dongvat" class="btn btn-gradient w-100"><i class="fas fa-paw me-1"></i> Quản lý động vật</a>
+                        <a href="/giave" class="btn btn-gradient w-100"><i class="fas fa-ticket-alt me-1"></i> Quản lý giá vé</a>
+                        <a href="/nhanvien" class="btn btn-gradient w-100"><i class="fas fa-user-tie me-1"></i>Quản lý Nhân viên</a>
+                        <a href="/lichchoan" class="btn btn-gradient w-100"><i class="fas fa-calendar-check me-1"></i>Quản lý Lịch cho ăn</a>
                     </div>
                 </div>
-            </div>
-
-            <!-- Thông tin nhân viên -->
-            <div class="col-md-5">
-                <div class="card gradient-card">
-                    <div class="card-header bg-light fw-bold">
-                        <i class="fas fa-user-tie me-2"></i>Thông tin nhân viên
-                    </div>
-                    <ul class="list-group list-group-flush" th:each="nv : ${danhSachNhanVien}">
-                        <li class="list-group-item">
-                            <div class="fw-semibold" th:text="${nv.fullname}">Tên</div>
-                            <div class="small text-muted">Mã nhân viên: <span th:text="${nv.id}">1</span></div>
-                            <div class="small">Tài khoản nhân viên: <span th:text="${nv.username}">admin</span></div>
-                            <div class="small">Ngày vào làm: <span th:text="${nv.datework}">2025-08-05</span></div>
-                            <div class="small">SĐT: <span th:text="${nv.phone}">0341234567</span></div>
-                            <div class="small">Chuồng: <span th:text="${nv.chuong}">Capybara</span></div>
-                            <div class="small">Cấp bậc: <span th:text="${nv.role}">admin</span></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Thao tác nhanh -->
-        <div class="card gradient-card mt-4 p-4">
-            <h5 class="text-center fw-bold mb-3"><i class="fas fa-rocket me-2"></i>Thao tác nhanh</h5>
-            <div class="d-flex flex-wrap gap-2 justify-content-center">
-                <a href="/dongvat" class="btn btn-gradient"><i class="fas fa-paw me-1"></i> Quản lý động vật</a>
-<<<<<<< HEAD
-                <a href="/giave" class="btn btn-gradient"><i class="fas fa-ticket-alt me-1"></i> Quản lý giá vé</a>
-                <a href="/nhanvien" class="btn btn-gradient"><i class="fas fa-user-tie me-1"></i>Quản lý Nhân viên</a>
-                <a href="/lichchoan" class="btn btn-gradient"><i class="fas fa-calendar-check me-1"></i>Quản lý
-                    Lịch cho ăn</a>
-=======
-                <a href="/giave" class="btn btn-gradient"><i class="fas fa-ticket-alt me-1"></i> Quản lý vé</a>
-                <a href="/nhanvien" class="btn btn-gradient"><i class="fas fa-user-tie me-1"></i> Quản lý Nhân viên</a>
-                <a href="/lichchoan" class="btn btn-outline-secondary"><i class="fas fa-calendar-check me-1"></i>Quản lý Lịch cho ăn</a>
->>>>>>> 9fdafe0c4e45ecdd1750035d0c8f7ff9e1ad580e
             </div>
         </div>
     </div>
-
-    <script>
-        function updateTime() {
-            const now = new Date();
-            const options = {
-                year: "numeric", month: "2-digit", day: "2-digit",
-                hour: "2-digit", minute: "2-digit", second: "2-digit",
-                hour12: false
-            };
-            const formatter = new Intl.DateTimeFormat("vi-VN", options);
-            document.getElementById("liveTime").textContent = formatter.format(now).replace(",", "");
-        }
-
-        updateTime();
-        setInterval(updateTime, 1000);
-    </script>
+</div>
+<script>
+    function updateTime() {
+        const now = new Date();
+        const options = {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false};
+        const formatter = new Intl.DateTimeFormat("vi-VN", options);
+        document.getElementById("liveTime").textContent = formatter.format(now).replace(",", "");
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+</script>
 </body>
-
 </html>

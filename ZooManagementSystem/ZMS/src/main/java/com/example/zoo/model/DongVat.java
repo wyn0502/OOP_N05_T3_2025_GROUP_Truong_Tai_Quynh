@@ -3,21 +3,21 @@ package com.example.zoo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dongvat") // tên bảng trong database
+@Table(name = "dongvat")
 public class DongVat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Đổi sang Long để thuận tiện với auto increment
+    private Long id;
 
     private String ten;
     private int tuoi;
     private String loai;
 
-    @Column(name = "suc_khoe") // ánh xạ cột nếu tên khác
+    @Column(name = "suc_khoe")
     private String sucKhoe;
 
-    private String khuVuc; // thêm khu vực nếu muốn hiển thị như trang chủ
+    private String khuVuc; 
 
     public DongVat() {}
 
