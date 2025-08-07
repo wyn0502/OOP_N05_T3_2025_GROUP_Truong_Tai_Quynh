@@ -175,10 +175,16 @@
                             <div class="card h-100">
                                 <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
                                     <span><i class="fas fa-paw me-2"></i>Thông tin động vật</span>
+                                    <!-- FORM CHỌN ĐỘNG VẬT -->
                                     <form method="get" action="/greeting" class="d-inline">
+                                        <input type="hidden" name="giaVeId" th:value="${giaVe?.id}" />
+                                        <input type="hidden" name="chuongId" th:value="${chuong?.maChuong}" />
                                         <select name="dongVatId" class="form-select form-select-sm d-inline w-auto"
                                                 onchange="this.form.submit()" th:if="${not #lists.isEmpty(danhSachDongVat)}">
-                                            <option th:each="dv : ${danhSachDongVat}" th:value="${dv.id}" th:text="${dv.ten}" th:selected="${dv.id == dongVat?.id}">Động vật</option>
+                                            <option th:each="dv : ${danhSachDongVat}"
+                                                    th:value="${dv.id}"
+                                                    th:text="${dv.ten}"
+                                                    th:selected="${dv.id == dongVat?.id}">Động vật</option>
                                         </select>
                                     </form>
                                 </div>
@@ -210,7 +216,10 @@
                             <div class="card h-100">
                                 <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
                                     <span><i class="fas fa-ticket-alt me-2"></i>Thông tin giá vé</span>
+                                    <!-- FORM CHỌN GIÁ VÉ -->
                                     <form method="get" action="/greeting" class="d-inline">
+                                        <input type="hidden" name="dongVatId" th:value="${dongVat?.id}" />
+                                        <input type="hidden" name="chuongId" th:value="${chuong?.maChuong}" />
                                         <select name="giaVeId" class="form-select form-select-sm d-inline w-auto"
                                                 onchange="this.form.submit()" th:if="${not #lists.isEmpty(danhSachGiaVe)}">
                                             <option th:each="ve : ${danhSachGiaVe}"
@@ -254,10 +263,14 @@
                             <div class="card h-100">
                                 <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
                                     <span><i class="fas fa-house-damage me-2"></i>Thông tin chuồng</span>
+                                    <!-- FORM CHỌN CHUỒNG -->
                                     <form method="get" action="/greeting" class="d-inline">
+                                        <input type="hidden" name="giaVeId" th:value="${giaVe?.id}" />
+                                        <input type="hidden" name="dongVatId" th:value="${dongVat?.id}" />
                                         <select name="chuongId" class="form-select form-select-sm d-inline w-auto"
                                                 onchange="this.form.submit()" th:if="${not #lists.isEmpty(danhSachChuong)}">
-                                            <option th:each="c : ${danhSachChuong}" th:value="${c.maChuong}" th:text="${c.tenKhuVuc + ' (' + c.maChuong + ')'}"
+                                            <option th:each="c : ${danhSachChuong}" th:value="${c.maChuong}"
+                                                    th:text="${c.tenKhuVuc + ' (' + c.maChuong + ')'}"
                                                     th:selected="${c.maChuong == chuong?.maChuong}">Chuồng</option>
                                         </select>
                                     </form>

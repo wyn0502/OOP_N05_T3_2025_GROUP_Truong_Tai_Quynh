@@ -38,7 +38,7 @@ public class GreetingController {
     public String greeting(
         @RequestParam(name = "dongVatId", required = false) Long dongVatId,
         @RequestParam(name = "chuongId", required = false) String chuongId,
-        @RequestParam(name = "giaVeId", required = false) Long giaVeId, // THÊM VÀO ĐÂY
+        @RequestParam(name = "giaVeId", required = false) Long giaVeId,
         Model model,
         HttpSession session) {
 
@@ -78,13 +78,12 @@ public class GreetingController {
 
         GiaVe giaVe = null;
         if (giaVeId != null) {
-            // Nếu đã chọn trong select, lấy đúng vé đó
             giaVe = danhSachGiaVe.stream()
                 .filter(v -> v.getId().equals(giaVeId))
                 .findFirst()
                 .orElse(danhSachGiaVe.isEmpty() ? null : danhSachGiaVe.get(0));
         } else if (!danhSachGiaVe.isEmpty()) {
-            giaVe = danhSachGiaVe.get(0); // mặc định lấy vé đầu tiên
+            giaVe = danhSachGiaVe.get(0);
         }
         model.addAttribute("giaVe", giaVe);
 
@@ -127,8 +126,6 @@ public class GreetingController {
         // 10. Biến user
         model.addAttribute("user", loggedInUser);
 
-        // 11. (Nếu cần) Thêm các thống kê/biến khác
-
-        return "greeting";  // tên template
+        return "greeting";
     }
 }
