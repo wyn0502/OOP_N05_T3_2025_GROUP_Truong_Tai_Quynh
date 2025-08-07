@@ -1,38 +1,44 @@
 package com.example.zoo.service;
 
 import com.example.zoo.model.Chuong;
-import com.example.zoo.interfaces.IManager;
+import com.example.zoo.repository.ChuongRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
-public class ChuongService implements IManager<Chuong> {
-    private final List<Chuong> danhSachChuong = new ArrayList<>();
+public class ChuongService {
 
-    @Override
-    public void them(Chuong c) { danhSachChuong.add(c); }
+    private final ChuongRepository repository;
 
-    @Override
-    public List<Chuong> hienThi() { return danhSachChuong; }
-
-    @Override
-    public void sua(String ma, Chuong newChuong) {
-        for (Chuong c : danhSachChuong) {
-            if (c.getMaChuong().equals(ma)) {
-                if (newChuong.getTenKhuVuc() != null)
-                    c.setTenKhuVuc(newChuong.getTenKhuVuc());
-                if (newChuong.getSucChuaToiDa() != 0)
-                    c.setSucChuaToiDa(newChuong.getSucChuaToiDa());
-                if (newChuong.getSoLuongHienTai() != 0)
-                    c.setSoLuongHienTai(newChuong.getSoLuongHienTai());
-                return;
-            }
-        }
+    @Autowired
+    public ChuongService(ChuongRepository repository) {
+        this.repository = repository;
     }
 
-    @Override
+    public void them(Chuong c) {
+        repository.save(c);
+    }
+
+    public List<Chuong> hienThi() {
+        return repository.findAll();
+    }
+
+    public void sua(String ma, Chuong newChuong) {
+        repository.findById(ma).ifPresent(c -> {
+            c.setTenKhuVuc(newChuong.getTenKhuVuc());
+            c.setSucChuaToiDa(newChuong.getSucChuaToiDa());
+            c.setSoLuongHienTai(newChuong.getSoLuongHienTai());
+            repository.save(c);
+        });
+    }
+
     public void xoa(String ma) {
-        danhSachChuong.removeIf(c -> c.getMaChuong().equals(ma));
+        repository.deleteById(ma);
+    }
+
+    public Chuong timTheoMa(String ma) {
+        return repository.findById(ma).orElse(null);
     }
 }
