@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN mvn clean package -DskipTests
+RUN mvn clean install -DskipTests -Dmaven.test.skip=true
 
 EXPOSE 8080
 
