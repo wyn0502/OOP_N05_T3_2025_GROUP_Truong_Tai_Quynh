@@ -122,9 +122,16 @@
                     <small class="text-white-50">Hệ thống quản lý sở thú</small>
                 </div>
                 <div class="text-end">
-                    <div class="badge bg-warning text-dark mb-1">
-                        <i class="fas fa-user"></i>
-                        <span th:text="${name}">Tên nhân viên</span>
+                    <div class="dropdown">
+                        <button class="btn btn-warning dropdown-toggle fw-semibold" type="button" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span th:text="${name}">Tên nhân viên</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-1"></i>Đăng
+                                    xuất</a></li>
+                        </ul>
                     </div>
                     <div class="badge bg-white text-dark">
                         <i class="fas fa-clock me-1"></i>
@@ -326,25 +333,35 @@
                     </div>
                 </div>
                 <!-- BÊN PHẢI: Thao tác nhanh -->
-                <div class="right-actions">
+                <div class="right-actions" th:if="${user.role == 'admin'}">
                     <div class="card gradient-card p-4 d-flex flex-column align-items-stretch">
-                        <h5 class="text-center fw-bold mb-3"><i class="fas fa-rocket me-2"></i>Thao tác nhanh</h5>
+                        <h5 class="text-center fw-bold mb-3">
+                            <i class="fas fa-rocket me-2"></i>Thao tác nhanh
+                        </h5>
                         <div class="d-flex flex-column gap-3">
-                            <a href="/nhanvien" class="btn btn-gradient w-100"><i class="fas fa-user-tie me-1"></i>Quản
-                                lý Nhân viên</a>
-                            <a href="/chuong" class="btn btn-gradient w-100"><i class="fas fa-house-damage me-1"></i>
-                                Quản lý Chuồng</a>
-                            <a href="/dongvat" class="btn btn-gradient w-100"><i class="fas fa-paw me-1"></i> Quản lý
-                                Động Vật</a>
-                            <a href="/giave" class="btn btn-gradient w-100"><i class="fas fa-ticket-alt me-1"></i> Quản
-                                lý Giá Vé</a>
-                            <a href="/lichchoan" class="btn btn-gradient w-100"><i
-                                    class="fas fa-calendar-check me-1"></i>Quản lý Lịch Cho Ăn</a>
+                            <a href="/nhanvien" class="btn btn-gradient w-100">
+                                <i class="fas fa-user-tie me-1"></i> Quản lý Nhân viên
+                            </a>
+                            <a href="/chuong" class="btn btn-gradient w-100">
+                                <i class="fas fa-house-damage me-1"></i> Quản lý Chuồng
+                            </a>
+                            <a href="/dongvat" class="btn btn-gradient w-100">
+                                <i class="fas fa-paw me-1"></i> Quản lý Động Vật
+                            </a>
+                            <a href="/giave" class="btn btn-gradient w-100">
+                                <i class="fas fa-ticket-alt me-1"></i> Quản lý Giá Vé
+                            </a>
+                            <a href="/lichchoan" class="btn btn-gradient w-100">
+                                <i class="fas fa-calendar-check me-1"></i> Quản lý Lịch Cho Ăn
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
+    </div>
     </div>
     <script>
         function updateTime() {
@@ -356,6 +373,13 @@
         updateTime();
         setInterval(updateTime, 1000);
     </script>
+
+    <script>
+    updateTime();
+    setInterval(updateTime, 1000);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

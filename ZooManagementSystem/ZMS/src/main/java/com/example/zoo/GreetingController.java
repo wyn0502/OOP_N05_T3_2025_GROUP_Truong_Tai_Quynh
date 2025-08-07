@@ -92,6 +92,8 @@ public class GreetingController {
         long tongNhanVien = userRepository.count(); 
         model.addAttribute("tongNhanVien", tongNhanVien);
 
+        model.addAttribute("user", loggedInUser);
+
         return "greeting";
     }
 }

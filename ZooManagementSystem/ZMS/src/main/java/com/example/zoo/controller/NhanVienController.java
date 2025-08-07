@@ -2,6 +2,7 @@ package com.example.zoo.controller;
 
 import com.example.zoo.model.User;
 import com.example.zoo.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,30 +17,47 @@ public class NhanVienController {
     @Autowired
     private UserRepository userRepository;
 
-    // Hiển thị danh sách nhân viên
+    private boolean isAdmin(User user) {
+        return user != null && "admin".equalsIgnoreCase(user.getRole());
+    }
+
+    private boolean isAuthorized(HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        return isAdmin(user);
+    }
+
+    // Danh sách nhân viên
     @GetMapping
-    public String hienThiDanhSach(Model model) {
+    public String hienThiDanhSach(Model model, HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
+
         model.addAttribute("danhSach", userRepository.findAll());
         return "nhanvien/list";
     }
 
     // Hiển thị form thêm nhân viên
     @GetMapping("/add")
-    public String hienThiFormThem(Model model) {
+    public String hienThiFormThem(Model model, HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
+
         model.addAttribute("user", new User());
         return "nhanvien/add";
     }
 
     // Lưu nhân viên mới
     @PostMapping("/save")
-    public String luuNhanVien(@ModelAttribute("user") User user) {
+    public String luuNhanVien(@ModelAttribute("user") User user, HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
+
         userRepository.save(user);
         return "redirect:/nhanvien?success";
     }
 
-    // Hiển thị form sửa thông tin nhân viên
+    // Hiển thị form sửa
     @GetMapping("/edit/{id}")
-    public String hienThiFormSua(@PathVariable("id") Long id, Model model) {
+    public String hienThiFormSua(@PathVariable("id") Long id, Model model, HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
+
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             model.addAttribute("user", optionalUser.get());
@@ -49,17 +67,15 @@ public class NhanVienController {
         }
     }
 
-    // Cập nhật thông tin nhân viên (giữ lại mật khẩu cũ nếu không thay)
+    // Cập nhật thông tin nhân viên
     @PostMapping("/update")
-    public String capNhatNhanVien(@ModelAttribute("user") User user) {
-        Optional<User> optionalUser = userRepository.findById(user.getId());
+    public String capNhatNhanVien(@ModelAttribute("user") User user, HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
 
+        Optional<User> optionalUser = userRepository.findById(user.getId());
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
-
-            // Giữ lại mật khẩu cũ
-            user.setPassword(existingUser.getPassword());
-
+            user.setPassword(existingUser.getPassword()); // giữ lại mật khẩu cũ
             userRepository.save(user);
             return "redirect:/nhanvien?updated";
         } else {
@@ -69,18 +85,22 @@ public class NhanVienController {
 
     // Xoá nhân viên
     @GetMapping("/delete/{id}")
-    public String xoaNhanVien(@PathVariable("id") Long id) {
+    public String xoaNhanVien(@PathVariable("id") Long id, HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
+
         userRepository.deleteById(id);
         return "redirect:/nhanvien?deleted";
     }
 
     // Hiển thị form reset mật khẩu
     @GetMapping("/reset-password/{id}")
-    public String hienThiFormResetMatKhau(@PathVariable("id") Long id, Model model) {
+    public String hienThiFormResetMatKhau(@PathVariable("id") Long id, Model model, HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
+
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             model.addAttribute("user", optionalUser.get());
-            return "nhanvien/reset-password"; // Tạo file này
+            return "nhanvien/reset-password";
         } else {
             return "redirect:/nhanvien?notfound";
         }
@@ -90,7 +110,9 @@ public class NhanVienController {
     @PostMapping("/reset-password")
     public String resetMatKhau(@RequestParam("id") Long id,
                                @RequestParam("newPassword") String newPassword,
-                               @RequestParam("confirmPassword") String confirmPassword) {
+                               @RequestParam("confirmPassword") String confirmPassword,
+                               HttpSession session) {
+        if (!isAuthorized(session)) return "redirect:/error/505";
 
         if (!newPassword.equals(confirmPassword)) {
             return "redirect:/nhanvien?password_mismatch";
