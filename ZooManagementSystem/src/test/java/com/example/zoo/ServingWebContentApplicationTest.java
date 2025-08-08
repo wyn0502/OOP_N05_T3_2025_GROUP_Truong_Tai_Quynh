@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.servingwebcontent;
+package com.example.zoo;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -29,7 +29,9 @@ public class DongVatController {
     // Hiển thị danh sách
     @GetMapping
     public String hienThiDanhSach(Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         try {
             model.addAttribute("danhSach", service.layTatCa());
             return "dongvat/list";
@@ -42,7 +44,9 @@ public class DongVatController {
     // Form thêm động vật
     @GetMapping("/them")
     public String hienThiFormThem(Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         try {
             model.addAttribute("dongVat", new DongVat());
             return "dongvat/form";
@@ -55,7 +59,9 @@ public class DongVatController {
     // Form sửa động vật
     @GetMapping("/sua/{id}")
     public String hienThiFormSua(@PathVariable Long id, Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         try {
             DongVat dv = service.timTheoId(id);
             if (dv == null) {
@@ -73,7 +79,9 @@ public class DongVatController {
     // Lưu động vật (thêm/sửa)
     @PostMapping("/luu")
     public String xuLyLuu(@ModelAttribute DongVat dongVat, Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         try {
             service.luuHoacCapNhat(dongVat);
             return "redirect:/dongvat?success";
@@ -87,7 +95,9 @@ public class DongVatController {
     // Xóa động vật
     @GetMapping("/xoa/{id}")
     public String xoaDongVat(@PathVariable Long id, Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         try {
             service.xoaTheoId(id);
             return "redirect:/dongvat?deleted";

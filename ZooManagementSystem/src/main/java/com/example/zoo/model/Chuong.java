@@ -14,11 +14,9 @@ public class Chuong {
     private int sucChuaToiDa;
     private int soLuongHienTai;
 
-    // Constructor mặc định (bắt buộc cho JPA)
     public Chuong() {
     }
 
-    // Constructor đầy đủ tham số (tùy ý dùng)
     public Chuong(String maChuong, String tenKhuVuc, int sucChuaToiDa, int soLuongHienTai) {
         this.maChuong = maChuong;
         this.tenKhuVuc = tenKhuVuc;

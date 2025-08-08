@@ -38,11 +38,12 @@ public class GiaVeController {
     }
 
     // ======== CRUD ========
-
     @GetMapping
     public String danhSachVe(@RequestParam(name = "keyword", required = false) String keyword,
-                             Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+            Model model, HttpSession session) {
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         try {
             List<GiaVe> danhSachVe = giaVeService.layTatCa();
             if (keyword != null && !keyword.isBlank()) {
@@ -61,18 +62,24 @@ public class GiaVeController {
 
     @GetMapping("/add")
     public String hienThiFormThem(Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         model.addAttribute("ve", new GiaVe());
         return "giave/add";
     }
 
     @PostMapping("/add")
     public String xuLyThemVe(@Valid @ModelAttribute("ve") GiaVe ve,
-                             BindingResult result,
-                             Model model,
-                             HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
-        if (result.hasErrors()) return "giave/add";
+            BindingResult result,
+            Model model,
+            HttpSession session) {
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
+        if (result.hasErrors()) {
+            return "giave/add";
+        }
         try {
             giaVeService.luu(ve);
             return "redirect:/giave";
@@ -84,20 +91,28 @@ public class GiaVeController {
 
     @GetMapping("/edit/{id}")
     public String hienThiFormSua(@PathVariable("id") Long id, Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         GiaVe ve = giaVeService.timTheoId(id);
-        if (ve == null) return "redirect:/giave";
+        if (ve == null) {
+            return "redirect:/giave";
+        }
         model.addAttribute("ve", ve);
         return "giave/edit";
     }
 
     @PostMapping("/edit")
     public String xuLySuaVe(@Valid @ModelAttribute("ve") GiaVe ve,
-                            BindingResult result,
-                            Model model,
-                            HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
-        if (result.hasErrors()) return "giave/edit";
+            BindingResult result,
+            Model model,
+            HttpSession session) {
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
+        if (result.hasErrors()) {
+            return "giave/edit";
+        }
         try {
             giaVeService.luu(ve);
             return "redirect:/giave";
@@ -109,7 +124,9 @@ public class GiaVeController {
 
     @GetMapping("/delete/{id}")
     public String xoaVe(@PathVariable("id") Long id, Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        if (!isAuthorized(session)) {
+            return "redirect:/error/505";
+        }
         try {
             giaVeService.xoaTheoId(id);
             return "redirect:/giave";
@@ -120,11 +137,12 @@ public class GiaVeController {
     }
 
     // ======== Xem và In vé (không chặn vì dùng cho cả staff) ========
-
     @GetMapping("/inve/{id}")
     public String xemTruocVe(@PathVariable("id") Long id, Model model) {
         GiaVe ve = giaVeService.timTheoId(id);
-        if (ve == null) return "redirect:/giave";
+        if (ve == null) {
+            return "redirect:/giave";
+        }
         model.addAttribute("ve", ve);
         return "giave/inve";
     }
@@ -149,7 +167,7 @@ public class GiaVeController {
 
     @PostMapping("/print-many")
     public void xuatNhieuPdf(@RequestParam("ids") List<Long> ids,
-                             HttpServletResponse response) throws IOException {
+            HttpServletResponse response) throws IOException {
         List<GiaVe> veList = giaVeService.layTatCa()
                 .stream()
                 .filter(ve -> ids.contains(ve.getId()))
@@ -172,8 +190,8 @@ public class GiaVeController {
 
     @PostMapping("/print-multiple-copies/{id}")
     public void inNhieuBan(@PathVariable("id") Long id,
-                           @RequestParam(name = "soluong", defaultValue = "1") int soLuong,
-                           HttpServletResponse response) throws IOException {
+            @RequestParam(name = "soluong", defaultValue = "1") int soLuong,
+            HttpServletResponse response) throws IOException {
         GiaVe ve = giaVeService.timTheoId(id);
         if (ve == null || soLuong <= 0) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

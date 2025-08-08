@@ -29,19 +29,23 @@ public class ChuongController {
     @GetMapping
     public String list(Model model, HttpSession session) {
         try {
-            if (!isAuthorized(session)) return "redirect:/error/505";
+            if (!isAuthorized(session)) {
+                return "redirect:/error/505";
+            }
             model.addAttribute("danhSach", service.hienThi());
             return "chuong/list";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi lấy danh sách: " + e.getMessage());
-            return "error/general"; // Tạo mới file error/general.html nếu chưa có
+            return "error/general";
         }
     }
 
     @GetMapping("/them")
     public String themForm(Model model, HttpSession session) {
         try {
-            if (!isAuthorized(session)) return "redirect:/error/505";
+            if (!isAuthorized(session)) {
+                return "redirect:/error/505";
+            }
             model.addAttribute("chuong", new Chuong("", "", 0, 0));
             model.addAttribute("mode", "add");
             return "chuong/form";
@@ -54,9 +58,13 @@ public class ChuongController {
     @GetMapping("/sua/{maChuong}")
     public String suaForm(@PathVariable String maChuong, Model model, HttpSession session) {
         try {
-            if (!isAuthorized(session)) return "redirect:/error/505";
+            if (!isAuthorized(session)) {
+                return "redirect:/error/505";
+            }
             Chuong c = service.timTheoMa(maChuong);
-            if (c == null) return "redirect:/chuong";
+            if (c == null) {
+                return "redirect:/chuong";
+            }
             model.addAttribute("chuong", c);
             model.addAttribute("mode", "edit");
             return "chuong/form";
@@ -68,11 +76,13 @@ public class ChuongController {
 
     @PostMapping("/luu")
     public String luu(@ModelAttribute Chuong chuong,
-                      @RequestParam(name = "mode") String mode,
-                      HttpSession session,
-                      Model model) {
+            @RequestParam(name = "mode") String mode,
+            HttpSession session,
+            Model model) {
         try {
-            if (!isAuthorized(session)) return "redirect:/error/505";
+            if (!isAuthorized(session)) {
+                return "redirect:/error/505";
+            }
             chuong.setMaChuong(sanitizeMaChuong(chuong.getMaChuong()));
 
             if ("add".equals(mode)) {
@@ -96,7 +106,9 @@ public class ChuongController {
     @GetMapping("/xoa/{maChuong}")
     public String xoa(@PathVariable String maChuong, HttpSession session, Model model) {
         try {
-            if (!isAuthorized(session)) return "redirect:/error/505";
+            if (!isAuthorized(session)) {
+                return "redirect:/error/505";
+            }
             service.xoa(maChuong);
             return "redirect:/chuong";
         } catch (Exception e) {
@@ -105,9 +117,10 @@ public class ChuongController {
         }
     }
 
-    // Loại bỏ dấu ',' và khoảng trắng đầu/cuối
     private String sanitizeMaChuong(String maChuong) {
-        if (maChuong == null) return null;
+        if (maChuong == null) {
+            return null;
+        }
         return maChuong.replaceAll("^[,\\s]+", "").replaceAll("[,\\s]+$", "");
     }
 }
