@@ -1,4 +1,4 @@
-package com.example.zoo.test;
+package com.example.servingwebcontent.test;
 
 import com.example.zoo.model.DongVat;
 import com.example.zoo.service.DongVatService;
