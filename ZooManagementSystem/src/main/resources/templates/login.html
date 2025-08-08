@@ -49,56 +49,61 @@
 
 <body class="d-flex justify-content-center align-items-center" style="height: 100vh;">
 
-    <div class="card shadow login-card">
-        <h3 class="text-center mb-4 fw-bold">Đăng nhập</h3>
+<div class="card shadow login-card">
+    <h3 class="text-center mb-4 fw-bold">Đăng nhập</h3>
 
-        <form method="post" th:action="@{/login}" th:object="${user}">
-            <div class="mb-3 position-relative">
-                <i class="fa fa-user form-icon"></i>
-                <input type="text" th:field="*{username}" class="form-control" placeholder="Tên đăng nhập" required>
-            </div>
+    <form method="post" th:action="@{/login}" th:object="${user}">
+        <div class="mb-3 position-relative">
+            <i class="fa fa-user form-icon"></i>
+            <input type="text" th:field="*{username}" class="form-control" placeholder="Tên đăng nhập" required>
+        </div>
 
-            <div class="mb-3 position-relative">
-                <i class="fa fa-lock form-icon"></i>
-                <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="Mật khẩu"
-                    required>
-                <i class="fa fa-eye toggle-password" onclick="togglePassword()"></i>
-            </div>
+        <div class="mb-3 position-relative">
+            <i class="fa fa-lock form-icon"></i>
+            <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="Mật khẩu" required>
+            <i class="fa fa-eye toggle-password" onclick="togglePassword()"></i>
+        </div>
 
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Ghi nhớ tôi</label>
-            </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Ghi nhớ tôi</label>
+        </div>
 
-            <button type="submit" class="btn btn-primary w-100">
-                <i class="fa fa-sign-in-alt me-1"></i> Đăng nhập
-            </button>
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="fa fa-sign-in-alt me-1"></i> Đăng nhập
+        </button>
 
-            <div th:if="${showErrorModal == true}" class="text-danger text-center mt-3">
-                Sai tài khoản hoặc mật khẩu!
-            </div>
-            <div th:if="${showLogoutModal == true}" class="text-success text-center mt-3">
-                Bạn đã đăng xuất thành công!
-            </div>
-        </form>
+        <!-- Thông báo -->
+        <div th:if="${showErrorModal == true}" class="text-danger text-center mt-3">
+            Sai tài khoản hoặc mật khẩu!
+        </div>
+        <div th:if="${showLogoutModal == true}" class="text-success text-center mt-3">
+            Bạn đã đăng xuất thành công!
+        </div>
+    </form>
+
+    <!-- Liên kết đăng ký -->
+    <div class="text-center mt-4">
+        <span>Chưa có tài khoản?</span>
+        <a href="/register" class="text-decoration-none fw-bold">Đăng ký ngay</a>
     </div>
+</div>
 
-    <script>
-        function togglePassword() {
-            const password = document.getElementById('password');
-            const icon = document.querySelector('.toggle-password');
-            if (password.type === 'password') {
-                password.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                password.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
+<script>
+    function togglePassword() {
+        const password = document.getElementById('password');
+        const icon = document.querySelector('.toggle-password');
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
         }
-    </script>
+    }
+</script>
 
 </body>
-
 </html>

@@ -2,7 +2,9 @@ package com.example.zoo.repository;
 
 import com.example.zoo.model.NhanVien;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface NhanVienRepository extends JpaRepository<NhanVien, String> {
-  
+@Repository
+public interface NhanVienRepository extends JpaRepository<NhanVien, Long> {
+    boolean existsByUsername(String username);
 }

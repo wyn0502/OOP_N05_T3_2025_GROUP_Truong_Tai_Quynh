@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Đăng ký - Zoo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-light">
+    <div class="container py-5" style="max-width:820px;">
+        <a href="/login" class="btn btn-outline-secondary mb-3">← Quay lại đăng nhập</a>
+        <h2 class="text-center mb-3 text-primary">Đăng ký tài khoản</h2>
+
+        <!-- Ghi chú quan trọng -->
+        <div class="alert alert-danger" role="alert">
+            <strong>Lưu ý:</strong> Sau khi đăng ký tài khoản, hệ thống công nhận bạn là <strong>nhân viên của sở
+                thú</strong>.
+            <br />Ngày vào làm sẽ tính theo <strong>thời điểm bạn đăng ký tài khoản</strong>.
+            <br />Nếu cần chỉnh sửa thông tin cá nhân trong tương lai, vui lòng <strong>liên hệ quản lý</strong>.
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <!-- Nếu controller dùng @GetMapping("/register") -> return "register" và addAttribute("form", new RegisterForm()) -->
+        <form th:action="@{/register}" th:object="${form}" method="post" class="bg-white p-4 rounded shadow-sm row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label">Họ tên</label>
+                <input class="form-control" th:field="*{fullname}" required>
+            </div>
+
+
+            <div class="col-md-6">
+                <label class="form-label">Tên đăng nhập</label>
+                <input class="form-control" th:field="*{username}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Cấp bậc</label>
+                <select class="form-select" th:field="*{role}" id="roleSelect">
+                    <option value="staff" selected>Nhân viên</option>
+                    <option value="admin">Quản lý (cần mã xác thực)</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" th:field="*{password}" minlength="6" required>
+                <div class="form-text">Tối thiểu 6 ký tự.</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Xác nhận mật khẩu</label>
+                <input type="password" class="form-control" th:field="*{confirmPassword}" minlength="6" required>
+            </div>
+
+            <!-- Chỉ hiển thị khi chọn Admin -->
+            <div class="col-12 d-none" id="inviteWrap">
+                <label class="form-label">Mã mời Admin</label>
+                <input class="form-control" th:field="*{invite}" placeholder="Nhập mã mời từ quản trị viên">
+                <div class="form-text">Chỉ cần khi chọn vai trò Quản lý.</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">SĐT</label>
+                <input class="form-control" th:field="*{phone}">
+            </div>
+
+
+            <div class="col-12 text-end">
+                <a href="/login" class="btn btn-outline-secondary">Hủy</a>
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const roleSelect = document.getElementById('roleSelect');
+        const inviteWrap = document.getElementById('inviteWrap');
+        function toggleInvite() { inviteWrap.classList.toggle('d-none', roleSelect.value !== 'admin'); }
+        roleSelect && roleSelect.addEventListener('change', toggleInvite);
+        toggleInvite();
+    </script>
+</body>
+
+</html>

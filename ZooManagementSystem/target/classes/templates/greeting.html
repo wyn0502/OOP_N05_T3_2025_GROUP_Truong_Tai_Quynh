@@ -366,20 +366,27 @@
                     </div>
                 </div>
                 <!-- BÊN PHẢI: Thao tác nhanh -->
-                <div class="right-actions">
+                <div class="right-actions" th:if="${session.loggedInUser.role == 'admin'}">
                     <div class="card gradient-card p-4 d-flex flex-column align-items-stretch">
-                        <h5 class="text-center fw-bold mb-3"><i class="fas fa-rocket me-2"></i>Thao tác nhanh</h5>
+                        <h5 class="text-center fw-bold mb-3">
+                            <i class="fas fa-rocket me-2"></i>Thao tác nhanh
+                        </h5>
                         <div class="d-flex flex-column gap-3">
-                            <a href="/nhanvien" class="btn btn-gradient w-100"><i class="fas fa-user-tie me-1"></i>Quản
-                                lý Nhân viên</a>
-                            <a href="/chuong" class="btn btn-gradient w-100"><i class="fas fa-house-damage me-1"></i>
-                                Quản lý Chuồng</a>
-                            <a href="/dongvat" class="btn btn-gradient w-100"><i class="fas fa-paw me-1"></i> Quản lý
-                                Động Vật</a>
-                            <a href="/giave" class="btn btn-gradient w-100"><i class="fas fa-ticket-alt me-1"></i> Quản
-                                lý Giá Vé</a>
-                            <a href="/lichchoan" class="btn btn-gradient w-100"><i
-                                    class="fas fa-calendar-check me-1"></i>Quản lý Lịch Cho Ăn</a>
+                            <a href="/nhanvien" class="btn btn-gradient w-100">
+                                <i class="fas fa-user-tie me-1"></i> Quản lý Nhân viên
+                            </a>
+                            <a href="/chuong" class="btn btn-gradient w-100">
+                                <i class="fas fa-house-damage me-1"></i> Quản lý Chuồng
+                            </a>
+                            <a href="/dongvat" class="btn btn-gradient w-100">
+                                <i class="fas fa-paw me-1"></i> Quản lý Động Vật
+                            </a>
+                            <a href="/giave" class="btn btn-gradient w-100">
+                                <i class="fas fa-ticket-alt me-1"></i> Quản lý Giá Vé
+                            </a>
+                            <a href="/lichchoan" class="btn btn-gradient w-100">
+                                <i class="fas fa-calendar-check me-1"></i> Quản lý Lịch Cho Ăn
+                            </a>
                         </div>
                     </div>
                 </div>

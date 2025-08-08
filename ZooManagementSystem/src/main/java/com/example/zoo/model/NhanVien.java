@@ -9,8 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class NhanVien {
 
     @Id
-    @Column(length = 50, nullable = false, updatable = false)
-    private String id;                    
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // id BIGINT AUTO_INCREMENT
+    private Long id;
 
     @Column(nullable = false, length = 120)
     private String fullname;
@@ -18,12 +18,14 @@ public class NhanVien {
     @Column(nullable = false, length = 60, unique = true)
     private String username;
 
+    @Column(nullable = false, length = 255) // đủ dài cho hash nếu sau này mã hoá
+    private String password;                // <-- THÊM
+
     @Column(nullable = false, length = 20)
-    private String role = "staff";         // mặc định staff
+    private String role = "staff";          // cho phép set tuỳ ý (admin/staff)
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column
-    private LocalDate datework;           
+    private LocalDate datework;
 
     @Column(length = 20)
     private String phone;
@@ -33,26 +35,30 @@ public class NhanVien {
 
     public NhanVien() {}
 
-    public NhanVien(String id, String fullname, String username, String role,
-                    LocalDate datework, String phone, String chuong) {
+    public NhanVien(Long id, String fullname, String username, String password,
+                    String role, LocalDate datework, String phone, String chuong) {
         this.id = id;
         this.fullname = fullname;
         this.username = username;
+        this.password = password;
         this.role = role;
         this.datework = datework;
         this.phone = phone;
         this.chuong = chuong;
     }
 
-    // ===== Getters / Setters =====
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    // getters/setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getFullname() { return fullname; }
     public void setFullname(String fullname) { this.fullname = fullname; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }          // <-- THÊM
+    public void setPassword(String password) { this.password = password; }
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
@@ -65,17 +71,4 @@ public class NhanVien {
 
     public String getChuong() { return chuong; }
     public void setChuong(String chuong) { this.chuong = chuong; }
-
-    @Override
-    public String toString() {
-        return "NhanVien{" +
-                "id='" + id + '\'' +
-                ", fullname='" + fullname + '\'' +
-                ", username='" + username + '\'' +
-                ", role='" + role + '\'' +
-                ", datework=" + datework +
-                ", phone='" + phone + '\'' +
-                ", chuong='" + chuong + '\'' +
-                '}';
-    }
 }

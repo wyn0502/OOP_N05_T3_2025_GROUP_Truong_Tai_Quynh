@@ -25,24 +25,20 @@ import java.util.List;
 @Controller
 public class GreetingController {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private DongVatRepository dongVatRepository;
-    @Autowired
-    private GiaVeRepository giaVeRepository;
-    @Autowired
-    private ChuongRepository chuongRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private DongVatRepository dongVatRepository;
+    @Autowired private GiaVeRepository giaVeRepository;
+    @Autowired private ChuongRepository chuongRepository;
 
     @GetMapping("/greeting")
     public String greeting(
-        @RequestParam(name = "dongVatId", required = false) Long dongVatId,
-        @RequestParam(name = "chuongId", required = false) String chuongId,
-        @RequestParam(name = "giaVeId", required = false) Long giaVeId,
-        Model model,
-        HttpSession session) {
+            @RequestParam(name = "dongVatId", required = false) Long dongVatId,
+            @RequestParam(name = "chuongId", required = false) String chuongId,
+            @RequestParam(name = "giaVeId", required = false) Long giaVeId,
+            Model model,
+            HttpSession session) {
 
-        // 1. Kiểm tra đăng nhập
+        // 1) Kiểm tra đăng nhập
         User sessionUser = (User) session.getAttribute("loggedInUser");
         if (sessionUser == null) return "redirect:/login";
         User loggedInUser = userRepository.findByUsername(sessionUser.getUsername());
@@ -51,79 +47,83 @@ public class GreetingController {
             return "redirect:/login";
         }
 
-        // 2. Thông tin cá nhân
+        // 2) Thông tin cá nhân
         model.addAttribute("name", loggedInUser.getFullname());
         model.addAttribute("role", loggedInUser.getRole());
 
-        // 3. Thời gian hiện tại
+        // 3) Thời gian hiện tại
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         model.addAttribute("currentTime", now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
         model.addAttribute("timezone", "GMT+7 (Việt Nam)");
 
-        // 4. Danh sách động vật
+        // 4) Danh sách động vật
         List<DongVat> danhSachDongVat = dongVatRepository.findAll();
         model.addAttribute("danhSachDongVat", danhSachDongVat);
 
         DongVat selectedDongVat = null;
         if (!danhSachDongVat.isEmpty()) {
             selectedDongVat = (dongVatId != null)
-                ? danhSachDongVat.stream().filter(dv -> dv.getId().equals(dongVatId)).findFirst().orElse(danhSachDongVat.get(0))
-                : danhSachDongVat.get(0);
+                    ? danhSachDongVat.stream().filter(dv -> dv.getId().equals(dongVatId)).findFirst().orElse(danhSachDongVat.get(0))
+                    : danhSachDongVat.get(0);
         }
         model.addAttribute("dongVat", selectedDongVat);
 
-        // 5. Danh sách giá vé & lấy đúng giaVe theo giaVeId
+        // 5) Danh sách giá vé
         List<GiaVe> danhSachGiaVe = giaVeRepository.findAll();
         model.addAttribute("danhSachGiaVe", danhSachGiaVe);
 
         GiaVe giaVe = null;
         if (giaVeId != null) {
             giaVe = danhSachGiaVe.stream()
-                .filter(v -> v.getId().equals(giaVeId))
-                .findFirst()
-                .orElse(danhSachGiaVe.isEmpty() ? null : danhSachGiaVe.get(0));
+                    .filter(v -> v.getId().equals(giaVeId))
+                    .findFirst()
+                    .orElse(danhSachGiaVe.isEmpty() ? null : danhSachGiaVe.get(0));
         } else if (!danhSachGiaVe.isEmpty()) {
             giaVe = danhSachGiaVe.get(0);
         }
         model.addAttribute("giaVe", giaVe);
 
-        // 6. Nhân viên hiện tại
-        NhanVien nhanVien = new NhanVien(
-            String.valueOf(loggedInUser.getId()),
-            loggedInUser.getFullname(),
-            loggedInUser.getUsername(),
-            loggedInUser.getRole(),
-            loggedInUser.getDatework(),
-            loggedInUser.getPhone(),
-            loggedInUser.getChuong()
-        );
-        model.addAttribute("danhSachNhanVien", List.of(nhanVien));
+        // 6) Nhân viên hiện tại (KHÔNG dùng constructor để tránh lệ thuộc chữ ký)
+        NhanVien nv = new NhanVien();
+        
+        if (loggedInUser.getId() != null) {
+            nv.setId(loggedInUser.getId());
+        }
+        nv.setFullname(loggedInUser.getFullname());
+        nv.setUsername(loggedInUser.getUsername());
+        nv.setRole(loggedInUser.getRole());
+        
+        nv.setDatework(loggedInUser.getDatework());
+        nv.setPhone(loggedInUser.getPhone());
+        nv.setChuong(loggedInUser.getChuong());
 
-        // 7. Thống kê số lượng động vật và vé
+        model.addAttribute("danhSachNhanVien", List.of(nv));
+
+        // 7) Thống kê
         model.addAttribute("dongVatCount", danhSachDongVat.size());
         model.addAttribute("loaiVeCount", danhSachGiaVe.size());
 
-        // 8. Danh sách chuồng và chuồng được chọn
+        // 8) Danh sách chuồng
         List<Chuong> danhSachChuong = chuongRepository.findAll();
         model.addAttribute("danhSachChuong", danhSachChuong);
 
         Chuong chuong = null;
         if (chuongId != null && !danhSachChuong.isEmpty()) {
             chuong = danhSachChuong.stream()
-                .filter(c -> c.getMaChuong().equals(chuongId))
-                .findFirst()
-                .orElse(danhSachChuong.get(0));
+                    .filter(c -> c.getMaChuong().equals(chuongId))
+                    .findFirst()
+                    .orElse(danhSachChuong.get(0));
         } else if (!danhSachChuong.isEmpty()) {
             chuong = danhSachChuong.get(0);
         }
         model.addAttribute("chuong", chuong);
         model.addAttribute("chuongCount", danhSachChuong.size());
 
-        // 9. Thống kê tổng nhân viên
+        // 9) Tổng nhân viên
         long tongNhanVien = userRepository.count();
         model.addAttribute("tongNhanVien", tongNhanVien);
 
-        // 10. Biến user
+        
         model.addAttribute("user", loggedInUser);
 
         return "greeting";
