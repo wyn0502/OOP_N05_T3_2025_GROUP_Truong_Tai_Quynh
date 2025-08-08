@@ -16,7 +16,7 @@ public class DongVatController {
     @Autowired
     private DongVatService service;
 
-    // ========== Kiểm tra quyền ==========
+    // Kiểm tra quyền admin
     private boolean isAdmin(User user) {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
@@ -26,7 +26,7 @@ public class DongVatController {
         return isAdmin(user);
     }
 
-    // ========== Danh sách ==========
+    // Hiển thị danh sách
     @GetMapping
     public String hienThiDanhSach(Model model, HttpSession session) {
         if (!isAuthorized(session)) return "redirect:/error/505";
@@ -34,12 +34,12 @@ public class DongVatController {
             model.addAttribute("danhSach", service.layTatCa());
             return "dongvat/list";
         } catch (Exception e) {
-            model.addAttribute("error", "Lỗi tải danh sách động vật.");
+            model.addAttribute("error", "Lỗi tải danh sách động vật: " + e.getMessage());
             return "dongvat/list";
         }
     }
 
-    // ========== Form thêm ==========
+    // Form thêm động vật
     @GetMapping("/them")
     public String hienThiFormThem(Model model, HttpSession session) {
         if (!isAuthorized(session)) return "redirect:/error/505";
@@ -47,12 +47,12 @@ public class DongVatController {
             model.addAttribute("dongVat", new DongVat());
             return "dongvat/form";
         } catch (Exception e) {
-            model.addAttribute("error", "Lỗi tạo mới động vật.");
+            model.addAttribute("error", "Lỗi tạo mới động vật: " + e.getMessage());
             return "dongvat/form";
         }
     }
 
-    // ========== Form sửa ==========
+    // Form sửa động vật
     @GetMapping("/sua/{id}")
     public String hienThiFormSua(@PathVariable Long id, Model model, HttpSession session) {
         if (!isAuthorized(session)) return "redirect:/error/505";
@@ -65,12 +65,12 @@ public class DongVatController {
             model.addAttribute("dongVat", dv);
             return "dongvat/form";
         } catch (Exception e) {
-            model.addAttribute("error", "Lỗi tải thông tin động vật.");
+            model.addAttribute("error", "Lỗi tải thông tin động vật: " + e.getMessage());
             return "dongvat/form";
         }
     }
 
-    // ========== Lưu ==========
+    // Lưu động vật (thêm/sửa)
     @PostMapping("/luu")
     public String xuLyLuu(@ModelAttribute DongVat dongVat, Model model, HttpSession session) {
         if (!isAuthorized(session)) return "redirect:/error/505";
@@ -78,13 +78,13 @@ public class DongVatController {
             service.luuHoacCapNhat(dongVat);
             return "redirect:/dongvat?success";
         } catch (Exception e) {
-            model.addAttribute("error", "Không thể lưu động vật. Vui lòng thử lại!");
+            model.addAttribute("error", "Không thể lưu động vật. Vui lòng thử lại! " + e.getMessage());
             model.addAttribute("dongVat", dongVat);
             return "dongvat/form";
         }
     }
 
-    // ========== Xóa ==========
+    // Xóa động vật
     @GetMapping("/xoa/{id}")
     public String xoaDongVat(@PathVariable Long id, Model model, HttpSession session) {
         if (!isAuthorized(session)) return "redirect:/error/505";
@@ -92,7 +92,7 @@ public class DongVatController {
             service.xoaTheoId(id);
             return "redirect:/dongvat?deleted";
         } catch (Exception e) {
-            model.addAttribute("error", "Không thể xóa động vật.");
+            model.addAttribute("error", "Không thể xóa động vật: " + e.getMessage());
             return "dongvat/list";
         }
     }

@@ -26,67 +26,83 @@ public class ChuongController {
         return isAdmin(user);
     }
 
-    // Danh sách chuồng
     @GetMapping
     public String list(Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
-        model.addAttribute("danhSach", service.hienThi());
-        return "chuong/list";
+        try {
+            if (!isAuthorized(session)) return "redirect:/error/505";
+            model.addAttribute("danhSach", service.hienThi());
+            return "chuong/list";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi lấy danh sách: " + e.getMessage());
+            return "error/general"; // Tạo mới file error/general.html nếu chưa có
+        }
     }
 
-    // Form thêm chuồng
     @GetMapping("/them")
     public String themForm(Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
-        model.addAttribute("chuong", new Chuong("", "", 0, 0));
-        model.addAttribute("mode", "add");
-        return "chuong/form";
+        try {
+            if (!isAuthorized(session)) return "redirect:/error/505";
+            model.addAttribute("chuong", new Chuong("", "", 0, 0));
+            model.addAttribute("mode", "add");
+            return "chuong/form";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi hiển thị form thêm: " + e.getMessage());
+            return "error/general";
+        }
     }
 
-    // Form sửa chuồng
     @GetMapping("/sua/{maChuong}")
     public String suaForm(@PathVariable String maChuong, Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
-        Chuong c = service.timTheoMa(maChuong);
-        if (c == null) return "redirect:/chuong";
-        model.addAttribute("chuong", c);
-        model.addAttribute("mode", "edit");
-        return "chuong/form";
+        try {
+            if (!isAuthorized(session)) return "redirect:/error/505";
+            Chuong c = service.timTheoMa(maChuong);
+            if (c == null) return "redirect:/chuong";
+            model.addAttribute("chuong", c);
+            model.addAttribute("mode", "edit");
+            return "chuong/form";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi hiển thị form sửa: " + e.getMessage());
+            return "error/general";
+        }
     }
 
-    // Lưu chuồng (thêm mới hoặc sửa)
     @PostMapping("/luu")
     public String luu(@ModelAttribute Chuong chuong,
                       @RequestParam(name = "mode") String mode,
                       HttpSession session,
                       Model model) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+        try {
+            if (!isAuthorized(session)) return "redirect:/error/505";
+            chuong.setMaChuong(sanitizeMaChuong(chuong.getMaChuong()));
 
-        // Làm sạch mã chuồng
-        chuong.setMaChuong(sanitizeMaChuong(chuong.getMaChuong()));
-
-        if ("add".equals(mode)) {
-            // Chỉ thêm nếu chưa tồn tại mã này
-            if (service.timTheoMa(chuong.getMaChuong()) != null) {
-                model.addAttribute("chuong", chuong);
-                model.addAttribute("mode", "add");
-                model.addAttribute("error", "Mã chuồng đã tồn tại!");
-                return "chuong/form";
+            if ("add".equals(mode)) {
+                if (service.timTheoMa(chuong.getMaChuong()) != null) {
+                    model.addAttribute("chuong", chuong);
+                    model.addAttribute("mode", "add");
+                    model.addAttribute("error", "Mã chuồng đã tồn tại!");
+                    return "chuong/form";
+                }
+                service.them(chuong);
+            } else if ("edit".equals(mode)) {
+                service.sua(chuong.getMaChuong(), chuong);
             }
-            service.them(chuong);
-        } else if ("edit".equals(mode)) {
-            // Sửa, giữ nguyên mã chuồng
-            service.sua(chuong.getMaChuong(), chuong);
+            return "redirect:/chuong";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi lưu chuồng: " + e.getMessage());
+            return "chuong/form";
         }
-        return "redirect:/chuong";
     }
 
-    // Xóa chuồng
     @GetMapping("/xoa/{maChuong}")
-    public String xoa(@PathVariable String maChuong, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
-        service.xoa(maChuong);
-        return "redirect:/chuong";
+    public String xoa(@PathVariable String maChuong, HttpSession session, Model model) {
+        try {
+            if (!isAuthorized(session)) return "redirect:/error/505";
+            service.xoa(maChuong);
+            return "redirect:/chuong";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi xóa chuồng: " + e.getMessage());
+            return "error/general";
+        }
     }
 
     // Loại bỏ dấu ',' và khoảng trắng đầu/cuối

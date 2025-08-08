@@ -13,7 +13,7 @@ import java.util.Optional;
 public class DongVatService {
 
     @Autowired
-    private DongVatRepository dongVatRepository;
+    public DongVatRepository dongVatRepository;
 
     public List<DongVat> layTatCa() {
         try {
