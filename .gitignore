@@ -5,6 +5,3 @@
 *.class
 out/
 .fake
-**/application.properties
-src/main/resources/application.properties
-ZooManagementSystem/src/main/resources/application.properties
