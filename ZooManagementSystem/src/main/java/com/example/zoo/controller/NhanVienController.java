@@ -146,7 +146,6 @@ public class NhanVienController {
             return "redirect:/nhanvien?notfound";
         }
 
-        // TODO: nếu dùng Spring Security, inject PasswordEncoder và mã hoá trước khi set:
         // nv.setPassword(passwordEncoder.encode(newPassword));
         nv.setPassword(newPassword);
 

@@ -12,9 +12,22 @@ public class NhanVienManager {
     private final List<NhanVien> danhSachNhanVien = new ArrayList<>();
     private final Scanner scanner = new Scanner(System.in);
 
+    private Long parseLongOrNull(String s) {
+        try {
+            return Long.parseLong(s.trim());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void themNhanVien() {
-        System.out.print("Nhập mã nhân viên (id): ");
-        String id = scanner.nextLine().trim();
+        System.out.print("Nhập mã nhân viên (id - số): ");
+        String idStr = scanner.nextLine().trim();
+        Long id = parseLongOrNull(idStr);
+        if (id == null) {
+            System.out.println("⛔ ID phải là số. Hủy thao tác.");
+            return;
+        }
 
         System.out.print("Nhập họ tên (fullname): ");
         String fullname = scanner.nextLine().trim();
@@ -25,7 +38,7 @@ public class NhanVienManager {
         // Chỉ cho phép staff
         String role = "staff";
 
-        System.out.print("Nhập ngày vào làm (datework, định dạng YYYY-MM-DD): ");
+        System.out.print("Nhập ngày vào làm (YYYY-MM-DD): ");
         LocalDate datework;
         try {
             datework = LocalDate.parse(scanner.nextLine().trim());
@@ -40,7 +53,17 @@ public class NhanVienManager {
         System.out.print("Nhập chuồng phụ trách (chuong): ");
         String chuong = scanner.nextLine().trim();
 
-        NhanVien nv = new NhanVien(id, fullname, username, role, datework, phone, chuong);
+        // KHÔNG dùng constructor sai chữ ký; dùng setter cho khớp entity thật
+        NhanVien nv = new NhanVien();
+        nv.setId(id);
+        nv.setFullname(fullname);
+        nv.setUsername(username);
+        nv.setPassword("123456"); 
+        nv.setRole(role);
+        nv.setDatework(datework);
+        nv.setPhone(phone);
+        nv.setChuong(chuong);
+
         danhSachNhanVien.add(nv);
         System.out.println("✔️ Đã thêm nhân viên thành công.");
     }
@@ -61,11 +84,16 @@ public class NhanVienManager {
     }
 
     public void suaNhanVien() {
-        System.out.print("Nhập mã nhân viên (id) cần sửa: ");
-        String id = scanner.nextLine().trim();
+        System.out.print("Nhập mã nhân viên (id - số) cần sửa: ");
+        String idStr = scanner.nextLine().trim();
+        Long id = parseLongOrNull(idStr);
+        if (id == null) {
+            System.out.println("⛔ ID phải là số.");
+            return;
+        }
 
         NhanVien target = danhSachNhanVien.stream()
-            .filter(nv -> id.equalsIgnoreCase(nv.getId()))
+            .filter(nv -> nv.getId() != null && nv.getId().equals(id))
             .findFirst()
             .orElse(null);
 
@@ -107,15 +135,19 @@ public class NhanVienManager {
     }
 
     public void xoaNhanVien() {
-        System.out.print("Nhập mã nhân viên (id) cần xóa (hoặc 'n' để hủy): ");
-        String id = scanner.nextLine().trim();
-
-        if (id.equalsIgnoreCase("n") || id.isEmpty()) {
+        System.out.print("Nhập mã nhân viên (id - số) cần xóa (hoặc 'n' để hủy): ");
+        String idStr = scanner.nextLine().trim();
+        if (idStr.equalsIgnoreCase("n") || idStr.isEmpty()) {
             System.out.println("❎ Đã hủy thao tác xóa.");
             return;
         }
+        Long id = parseLongOrNull(idStr);
+        if (id == null) {
+            System.out.println("⛔ ID phải là số.");
+            return;
+        }
 
-        boolean removed = danhSachNhanVien.removeIf(nv -> id.equalsIgnoreCase(nv.getId()));
+        boolean removed = danhSachNhanVien.removeIf(nv -> nv.getId() != null && nv.getId().equals(id));
         if (removed) {
             System.out.println("✔️ Đã xóa nhân viên thành công.");
         } else {

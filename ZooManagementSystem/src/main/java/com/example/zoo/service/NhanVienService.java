@@ -42,7 +42,6 @@ public class NhanVienService {
         nv.setRole(normalizeRole(nv.getRole()));
         nv.setPassword(safe(nv.getPassword())); 
 
-         Chặn trùng username (bật nếu cần)
          if (!isBlank(nv.getUsername()) && repo.existsByUsername(nv.getUsername())) {
              throw new IllegalArgumentException("Username đã tồn tại");
          }
