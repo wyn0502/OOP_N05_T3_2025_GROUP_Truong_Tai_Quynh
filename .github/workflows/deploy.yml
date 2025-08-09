@@ -1,0 +1,54 @@
+name: CI/CD to VPS
+
+on:
+  push:
+    branches: [ "main" ]         
+  workflow_dispatch:             
+
+concurrency:
+  group: ci-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Build JAR (module ZooManagementSystem)
+        working-directory: ZooManagementSystem
+        run: mvn -DskipTests clean package
+
+      - name: Upload JAR to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          source: "ZooManagementSystem/target/*.jar"
+          target: "/opt/zoo"
+          strip_components: 2
+          overwrite: true
+
+      - name: Restart service on VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            set -e
+            cd /opt/zoo
+            NEW_JAR=$(ls -t *.jar | head -n1)
+            mv -f "$NEW_JAR" app.jar
+            sudo systemctl restart zoo
+            sudo systemctl status zoo --no-pager -l || true
