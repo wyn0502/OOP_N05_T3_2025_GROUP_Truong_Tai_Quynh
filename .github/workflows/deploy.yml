@@ -1,4 +1,4 @@
-name: Sync commit to server
+name: Sync commit to Server
 
 on:
   push:
