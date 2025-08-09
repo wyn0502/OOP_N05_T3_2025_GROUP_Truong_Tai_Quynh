@@ -5,10 +5,12 @@ import com.example.zoo.model.DongVat;
 import com.example.zoo.model.GiaVe;
 import com.example.zoo.model.NhanVien;
 import com.example.zoo.model.User;
+import com.example.zoo.model.LichChoAn;
 import com.example.zoo.repository.ChuongRepository;
 import com.example.zoo.repository.DongVatRepository;
 import com.example.zoo.repository.GiaVeRepository;
 import com.example.zoo.repository.UserRepository;
+import com.example.zoo.repository.LichChoAnRepository;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,14 @@ public class GreetingController {
     @Autowired private DongVatRepository dongVatRepository;
     @Autowired private GiaVeRepository giaVeRepository;
     @Autowired private ChuongRepository chuongRepository;
+    @Autowired private LichChoAnRepository lichChoAnRepository;
 
     @GetMapping("/greeting")
     public String greeting(
             @RequestParam(name = "dongVatId", required = false) Long dongVatId,
             @RequestParam(name = "chuongId", required = false) String chuongId,
             @RequestParam(name = "giaVeId", required = false) Long giaVeId,
+            @RequestParam(name = "lichChoAnId", required = false) Long lichChoAnId,
             Model model,
             HttpSession session) {
 
@@ -125,6 +129,21 @@ public class GreetingController {
 
         
         model.addAttribute("user", loggedInUser);
+    // 10) Danh sách lịch cho ăn
+    List<LichChoAn> danhSachLichChoAn = lichChoAnRepository.findAll();
+    model.addAttribute("danhSachLichChoAn", danhSachLichChoAn);
+
+    LichChoAn lichChoAn = null;
+    if (lichChoAnId != null && !danhSachLichChoAn.isEmpty()) {
+        lichChoAn = danhSachLichChoAn.stream()
+                .filter(l -> l.getId().equals(lichChoAnId))
+                .findFirst()
+                .orElse(danhSachLichChoAn.get(0));
+    } else if (!danhSachLichChoAn.isEmpty()) {
+        lichChoAn = danhSachLichChoAn.get(0);
+    }
+    model.addAttribute("lichChoAn", lichChoAn);
+    model.addAttribute("lichChoAnCount", danhSachLichChoAn.size());
 
         return "greeting";
     }

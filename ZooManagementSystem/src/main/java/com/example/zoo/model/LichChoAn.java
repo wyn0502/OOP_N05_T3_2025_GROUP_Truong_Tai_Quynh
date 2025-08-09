@@ -1,38 +1,23 @@
 package com.example.zoo.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
+@Entity
+@Table(name = "lich_cho_an")
 public class LichChoAn {
 
-    @NotBlank(message = "Vui lòng nhập mã lịch")
-    @Pattern(regexp = "^L\\d{3}$", message = "Mã lịch phải có định dạng L + 3 chữ số, ví dụ: L001")
+    @Id
     private String maLich;
-
-    @NotBlank(message = "Vui lòng nhập động vật cho ăn")
     private String dongVat;
-
-    @NotBlank(message = "Vui lòng nhập tên thức ăn")
     private String thucAn;
-
-    @NotBlank(message = "Vui lòng nhập tên nhân viên")
     private String nhanVien;
+    private String thoiGian; 
 
-    @NotBlank(message = "Vui lòng nhập thời gian cho ăn")
-    private String thoiGian; // ISO 8601 format: "2025-08-05T10:30"
-
-    // Constructor mặc định
     public LichChoAn() {
-        this.dongVat = "";
-        this.thucAn = "";
-        this.nhanVien = "";
-        this.thoiGian = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
-    // Constructor đầy đủ
     public LichChoAn(String maLich, String dongVat, String thucAn, String nhanVien, String thoiGian) {
         this.maLich = maLich;
         this.dongVat = dongVat;
@@ -41,13 +26,17 @@ public class LichChoAn {
         this.thoiGian = thoiGian;
     }
 
-    // Getter & Setter
     public String getMaLich() {
         return maLich;
     }
 
     public void setMaLich(String maLich) {
         this.maLich = maLich;
+    }
+
+    // Thêm phương thức getId() để tương thích với code gọi ở GreetingController
+    public String getId() {
+        return maLich;
     }
 
     public String getDongVat() {
@@ -81,32 +70,5 @@ public class LichChoAn {
     public void setThoiGian(String thoiGian) {
         this.thoiGian = thoiGian;
     }
-
-    // Logic tính thời gian tiếp theo
-    public String tinhThoiGianKeTiep(int soGio) {
-        try {
-            LocalDateTime time = LocalDateTime.parse(thoiGian);
-            return time.plusHours(soGio).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        } catch (Exception e) {
-            return "Thời gian không hợp lệ";
-        }
-    }
-
-    public boolean laLichTrongNgay() {
-        try {
-            LocalDateTime tg = LocalDateTime.parse(thoiGian);
-            return tg.toLocalDate().equals(LocalDateTime.now().toLocalDate());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Mã lịch: " + maLich
-                + ", Động vật: " + dongVat
-                + ", Thức ăn: " + thucAn
-                + ", Nhân viên: " + nhanVien
-                + ", Thời gian: " + thoiGian;
-    }
 }
+

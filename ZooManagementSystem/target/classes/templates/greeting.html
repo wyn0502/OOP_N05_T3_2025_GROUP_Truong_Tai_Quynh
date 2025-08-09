@@ -362,6 +362,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <<div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-calendar text-dark"></i>
+                                    <span class="ml-1">Thông tin lịch cho ăn</span>
+                                    <select th:if="${lichChoAnCount > 0}" onchange="location = '?lichChoAnId=' + this.value">
+                                        <option th:each="lca : ${danhSachLichChoAn}"
+                                                th:value="${lca.id}"
+                                                th:selected="${lca.id == lichChoAn.id}"
+                                                th:text="${lca.tenLich}"></option>
+                                    </select>
+                                </div>
+                                <div class="card-body">
+                                    <div th:if="${lichChoAnCount == 0}">
+                                        <em>Không có lịch nào được thêm gần đây</em>
+                                    </div>
+                                    <div th:if="${lichChoAnCount > 0}">
+                                        <p><strong>ID:</strong> <span th:text="${lichChoAn.id}"></span></p>
+                                        <p><strong>Ngày:</strong> <span th:text="${lichChoAn.ngayChoAn}"></span></p>
+                                        <p><strong>Giờ:</strong> <span th:text="${lichChoAn.gioChoAn}"></span></p>
+                                        <p><strong>Chuồng:</strong> <span th:text="${lichChoAn.chuong}"></span></p>
+                                        <p><strong>Thức ăn:</strong> <span th:text="${lichChoAn.thucAn}"></span></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

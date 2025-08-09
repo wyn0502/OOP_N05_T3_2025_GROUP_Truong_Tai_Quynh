@@ -40,47 +40,47 @@ public class LichChoAnController {
     }
 
     // Hiển thị form thêm
-    @GetMapping("/add")
-    public String hienThiFormThem(Model model, HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+@GetMapping("/them")
+public String hienThiFormThem(Model model, HttpSession session) {
+    if (!isAuthorized(session)) return "redirect:/error/505";
+    model.addAttribute("lich", new LichChoAn());
+    return "lichchoan/add";
+}
 
-        model.addAttribute("lich", new LichChoAn());
+// Xử lý thêm lịch
+@PostMapping("/them")
+public String xuLyThem(@Valid @ModelAttribute("lich") LichChoAn lich,
+                       BindingResult result,
+                       Model model,
+                       HttpSession session) {
+    if (!isAuthorized(session)) return "redirect:/error/505";
+
+    if (!lich.getMaLich().matches("^L00\\d+$")) {
+        result.rejectValue("maLich", "error.lich", "Mã lịch phải có định dạng L00 + số");
+    }
+
+    if (lichChoAnService.timTheoId(lich.getMaLich()) != null) {
+        result.rejectValue("maLich", "error.lich", "Mã lịch đã tồn tại");
+    }
+
+    try {
+        LocalDateTime thoiGian = LocalDateTime.parse(lich.getThoiGian());
+        if (thoiGian.isBefore(LocalDateTime.now())) {
+            result.rejectValue("thoiGian", "error.lich", "Không thể chọn thời gian đã qua");
+        }
+    } catch (Exception e) {
+        result.rejectValue("thoiGian", "error.lich", "Thời gian không hợp lệ");
+    }
+
+    if (result.hasErrors()) {
+        model.addAttribute("lich", lich);
         return "lichchoan/add";
     }
 
-    // Xử lý thêm lịch
-    @PostMapping("/add")
-    public String xuLyThem(@Valid @ModelAttribute("lich") LichChoAn lich,
-                           BindingResult result,
-                           Model model,
-                           HttpSession session) {
-        if (!isAuthorized(session)) return "redirect:/error/505";
+    lichChoAnService.themLich(lich);
+    return "redirect:/lichchoan";
+}
 
-        if (!lich.getMaLich().matches("^L00\\d+$")) {
-            result.rejectValue("maLich", "error.lich", "Mã lịch phải có định dạng L00 + số");
-        }
-
-        if (lichChoAnService.timTheoId(lich.getMaLich()) != null) {
-            result.rejectValue("maLich", "error.lich", "Mã lịch đã tồn tại");
-        }
-
-        try {
-            LocalDateTime thoiGian = LocalDateTime.parse(lich.getThoiGian());
-            if (thoiGian.isBefore(LocalDateTime.now())) {
-                result.rejectValue("thoiGian", "error.lich", "Không thể chọn thời gian đã qua");
-            }
-        } catch (Exception e) {
-            result.rejectValue("thoiGian", "error.lich", "Thời gian không hợp lệ");
-        }
-
-        if (result.hasErrors()) {
-            model.addAttribute("lich", lich);
-            return "lichchoan/add";
-        }
-
-        lichChoAnService.themLich(lich);
-        return "redirect:/lichchoan";
-    }
 
     // Hiển thị form sửa
     @GetMapping("/edit/{id}")
