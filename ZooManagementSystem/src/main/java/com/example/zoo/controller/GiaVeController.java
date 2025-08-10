@@ -162,7 +162,7 @@ public class GiaVeController {
         }
     }
 
-    // ======== Xem và In vé (không chặn vì dùng cho cả staff) ========
+    // ======== Xem và In vé ========
     @GetMapping("/inve/{id}")
     public String xemTruocVe(@PathVariable("id") Long id, Model model) {
         GiaVe ve = giaVeService.timTheoId(id);

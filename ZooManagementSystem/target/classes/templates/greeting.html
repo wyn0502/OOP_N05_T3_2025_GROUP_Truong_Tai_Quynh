@@ -121,14 +121,17 @@
 <body>
     <div class="container py-4">
         <div class="main-rectangle mx-auto" style="max-width: 1280px;">
-            <!-- HEADER ĐƠN GIẢN (KHÔNG CÓ NÚT ZOOM) -->
             <div class="header-bar d-flex justify-content-between align-items-center">
                 <div>
                     <h2 class="text-white fw-bold">Zoo Management System</h2>
                     <small class="text-white-50">Hệ thống quản lý sở thú</small>
                 </div>
                 <div class="text-end d-flex align-items-center gap-3">
-                    <!-- USER DROPDOWN -->
+                    <!-- CLOCK -->
+                    <div class="badge bg-white text-dark">
+                        <i class="fas fa-clock me-1"></i>
+                        <span id="liveTime"></span>
+                    </div>
                     <div class="dropdown">
                         <button class="btn btn-warning dropdown-toggle fw-semibold" type="button" id="userDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -139,12 +142,6 @@
                             <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-1"></i>Đăng
                                     xuất</a></li>
                         </ul>
-                    </div>
-
-                    <!-- CLOCK -->
-                    <div class="badge bg-white text-dark">
-                        <i class="fas fa-clock me-1"></i>
-                        <span id="liveTime"></span>
                     </div>
                 </div>
             </div>    
@@ -207,7 +204,7 @@
                 </div>
             </div>
 
-            <!-- NÚT TÌM KIẾM VÀ ZOOM CẠNH NHAU - BOOTSTRAP -->
+            <!-- NÚT TÌM KIẾM VÀ ZOOM CẠNH NHAU -->
             <div class="text-center mb-3">
                 <div class="btn-toolbar justify-content-center gap-2" role="toolbar">
                     <!-- Nút Tìm kiếm ID -->
@@ -233,7 +230,7 @@
                 </div>
             </div>
 
-            <!-- BẢNG TÌM KIẾM BOOTSTRAP -->
+            <!-- BẢNG TÌM KIẾM -->
             <div id="searchPanel" class="mb-4" style="display: none;">
                 <div class="card">
                     <div class="card-header text-center">
@@ -270,7 +267,7 @@
 
             <!-- BOTTOM: Thông tin chi tiết -->
             <div class="bottom-section">
-                <!-- LEFT: THÔNG TIN CHI TIẾT (BÂY GIỜ LÀ GRID 2x3 - 6 CARD) -->
+                <!-- LEFT: THÔNG TIN CHI TIẾT -->
                 <div class="left-info">
                     <div class="card gradient-card p-4 card-4grid">
                         <div class="row g-3">
@@ -298,7 +295,7 @@
                                 </div>
                             </div>
 
-                            <!-- Động vật (hàng 1, cột 2) -->
+                            <!-- Động vật -->
                             <div class="col-12 col-md-6">
                                 <div class="card h-100">
                                     <div
@@ -344,7 +341,7 @@
                                 </div>
                             </div>
 
-                            <!-- Giá vé (hàng 2, cột 1) -->
+                            <!-- Giá vé -->
                             <div class="col-12 col-md-6">
                                 <div class="card h-100">
                                     <div
@@ -399,7 +396,7 @@
                                 </div>
                             </div>
 
-                            <!-- Chuồng (hàng 2, cột 2) -->
+                            <!-- Chuồng -->
                             <div class="col-12 col-md-6">
                                 <div class="card h-100">
                                     <div
@@ -440,7 +437,7 @@
                                 </div>
                             </div>
 
-                            <!-- LỊCH CHO ĂN (THÊM VÀO GRID - hàng 3, cột 1-2) -->
+                            <!-- LỊCH CHO ĂN -->
                             <div class="col-12">
                                 <div class="card h-100">
                                     <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
@@ -532,11 +529,9 @@
         function updateZoom() {
             document.body.style.transform = `scale(${currentZoom / 100})`;
             document.body.style.transformOrigin = 'top center';
-            
-            // Lưu zoom level vào localStorage
+
             localStorage.setItem('pageZoom', currentZoom);
-            
-            // Cập nhật title tooltip
+
             document.querySelector('[onclick="zoomOut()"]').title = `Thu nhỏ (${currentZoom}%)`;
             document.querySelector('[onclick="zoomIn()"]').title = `Phóng to (${currentZoom}%)`;
             document.querySelector('[onclick="resetZoom()"]').title = `Kích thước mặc định (${currentZoom}%)`;
@@ -561,7 +556,6 @@
             updateZoom();
         }
 
-        // Khôi phục zoom level khi load trang
         document.addEventListener('DOMContentLoaded', function() {
             const savedZoom = localStorage.getItem('pageZoom');
             if (savedZoom) {
@@ -570,7 +564,6 @@
             }
         });
 
-        // Keyboard shortcuts cho zoom
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey || e.metaKey) {
                 switch(e.key) {
@@ -610,14 +603,13 @@
             }
         });
 
-        // Cấu hình tìm kiếm
+        // tìm kiếm
         const searchConfig = {
             dongvat: { url: '/dongvat', placeholder: 'Nhập ID động vật...', hint: 'Tìm động vật theo ID số' },
             giave: { url: '/giave', placeholder: 'Nhập ID giá vé...', hint: 'Tìm giá vé theo ID số' },
             chuong: { url: '/chuong', placeholder: 'Nhập mã chuồng...', hint: 'Tìm chuồng theo mã' }
         };
 
-        // Cập nhật UI
         function updateUI() {
             const config = searchConfig[searchType.value];
             searchInput.placeholder = config.placeholder;
@@ -627,7 +619,6 @@
 
         searchType.addEventListener('change', updateUI);
 
-        // Validation
         searchInput.addEventListener('input', function() {
             if (['dongvat', 'giave'].includes(searchType.value)) {
                 this.value = this.value.replace(/[^\d]/g, '');
@@ -637,7 +628,6 @@
             }
         });
 
-        // Submit
         document.getElementById('universalSearch').addEventListener('submit', function(e) {
             e.preventDefault();
             const value = searchInput.value.trim();
