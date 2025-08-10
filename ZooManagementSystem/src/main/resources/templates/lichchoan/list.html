@@ -1,80 +1,73 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <title>Quản lý Lịch Cho Ăn</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .page-title {
-            color: #2c3e50; /* Màu chữ đậm */
-            font-weight: bold;
-            text-align: center;
-        }
-        .page-title i {
-            color: #2c3e50; /* Màu icon cùng màu chữ */
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Quản lý Lịch Cho Ăn</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <style>
+    body { background-color: #f8f9fa; }
+    .page-title { color:#2c3e50; font-weight:bold; text-align:center; }
+    .page-title i { color:#2c3e50; }
+  </style>
 </head>
 <body>
 <div class="container mt-4">
 
-    <a href="/greeting" class="btn btn-outline-primary mb-3">
-        ← Quay lại Dashboard
-    </a>
+  <a href="/greeting" class="btn btn-outline-primary mb-3">← Quay lại Dashboard</a>
 
-    <h2 class="page-title mb-4">
-        <i class="bi bi-calendar-check-fill"></i> Quản Lý Lịch Cho Ăn
-    </h2>
+  <h2 class="page-title mb-4">
+    <i class="bi bi-calendar-check-fill"></i> Quản Lý Lịch Cho Ăn
+  </h2>
+  <p class="text-center text-muted mb-4">Danh sách tất cả lịch cho ăn đã tạo</p>
 
-    <p class="text-center text-muted mb-4">Danh sách tất cả lịch cho ăn đã tạo</p>
+  <!-- Chỉ admin mới thấy các hành động -->
+  <div class="d-flex justify-content-center gap-2 mb-3"
+       th:if="${session.loggedInUser != null and session.loggedInUser.role?.toLowerCase() == 'admin'}">
+    <a href="/lichchoan/them" class="btn btn-success fw-bold">+ Thêm lịch mới</a>
+    <a href="/lichchoan" class="btn btn-outline-danger fw-bold">🔄 Làm mới</a>
+  </div>
 
-    <div class="d-flex justify-content-center gap-2 mb-3">
-        <a href="/lichchoan/them" class="btn btn-success fw-bold">
-            + Thêm lịch mới
-        </a>
-        <a href="/lichchoan" class="btn btn-outline-danger fw-bold">
-            🔄 Làm mới
-        </a>
-    </div>
+  <table class="table table-striped table-bordered text-center align-middle">
+    <thead class="table-success">
+      <tr>
+        <th>Mã lịch</th>
+        <th>Động vật</th>
+        <th>Thức ăn</th>
+        <th>Nhân viên</th>
+        <th>Thời gian</th>
+        <th th:text="${session.loggedInUser != null && session.loggedInUser.role?.toLowerCase() == 'admin' ? 'Hành động' : ' '}"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="lich : ${danhSachLich}">
+        <td th:text="${lich.maLich}"></td>
+        <td th:text="${lich.dongVat}"></td>
+        <td th:text="${lich.thucAn}"></td>
+        <td th:text="${lich.nhanVien}"></td>
 
-    <table class="table table-striped table-bordered text-center align-middle">
-        <thead class="table-success">
-            <tr>
-                <th>Mã lịch</th>
-                <th>Động vật</th>
-                <th>Thức ăn</th>
-                <th>Nhân viên</th>
-                <th>Thời gian</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="lich : ${danhSachLich}">
-                <td th:text="${lich.maLich}"></td>
-                <td th:text="${lich.dongVat}"></td>
-                <td th:text="${lich.thucAn}"></td>
-                <td th:text="${lich.nhanVien}"></td>
-                <td th:text="${lich.thoiGian}"></td>
-                <td>
-                    <a th:href="@{/lichchoan/edit/{id}(id=${lich.maLich})}" class="btn btn-warning btn-sm me-1">
-                        <i class="bi bi-pencil-square"></i> Sửa
-                    </a>
-                    <a th:href="@{/lichchoan/delete/{id}(id=${lich.maLich})}" 
-                       onclick="return confirm('Bạn có chắc muốn xóa lịch này?');"
-                       class="btn btn-danger btn-sm">
-                        <i class="bi bi-trash"></i> Xóa
-                    </a>
-                </td>
-            </tr>
-            <tr th:if="${#lists.isEmpty(danhSachLich)}">
-                <td colspan="6" class="text-muted fst-italic">Chưa có lịch nào được tạo.</td>
-            </tr>
-        </tbody>
-    </table>
+        <td th:text="${#temporals.format(lich.thoiGian, 'dd/MM/yyyy HH:mm')}"></td>
+
+     
+        <td th:if="${session.loggedInUser != null and session.loggedInUser.role?.toLowerCase() == 'admin'}">
+          <a th:href="@{/lichchoan/edit/{id}(id=${lich.maLich})}" class="btn btn-warning btn-sm me-1">
+            <i class="bi bi-pencil-square"></i> Sửa
+          </a>
+          <a th:href="@{/lichchoan/delete/{id}(id=${lich.maLich})}"
+             onclick="return confirm('Bạn có chắc muốn xóa lịch này?');"
+             class="btn btn-danger btn-sm">
+            <i class="bi bi-trash"></i> Xóa
+          </a>
+        </td>
+      
+        <td th:if="${!(session.loggedInUser != null and session.loggedInUser.role?.toLowerCase() == 'admin')}"></td>
+      </tr>
+
+      <tr th:if="${#lists.isEmpty(danhSachLich)}">
+        <td colspan="6" class="text-muted fst-italic">Chưa có lịch nào được tạo.</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 </body>
 </html>

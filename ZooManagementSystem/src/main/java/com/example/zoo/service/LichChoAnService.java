@@ -1,41 +1,53 @@
 package com.example.zoo.service;
 
-import com.example.zoo.model.LichChoAn;
 import com.example.zoo.interfaces.IManager;
+import com.example.zoo.model.LichChoAn;
+import com.example.zoo.repository.LichChoAnRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class LichChoAnService implements IManager<LichChoAn> {
-    private List<LichChoAn> danhSachLich = new ArrayList<>();
 
+    private final LichChoAnRepository repo;
+
+    public LichChoAnService(LichChoAnRepository repo) {
+        this.repo = repo;
+    }
+
+    // ===== IManager impl =====
     @Override
     public void them(LichChoAn lich) {
-        danhSachLich.add(lich);
+        repo.save(lich);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LichChoAn> hienThi() {
-        return danhSachLich;
+        return repo.findAllByOrderByThoiGianDesc();
     }
 
     @Override
     public void sua(String id, LichChoAn lichMoi) {
-        for (int i = 0; i < danhSachLich.size(); i++) {
-            if (danhSachLich.get(i).getMaLich().equals(id)) {
-                danhSachLich.set(i, lichMoi);
-                return;
-            }
+        if (repo.existsById(id)) {
+           
+            lichMoi.setMaLich(id);
+            repo.save(lichMoi);
         }
     }
 
     @Override
     public void xoa(String id) {
-        danhSachLich.removeIf(lich -> lich.getMaLich().equals(id));
+        if (repo.existsById(id)) {
+            repo.deleteById(id);
+        }
     }
 
+    // ===== API dùng trong controller =====
+    @Transactional(readOnly = true)
     public List<LichChoAn> getAll() {
         return hienThi();
     }
@@ -44,20 +56,22 @@ public class LichChoAnService implements IManager<LichChoAn> {
         them(lich);
     }
 
+    @Transactional(readOnly = true)
     public LichChoAn timTheoId(String id) {
-        for (LichChoAn lich : danhSachLich) {
-            if (lich.getMaLich().equals(id)) {
-                return lich;
-            }
-        }
-        return null;
+        return repo.findById(id).orElse(null);
     }
 
     public void capNhatLich(LichChoAn lichMoi) {
-        sua(lichMoi.getMaLich(), lichMoi);
+        repo.save(lichMoi);
     }
 
     public void xoaLich(String id) {
         xoa(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LichChoAn> getLatest(int limit) {
+       
+        return repo.findTop5ByOrderByThoiGianDesc();
     }
 }
