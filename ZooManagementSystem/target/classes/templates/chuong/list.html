@@ -44,6 +44,9 @@
     </div>
   </div>
 
+  <!-- Thông báo lỗi (nếu có) -->
+  <div th:if="${error}" class="alert alert-danger mb-4" th:text="${error}"></div>
+
   <!-- Thông báo kết quả tìm kiếm -->
   <div th:if="${searchResult}" class="alert alert-info text-center mb-4" th:text="${searchResult}"></div>
 
@@ -64,22 +67,34 @@
           <th>Tên khu vực</th>
           <th>Sức chứa tối đa</th>
           <th>Số lượng hiện tại</th>
+          <th>Trạng thái</th>
           <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="c : ${danhSach}">
-          <td th:text="${c.maChuong}">V001</td>
+          <td>
+            <span th:text="${c.maChuong}" class="badge bg-primary">V001</span>
+          </td>
           <td th:text="${c.tenKhuVuc}">Khu A</td>
           <td th:text="${c.sucChuaToiDa}">20</td>
-          <td th:text="${c.soLuongHienTai}">5</td>
+          <td>
+            <span th:text="${c.soLuongHienTai}" 
+                  th:classappend="${c.soLuongHienTai >= c.sucChuaToiDa} ? 'text-danger fw-bold' : 
+                                  (${c.soLuongHienTai > c.sucChuaToiDa * 0.8} ? 'text-warning fw-bold' : 'text-success')">5</span>
+          </td>
+          <td>
+            <span th:if="${c.soLuongHienTai == 0}" class="badge bg-secondary">Trống</span>
+            <span th:if="${c.soLuongHienTai > 0 and c.soLuongHienTai < c.sucChuaToiDa}" class="badge bg-success">Có chỗ</span>
+            <span th:if="${c.soLuongHienTai >= c.sucChuaToiDa}" class="badge bg-danger">Đầy</span>
+          </td>
           <td>
             <div class="btn-group btn-group-sm" role="group">
               <a th:href="@{'/chuong/sua/' + ${c.maChuong}}" class="btn btn-warning" title="Sửa">
                 <i class="fas fa-edit"></i>
               </a>
               <a th:href="@{'/chuong/xoa/' + ${c.maChuong}}" class="btn btn-danger" title="Xóa"
-                 onclick="return confirmDelete(event)">
+                 onclick="return confirmDelete(event)" th:data-ma-chuong="${c.maChuong}">
                 <i class="fas fa-trash-alt"></i>
               </a>
             </div>
@@ -87,6 +102,7 @@
         </tr>
       </tbody>
     </table>
+    
     <div th:if="${#lists.isEmpty(danhSach)}" class="text-center p-5 bg-white rounded shadow-sm">
       <i class="fas fa-house-damage display-1 text-muted mb-3"></i>
       <h4 class="text-muted" th:text="${searchValue != null and !searchValue.isEmpty()} ? 'Không tìm thấy kết quả' : 'Chưa có chuồng nào'">Chưa có chuồng nào</h4>
@@ -94,6 +110,21 @@
     </div>
   </div>
 </div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 mb-0">Đang kiểm tra...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function refreshData() {
@@ -103,11 +134,63 @@
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tải...';
     setTimeout(() => location.reload(), 800);
   }
+
   function confirmDelete(event) {
     event.preventDefault();
-    if (confirm('Bạn chắc chắn muốn xóa chuồng này?')) {
-      window.location.href = event.target.closest('a').href;
-    }
+    const url = event.target.closest('a').href;
+    const maChuong = url.split('/').pop();
+    
+    // Hiển thị loading modal
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    loadingModal.show();
+    
+    // Gọi API kiểm tra trước
+    fetch(`/chuong/kiem-tra/${maChuong}`)
+        .then(response => response.json())
+        .then(data => {
+            loadingModal.hide();
+            
+            if (data.coDongVat) {
+                // Tạo thông báo chi tiết
+                const animalList = data.tenDongVat.join('\n• ');
+                const message = `⚠️ KHÔNG THỂ XÓA CHUỒNG ${maChuong}\n\n` +
+                               `📊 Thống kê:\n` +
+                               `• Số lượng động vật: ${data.soDongVat} con\n\n` +
+                               `🐾 Danh sách động vật:\n• ${animalList}\n\n` +
+                               `💡 Hướng dẫn:\n` +
+                               `1. Di chuyển động vật sang chuồng khác\n` +
+                               `2. Hoặc xóa động vật trước\n` +
+                               `3. Sau đó mới có thể xóa chuồng này\n\n` +
+                               `🔒 Lý do: Bảo đảm tính toàn vẹn dữ liệu`;
+                
+                alert(message);
+            } else {
+                const confirmMessage = `🗑️ XÁC NHẬN XÓA CHUỒNG\n\n` +
+                                     `Mã chuồng: ${maChuong}\n` +
+                                     `Trạng thái: Chuồng trống\n\n` +
+                                     `⚠️ Hành động này không thể hoàn tác!\n` +
+                                     `Bạn có chắc chắn muốn xóa không?`;
+                
+                if (confirm(confirmMessage)) {
+                    // Hiển thị thông báo đang xóa
+                    const deleteBtn = event.target.closest('a');
+                    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    deleteBtn.classList.add('disabled');
+                    
+                    window.location.href = url;
+                }
+            }
+        })
+        .catch(error => {
+            loadingModal.hide();
+            console.error('Lỗi kiểm tra:', error);
+            
+            // Fallback nếu API lỗi
+            if (confirm(`Không thể kiểm tra trạng thái chuồng ${maChuong}.\n\nBạn vẫn muốn tiếp tục xóa?`)) {
+                window.location.href = url;
+            }
+        });
+    
     return false;
   }
 
@@ -117,6 +200,35 @@
     if (searchInput && !searchInput.value) {
       searchInput.focus();
     }
+
+    // Hiển thị thông báo thành công nếu có
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('deleted')) {
+      const alert = document.createElement('div');
+      alert.className = 'alert alert-success alert-dismissible fade show';
+      alert.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        Xóa chuồng thành công!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      `;
+      document.querySelector('.container').insertBefore(alert, document.querySelector('.text-center'));
+      
+      // Tự động ẩn sau 5 giây
+      setTimeout(() => {
+        alert.remove();
+      }, 5000);
+    }
+  });
+
+  // Thêm hiệu ứng hover cho các hàng
+  document.querySelectorAll('tbody tr').forEach(row => {
+    row.addEventListener('mouseenter', function() {
+      this.style.backgroundColor = '#f8f9fa';
+    });
+    
+    row.addEventListener('mouseleave', function() {
+      this.style.backgroundColor = '';
+    });
   });
 </script>
 </body>

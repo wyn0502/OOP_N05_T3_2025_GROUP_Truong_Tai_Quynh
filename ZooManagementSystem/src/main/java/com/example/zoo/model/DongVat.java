@@ -17,21 +17,28 @@ public class DongVat {
     @Column(name = "suc_khoe")
     private String sucKhoe;
 
-    @Column(name = "ma_chuong")  // Cập nhật tên cột trong database
-    private String maChuong;     // Thay đổi từ khuVuc thành maChuong
+    @Column(name = "ma_chuong")
+    private String maChuong;
 
-    public DongVat() {}
+    // Thiết lập mối quan hệ Many-to-One với Chuong
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ma_chuong", referencedColumnName = "ma_chuong",
+            insertable = false, updatable = false)
+    private Chuong chuong;
+
+    // Constructors
+    public DongVat() {
+    }
 
     public DongVat(String ten, int tuoi, String loai, String sucKhoe, String maChuong) {
         this.ten = ten;
         this.tuoi = tuoi;
         this.loai = loai;
         this.sucKhoe = sucKhoe;
-        this.maChuong = maChuong;  // Thay đổi từ khuVuc thành maChuong
+        this.maChuong = maChuong;
     }
 
-    // GETTERS & SETTERS
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -72,23 +79,31 @@ public class DongVat {
         this.sucKhoe = sucKhoe;
     }
 
-    public String getMaChuong() {  // Thay đổi getter
+    public String getMaChuong() {
         return maChuong;
     }
 
-    public void setMaChuong(String maChuong) {  // Thay đổi setter
+    public void setMaChuong(String maChuong) {
         this.maChuong = maChuong;
+    }
+
+    public Chuong getChuong() {
+        return chuong;
+    }
+
+    public void setChuong(Chuong chuong) {
+        this.chuong = chuong;
     }
 
     @Override
     public String toString() {
-        return "DongVat{" +
-                "id=" + id +
-                ", ten='" + ten + '\'' +
-                ", tuoi=" + tuoi +
-                ", loai='" + loai + '\'' +
-                ", sucKhoe='" + sucKhoe + '\'' +
-                ", maChuong='" + maChuong + '\'' +  // Thay đổi trong toString
-                '}';
+        return "DongVat{"
+                + "id=" + id
+                + ", ten='" + ten + '\''
+                + ", tuoi=" + tuoi
+                + ", loai='" + loai + '\''
+                + ", sucKhoe='" + sucKhoe + '\''
+                + ", maChuong='" + maChuong + '\''
+                + '}';
     }
 }

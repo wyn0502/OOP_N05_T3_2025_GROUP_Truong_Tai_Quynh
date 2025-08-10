@@ -18,27 +18,97 @@ public class ChuongService {
     }
 
     public void them(Chuong c) {
-        repository.save(c);
+        try {
+            repository.save(c);
+        } catch (Exception e) {
+            System.err.println("Lỗi khi thêm chuồng: " + e.getMessage());
+            throw new RuntimeException("Không thể thêm chuồng.", e);
+        }
     }
 
     public List<Chuong> hienThi() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (Exception e) {
+            System.err.println("Lỗi khi lấy danh sách chuồng: " + e.getMessage());
+            return java.util.Collections.emptyList();
+        }
     }
 
     public void sua(String ma, Chuong newChuong) {
-        repository.findById(ma).ifPresent(c -> {
-            c.setTenKhuVuc(newChuong.getTenKhuVuc());
-            c.setSucChuaToiDa(newChuong.getSucChuaToiDa());
-            c.setSoLuongHienTai(newChuong.getSoLuongHienTai());
-            repository.save(c);
-        });
+        try {
+            repository.findById(ma).ifPresent(c -> {
+                c.setTenKhuVuc(newChuong.getTenKhuVuc());
+                c.setSucChuaToiDa(newChuong.getSucChuaToiDa());
+                c.setSoLuongHienTai(newChuong.getSoLuongHienTai());
+                repository.save(c);
+            });
+        } catch (Exception e) {
+            System.err.println("Lỗi khi sửa chuồng: " + e.getMessage());
+            throw new RuntimeException("Không thể cập nhật chuồng.", e);
+        }
     }
 
     public void xoa(String ma) {
-        repository.deleteById(ma);
+        try {
+            repository.deleteById(ma);
+        } catch (Exception e) {
+            System.err.println("Lỗi khi xóa chuồng: " + e.getMessage());
+            throw new RuntimeException("Không thể xóa chuồng.", e);
+        }
     }
 
     public Chuong timTheoMa(String ma) {
-        return repository.findById(ma).orElse(null);
+        try {
+            return repository.findById(ma).orElse(null);
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tìm chuồng: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // PHƯƠNG THỨC HỖ TRỢ KIỂM TRA CHUỒNG
+    public boolean chuongTonTai(String maChuong) {
+        try {
+            return repository.existsById(maChuong);
+        } catch (Exception e) {
+            System.err.println("Lỗi khi kiểm tra chuồng: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // THỐNG KÊ
+    public long demTongSoChuong() {
+        try {
+            return repository.count();
+        } catch (Exception e) {
+            System.err.println("Lỗi khi đếm chuồng: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    // LẤY CHUỒNG CÓ CHỖ TRỐNG
+    public List<Chuong> layChuongCoChoTrong() {
+        try {
+            return repository.findAll().stream()
+                .filter(c -> c.getSoLuongHienTai() < c.getSucChuaToiDa())
+                .collect(java.util.stream.Collectors.toList());
+        } catch (Exception e) {
+            System.err.println("Lỗi khi lấy chuồng có chỗ trống: " + e.getMessage());
+            return java.util.Collections.emptyList();
+        }
+    }
+
+    // CẬP NHẬT SỐ LƯỢNG ĐỘNG VẬT TRONG CHUỒNG
+    public void capNhatSoLuongDongVat(String maChuong, int soLuongMoi) {
+        try {
+            repository.findById(maChuong).ifPresent(c -> {
+                c.setSoLuongHienTai(soLuongMoi);
+                repository.save(c);
+            });
+        } catch (Exception e) {
+            System.err.println("Lỗi khi cập nhật số lượng động vật: " + e.getMessage());
+            throw new RuntimeException("Không thể cập nhật số lượng động vật trong chuồng.", e);
+        }
     }
 }

@@ -1,13 +1,21 @@
 package com.example.zoo.controller;
 
 import com.example.zoo.model.Chuong;
+import com.example.zoo.model.DongVat;
 import com.example.zoo.model.User;
 import com.example.zoo.service.ChuongService;
+import com.example.zoo.service.DongVatService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/chuong")
@@ -15,6 +23,9 @@ public class ChuongController {
 
     @Autowired
     private ChuongService service;
+
+    @Autowired
+    private DongVatService dongVatService;
 
     // Kiểm tra quyền admin
     private boolean isAdmin(User user) {
@@ -47,13 +58,51 @@ public class ChuongController {
                 model.addAttribute("searchValue", searchId);
             } else {
                 // Hiển thị tất cả
-                model.addAttribute("danhSach", service.hienThi());
+                List<Chuong> danhSach = service.hienThi();
+                System.out.println("DEBUG Controller: Số chuồng nhận được: " + danhSach.size());
+                model.addAttribute("danhSach", danhSach);
             }
             
             return "chuong/list";
         } catch (Exception e) {
+            System.err.println("Lỗi trong controller: " + e.getMessage());
+            e.printStackTrace();
             model.addAttribute("error", "Lỗi lấy danh sách: " + e.getMessage());
             return "error/general";
+        }
+    }
+
+    // THÊM ENDPOINT TEST
+    @GetMapping("/test")
+    @ResponseBody
+    public String testConnections() {
+        try {
+            // Test ChuongService
+            long totalChuong = service.demTongSoChuong();
+            List<Chuong> allChuong = service.hienThi();
+            
+            // Test DongVatService
+            long totalDongVat = dongVatService.demTongSoDongVat();
+            List<DongVat> allDongVat = dongVatService.layTatCa();
+            
+            StringBuilder result = new StringBuilder();
+            result.append("=== KIỂM TRA KẾT NỐI ===\n");
+            result.append("Tổng số chuồng: ").append(totalChuong).append("\n");
+            result.append("Tổng số động vật: ").append(totalDongVat).append("\n\n");
+            
+            result.append("=== DANH SÁCH CHUỒNG ===\n");
+            for (Chuong c : allChuong) {
+                result.append("- ").append(c.getMaChuong()).append(": ").append(c.getTenKhuVuc()).append("\n");
+            }
+            
+            result.append("\n=== DANH SÁCH ĐỘNG VẬT ===\n");
+            for (DongVat dv : allDongVat) {
+                result.append("- ").append(dv.getTen()).append(" (Chuồng: ").append(dv.getMaChuong()).append(")\n");
+            }
+            
+            return result.toString();
+        } catch (Exception e) {
+            return "LỖI: " + e.getMessage();
         }
     }
 
@@ -120,16 +169,55 @@ public class ChuongController {
         }
     }
 
+    // API kiểm tra trước khi xóa
+    @GetMapping("/kiem-tra/{maChuong}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> kiemTraChuong(@PathVariable String maChuong) {
+        Map<String, Object> result = new HashMap<>();
+        
+        try {
+            var danhSachDongVat = dongVatService.layDongVatTheoMaChuong(maChuong);
+            
+            result.put("coDongVat", !danhSachDongVat.isEmpty());
+            result.put("soDongVat", danhSachDongVat.size());
+            result.put("tenDongVat", danhSachDongVat.stream()
+                .map(dv -> dv.getTen())
+                .collect(Collectors.toList()));
+            
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            result.put("error", e.getMessage());
+            return ResponseEntity.status(500).body(result);
+        }
+    }
+
     @GetMapping("/xoa/{maChuong}")
     public String xoa(@PathVariable String maChuong, HttpSession session, Model model) {
         try {
             if (!isAuthorized(session)) {
                 return "redirect:/error/505";
             }
+            
+            // KIỂM TRA TRƯỚC KHI XÓA
+            long soDongVat = dongVatService.demDongVatTheoMaChuong(maChuong);
+            if (soDongVat > 0) {
+                var danhSachDongVat = dongVatService.layDongVatTheoMaChuong(maChuong);
+                String tenDongVat = danhSachDongVat.stream()
+                    .map(dv -> dv.getTen())
+                    .collect(Collectors.joining(", "));
+                    
+                model.addAttribute("error", 
+                    String.format("Không thể xóa chuồng %s vì còn %d động vật bên trong: %s. " +
+                                "Hãy di chuyển hoặc xóa động vật trước khi xóa chuồng.", 
+                                maChuong, soDongVat, tenDongVat));
+                model.addAttribute("danhSach", service.hienThi());
+                return "chuong/list";
+            }
+            
             service.xoa(maChuong);
-            return "redirect:/chuong";
+            return "redirect:/chuong?deleted";
         } catch (Exception e) {
-            model.addAttribute("error", "Lỗi khi xóa chuồng: " + e.getMessage());
+            model.addAttribute("error", "Không thể xóa chuồng: " + e.getMessage());
             return "error/general";
         }
     }
