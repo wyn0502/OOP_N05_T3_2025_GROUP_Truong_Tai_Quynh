@@ -37,25 +37,51 @@ public class GiaVeController {
         return isAdmin(user);
     }
 
-    // ======== CRUD ========
+    // ======== CRUD với tìm kiếm ========
     @GetMapping
-    public String danhSachVe(@RequestParam(name = "keyword", required = false) String keyword,
-            Model model, HttpSession session) {
+    public String danhSachVe(@RequestParam(name = "search", required = false) String searchId,
+                            @RequestParam(name = "keyword", required = false) String keyword,
+                            Model model, HttpSession session) {
         if (!isAuthorized(session)) {
             return "redirect:/error/505";
         }
         try {
-            List<GiaVe> danhSachVe = giaVeService.layTatCa();
-            if (keyword != null && !keyword.isBlank()) {
-                danhSachVe = danhSachVe.stream()
+            List<GiaVe> danhSachVe;
+            
+            if (searchId != null && !searchId.trim().isEmpty()) {
+                // Tìm kiếm theo ID
+                try {
+                    Long id = Long.parseLong(searchId.trim());
+                    GiaVe foundVe = giaVeService.timTheoId(id);
+                    if (foundVe != null) {
+                        danhSachVe = java.util.Arrays.asList(foundVe);
+                        model.addAttribute("searchResult", "Tìm thấy 1 kết quả cho ID: " + searchId);
+                    } else {
+                        danhSachVe = java.util.Collections.emptyList();
+                        model.addAttribute("searchResult", "Không tìm thấy vé với ID: " + searchId);
+                    }
+                    model.addAttribute("searchValue", searchId);
+                } catch (NumberFormatException e) {
+                    danhSachVe = java.util.Collections.emptyList();
+                    model.addAttribute("searchResult", "ID phải là một số nguyên hợp lệ");
+                    model.addAttribute("searchValue", searchId);
+                }
+            } else if (keyword != null && !keyword.isBlank()) {
+                // Tìm kiếm theo từ khóa (loại vé)
+                danhSachVe = giaVeService.layTatCa().stream()
                         .filter(ve -> ve.getLoaiVe().toLowerCase().contains(keyword.toLowerCase()))
                         .collect(Collectors.toList());
                 model.addAttribute("keyword", keyword);
+                model.addAttribute("searchResult", "Tìm thấy " + danhSachVe.size() + " kết quả cho từ khóa: " + keyword);
+            } else {
+                // Hiển thị tất cả
+                danhSachVe = giaVeService.layTatCa();
             }
+            
             model.addAttribute("danhSachVe", danhSachVe);
             return "giave/list";
         } catch (Exception ex) {
-            model.addAttribute("error", "Đã xảy ra lỗi khi tải danh sách vé.");
+            model.addAttribute("error", "Đã xảy ra lỗi khi tải danh sách vé: " + ex.getMessage());
             return "error";
         }
     }
@@ -82,7 +108,7 @@ public class GiaVeController {
         }
         try {
             giaVeService.luu(ve);
-            return "redirect:/giave";
+            return "redirect:/giave?success";
         } catch (Exception ex) {
             model.addAttribute("error", "Không thể lưu vé. Vui lòng thử lại!");
             return "giave/add";
@@ -96,7 +122,7 @@ public class GiaVeController {
         }
         GiaVe ve = giaVeService.timTheoId(id);
         if (ve == null) {
-            return "redirect:/giave";
+            return "redirect:/giave?notfound";
         }
         model.addAttribute("ve", ve);
         return "giave/edit";
@@ -115,7 +141,7 @@ public class GiaVeController {
         }
         try {
             giaVeService.luu(ve);
-            return "redirect:/giave";
+            return "redirect:/giave?updated";
         } catch (Exception ex) {
             model.addAttribute("error", "Không thể cập nhật vé. Vui lòng thử lại!");
             return "giave/edit";
@@ -129,7 +155,7 @@ public class GiaVeController {
         }
         try {
             giaVeService.xoaTheoId(id);
-            return "redirect:/giave";
+            return "redirect:/giave?deleted";
         } catch (Exception ex) {
             model.addAttribute("error", "Không thể xóa vé.");
             return "error";

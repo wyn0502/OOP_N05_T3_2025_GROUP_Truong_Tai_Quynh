@@ -87,6 +87,11 @@
             border-radius: 10px;
         }
 
+        /* CHỈ CẦN CSS TỐI THIỂU */
+        #searchPanel {
+            transition: all 0.3s ease;
+        }
+
         @media (max-width: 992px) {
             .main-rectangle {
                 min-height: unset;
@@ -116,13 +121,14 @@
 <body>
     <div class="container py-4">
         <div class="main-rectangle mx-auto" style="max-width: 1280px;">
-            <!-- HEADER -->
+            <!-- HEADER ĐƠN GIẢN (KHÔNG CÓ NÚT ZOOM) -->
             <div class="header-bar d-flex justify-content-between align-items-center">
                 <div>
                     <h2 class="text-white fw-bold">Zoo Management System</h2>
                     <small class="text-white-50">Hệ thống quản lý sở thú</small>
                 </div>
-                <div class="text-end">
+                <div class="text-end d-flex align-items-center gap-3">
+                    <!-- USER DROPDOWN -->
                     <div class="dropdown">
                         <button class="btn btn-warning dropdown-toggle fw-semibold" type="button" id="userDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -134,12 +140,15 @@
                                     xuất</a></li>
                         </ul>
                     </div>
+
+                    <!-- CLOCK -->
                     <div class="badge bg-white text-dark">
                         <i class="fas fa-clock me-1"></i>
                         <span id="liveTime"></span>
                     </div>
                 </div>
-            </div>
+            </div>    
+
             <!-- TOP: Thống kê tổng (5 card) -->
             <div class="top-section">
                 <div class="card gradient-card p-4">
@@ -197,13 +206,75 @@
                     </div>
                 </div>
             </div>
+
+            <!-- NÚT TÌM KIẾM VÀ ZOOM CẠNH NHAU - BOOTSTRAP -->
+            <div class="text-center mb-3">
+                <div class="btn-toolbar justify-content-center gap-2" role="toolbar">
+                    <!-- Nút Tìm kiếm ID -->
+                    <div class="btn-group" role="group">
+                        <button id="toggleSearchBtn" class="btn btn-outline-light">
+                            <i class="fas fa-search me-2"></i>Tìm Kiếm ID
+                            <i class="fas fa-chevron-down ms-2"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Nút Zoom -->
+                    <div class="btn-group" role="group" aria-label="Zoom controls">
+                        <button type="button" class="btn btn-outline-light" onclick="zoomOut()" title="Thu nhỏ">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-light" onclick="resetZoom()" title="Kích thước mặc định">
+                            <i class="fas fa-home"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-light" onclick="zoomIn()" title="Phóng to">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BẢNG TÌM KIẾM BOOTSTRAP -->
+            <div id="searchPanel" class="mb-4" style="display: none;">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h6 class="mb-0"><i class="fas fa-search me-2"></i>Tìm Kiếm ID</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <form id="universalSearch" method="get">
+                                    <div class="input-group mb-2">
+                                        <select id="searchType" class="form-select" style="max-width: 140px;">
+                                            <option value="dongvat">Động vật</option>
+                                            <option value="giave">Giá vé</option>
+                                            <option value="chuong">Chuồng</option>
+                                        </select>
+                                        <input type="text" 
+                                               id="searchInput"
+                                               class="form-control" 
+                                               placeholder="Nhập ID cần tìm..."
+                                               required />
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="text-center">
+                                    <small class="text-muted" id="searchHint">Tìm động vật theo ID số</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- BOTTOM: Thông tin chi tiết -->
             <div class="bottom-section">
-                <!-- LEFT: 4 card nhỏ trong 1 grid -->
+                <!-- LEFT: THÔNG TIN CHI TIẾT (BÂY GIỜ LÀ GRID 2x3 - 6 CARD) -->
                 <div class="left-info">
                     <div class="card gradient-card p-4 card-4grid">
                         <div class="row g-3">
-                            <!-- Nhân viên (trái trên) -->
+                            <!-- Nhân viên (hàng 1, cột 1) -->
                             <div class="col-12 col-md-6">
                                 <div class="card h-100">
                                     <div class="card-header bg-light fw-bold">
@@ -226,7 +297,8 @@
                                     </ul>
                                 </div>
                             </div>
-                            <!-- Động vật (phải trên) -->
+
+                            <!-- Động vật (hàng 1, cột 2) -->
                             <div class="col-12 col-md-6">
                                 <div class="card h-100">
                                     <div
@@ -236,6 +308,7 @@
                                         <form method="get" action="/greeting" class="d-inline">
                                             <input type="hidden" name="giaVeId" th:value="${giaVe?.id}" />
                                             <input type="hidden" name="chuongId" th:value="${chuong?.maChuong}" />
+                                            <input type="hidden" name="lichChoAnId" th:value="${lichChoAn?.id}" />
                                             <select name="dongVatId" class="form-select form-select-sm d-inline w-auto"
                                                 onchange="this.form.submit()"
                                                 th:if="${not #lists.isEmpty(danhSachDongVat)}">
@@ -270,7 +343,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Giá vé (trái dưới) -->
+
+                            <!-- Giá vé (hàng 2, cột 1) -->
                             <div class="col-12 col-md-6">
                                 <div class="card h-100">
                                     <div
@@ -280,6 +354,7 @@
                                         <form method="get" action="/greeting" class="d-inline">
                                             <input type="hidden" name="dongVatId" th:value="${dongVat?.id}" />
                                             <input type="hidden" name="chuongId" th:value="${chuong?.maChuong}" />
+                                            <input type="hidden" name="lichChoAnId" th:value="${lichChoAn?.id}" />
                                             <select name="giaVeId" class="form-select form-select-sm d-inline w-auto"
                                                 onchange="this.form.submit()"
                                                 th:if="${not #lists.isEmpty(danhSachGiaVe)}">
@@ -323,7 +398,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Chuồng (phải dưới) -->
+
+                            <!-- Chuồng (hàng 2, cột 2) -->
                             <div class="col-12 col-md-6">
                                 <div class="card h-100">
                                     <div
@@ -333,6 +409,7 @@
                                         <form method="get" action="/greeting" class="d-inline">
                                             <input type="hidden" name="giaVeId" th:value="${giaVe?.id}" />
                                             <input type="hidden" name="dongVatId" th:value="${dongVat?.id}" />
+                                            <input type="hidden" name="lichChoAnId" th:value="${lichChoAn?.id}" />
                                             <select name="chuongId" class="form-select form-select-sm d-inline w-auto"
                                                 onchange="this.form.submit()"
                                                 th:if="${not #lists.isEmpty(danhSachChuong)}">
@@ -362,61 +439,81 @@
                                     </div>
                                 </div>
                             </div>
-                            <<div class="card">
-                                <div class="card-header">
-                                    <i class="fa fa-calendar text-dark"></i>
-                                    <span class="ml-1">Thông tin lịch cho ăn</span>
-                                    <select th:if="${lichChoAnCount > 0}"
-                                        onchange="location = '?lichChoAnId=' + this.value">
-                                        <option th:each="lca : ${danhSachLichChoAn}" th:value="${lca.id}"
-                                            th:selected="${lca.id == lichChoAn.id}" th:text="${lca.tenLich}"></option>
-                                    </select>
-                                </div>
-                                <div class="card-body">
-                                    <div th:if="${lichChoAnCount == 0}">
-                                        <em>Không có lịch nào được thêm gần đây</em>
+
+                            <!-- LỊCH CHO ĂN (THÊM VÀO GRID - hàng 3, cột 1-2) -->
+                            <div class="col-12">
+                                <div class="card h-100">
+                                    <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-calendar-alt me-2"></i>Thông tin lịch cho ăn</span>
+                                        <form method="get" action="/greeting" class="d-inline" th:if="${lichChoAnCount > 0}">
+                                            <input type="hidden" name="giaVeId" th:value="${giaVe?.id}" />
+                                            <input type="hidden" name="dongVatId" th:value="${dongVat?.id}" />
+                                            <input type="hidden" name="chuongId" th:value="${chuong?.maChuong}" />
+                                            <select name="lichChoAnId" class="form-select form-select-sm d-inline w-auto"
+                                                onchange="this.form.submit()">
+                                                <option th:each="lca : ${danhSachLichChoAn}" 
+                                                        th:value="${lca.id}"
+                                                        th:selected="${lca.id == lichChoAn?.id}" 
+                                                        th:text="${lca.tenLich}">Lịch</option>
+                                            </select>
+                                        </form>
                                     </div>
-                                    <div th:if="${lichChoAnCount > 0}">
-                                        <p><strong>ID:</strong> <span th:text="${lichChoAn.id}"></span></p>
-                                        <p><strong>Ngày:</strong> <span th:text="${lichChoAn.ngayChoAn}"></span></p>
-                                        <p><strong>Giờ:</strong> <span th:text="${lichChoAn.gioChoAn}"></span></p>
-                                        <p><strong>Chuồng:</strong> <span th:text="${lichChoAn.chuong}"></span></p>
-                                        <p><strong>Thức ăn:</strong> <span th:text="${lichChoAn.thucAn}"></span></p>
+                                    <div class="card-body">
+                                        <div th:if="${lichChoAnCount == 0}">
+                                            <em class="text-muted">Không có lịch nào được thêm gần đây</em>
+                                        </div>
+                                        <div th:if="${lichChoAnCount > 0 and lichChoAn != null}">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>ID:</strong> <span th:text="${lichChoAn.id}">-</span></p>
+                                                    <p><strong>Ngày:</strong> <span th:text="${lichChoAn.ngayChoAn}">-</span></p>
+                                                    <p><strong>Giờ:</strong> <span th:text="${lichChoAn.gioChoAn}">-</span></p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Chuồng:</strong> <span th:text="${lichChoAn.chuong}">-</span></p>
+                                                    <p><strong>Thức ăn:</strong> <span th:text="${lichChoAn.thucAn}">-</span></p>
+                                                    <p><strong>Tên lịch:</strong> <span th:text="${lichChoAn.tenLich}">-</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- BÊN PHẢI: Thao tác nhanh -->
-            <div class="right-actions">
-                <div class="card gradient-card p-4 d-flex flex-column align-items-stretch">
-                    <h5 class="text-center fw-bold mb-3">
-                        <i class="fas fa-rocket me-2"></i>Thao tác nhanh
-                    </h5>
-                    <div class="d-flex flex-column gap-3">
-                        <a href="/nhanvien" class="btn btn-gradient w-100">
-                            <i class="fas fa-user-tie me-1"></i> Quản lý Nhân viên
-                        </a>
-                        <a href="/chuong" class="btn btn-gradient w-100">
-                            <i class="fas fa-house-damage me-1"></i> Quản lý Chuồng
-                        </a>
-                        <a href="/dongvat" class="btn btn-gradient w-100">
-                            <i class="fas fa-paw me-1"></i> Quản lý Động Vật
-                        </a>
-                        <a href="/giave" class="btn btn-gradient w-100">
-                            <i class="fas fa-ticket-alt me-1"></i> Quản lý Giá Vé
-                        </a>
-                        <a href="/lichchoan" class="btn btn-gradient w-100">
-                            <i class="fas fa-calendar-check me-1"></i> Quản lý Lịch Cho Ăn
-                        </a>
+
+                <!-- BÊN PHẢI: Thao tác nhanh -->
+                <div class="right-actions">
+                    <div class="card gradient-card p-4 d-flex flex-column align-items-stretch">
+                        <h5 class="text-center fw-bold mb-3">
+                            <i class="fas fa-rocket me-2"></i>Thao tác nhanh
+                        </h5>
+                        <div class="d-flex flex-column gap-3">
+                            <a href="/nhanvien" class="btn btn-gradient w-100">
+                                <i class="fas fa-user-tie me-1"></i> Quản lý Nhân viên
+                            </a>
+                            <a href="/chuong" class="btn btn-gradient w-100">
+                                <i class="fas fa-house-damage me-1"></i> Quản lý Chuồng
+                            </a>
+                            <a href="/dongvat" class="btn btn-gradient w-100">
+                                <i class="fas fa-paw me-1"></i> Quản lý Động Vật
+                            </a>
+                            <a href="/giave" class="btn btn-gradient w-100">
+                                <i class="fas fa-ticket-alt me-1"></i> Quản lý Giá Vé
+                            </a>
+                            <a href="/lichchoan" class="btn btn-gradient w-100">
+                                <i class="fas fa-calendar-check me-1"></i> Quản lý Lịch Cho Ăn
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
     <script>
+        // ===== THỜI GIAN THỰC =====
         function updateTime() {
             const now = new Date();
             const options = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false };
@@ -425,6 +522,134 @@
         }
         updateTime();
         setInterval(updateTime, 1000);
+
+        // ===== ZOOM PAGE FUNCTIONALITY =====
+        let currentZoom = 100;
+        const zoomStep = 10;
+        const minZoom = 50;
+        const maxZoom = 200;
+
+        function updateZoom() {
+            document.body.style.transform = `scale(${currentZoom / 100})`;
+            document.body.style.transformOrigin = 'top center';
+            
+            // Lưu zoom level vào localStorage
+            localStorage.setItem('pageZoom', currentZoom);
+            
+            // Cập nhật title tooltip
+            document.querySelector('[onclick="zoomOut()"]').title = `Thu nhỏ (${currentZoom}%)`;
+            document.querySelector('[onclick="zoomIn()"]').title = `Phóng to (${currentZoom}%)`;
+            document.querySelector('[onclick="resetZoom()"]').title = `Kích thước mặc định (${currentZoom}%)`;
+        }
+
+        function zoomIn() {
+            if (currentZoom < maxZoom) {
+                currentZoom += zoomStep;
+                updateZoom();
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom > minZoom) {
+                currentZoom -= zoomStep;
+                updateZoom();
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 100;
+            updateZoom();
+        }
+
+        // Khôi phục zoom level khi load trang
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedZoom = localStorage.getItem('pageZoom');
+            if (savedZoom) {
+                currentZoom = parseInt(savedZoom);
+                updateZoom();
+            }
+        });
+
+        // Keyboard shortcuts cho zoom
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case '=':
+                    case '+':
+                        e.preventDefault();
+                        zoomIn();
+                        break;
+                    case '-':
+                        e.preventDefault();
+                        zoomOut();
+                        break;
+                    case '0':
+                        e.preventDefault();
+                        resetZoom();
+                        break;
+                }
+            }
+        });
+
+        // ===== TÌM KIẾM ĐƠN GIẢN =====
+        const toggleBtn = document.getElementById('toggleSearchBtn');
+        const searchPanel = document.getElementById('searchPanel');
+        const searchType = document.getElementById('searchType');
+        const searchInput = document.getElementById('searchInput');
+        const searchHint = document.getElementById('searchHint');
+
+        // Toggle hiện/ẩn
+        toggleBtn.addEventListener('click', function() {
+            if (searchPanel.style.display === 'none') {
+                searchPanel.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-search me-2"></i>Ẩn Tìm Kiếm<i class="fas fa-chevron-up ms-2"></i>';
+                searchInput.focus();
+            } else {
+                searchPanel.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-search me-2"></i>Tìm Kiếm ID<i class="fas fa-chevron-down ms-2"></i>';
+            }
+        });
+
+        // Cấu hình tìm kiếm
+        const searchConfig = {
+            dongvat: { url: '/dongvat', placeholder: 'Nhập ID động vật...', hint: 'Tìm động vật theo ID số' },
+            giave: { url: '/giave', placeholder: 'Nhập ID giá vé...', hint: 'Tìm giá vé theo ID số' },
+            chuong: { url: '/chuong', placeholder: 'Nhập mã chuồng...', hint: 'Tìm chuồng theo mã' }
+        };
+
+        // Cập nhật UI
+        function updateUI() {
+            const config = searchConfig[searchType.value];
+            searchInput.placeholder = config.placeholder;
+            searchHint.textContent = config.hint;
+            searchInput.value = '';
+        }
+
+        searchType.addEventListener('change', updateUI);
+
+        // Validation
+        searchInput.addEventListener('input', function() {
+            if (['dongvat', 'giave'].includes(searchType.value)) {
+                this.value = this.value.replace(/[^\d]/g, '');
+            }
+            if (searchType.value === 'chuong') {
+                this.value = this.value.toUpperCase();
+            }
+        });
+
+        // Submit
+        document.getElementById('universalSearch').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const value = searchInput.value.trim();
+            if (!value) {
+                alert('Vui lòng nhập ID!');
+                return;
+            }
+            const config = searchConfig[searchType.value];
+            window.location.href = `${config.url}?search=${value}`;
+        });
+
+        updateUI();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

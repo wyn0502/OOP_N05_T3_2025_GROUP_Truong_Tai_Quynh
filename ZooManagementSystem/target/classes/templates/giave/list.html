@@ -21,6 +21,81 @@
     <p class="text-muted">Danh sách các loại vé hiện có trong hệ thống</p>
   </div>
 
+  <!-- Form tìm kiếm -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="row g-2">
+            <!-- Tìm kiếm theo ID -->
+            <div class="col-md-6">
+              <form method="get" action="/giave" class="d-flex gap-2">
+                <div class="flex-grow-1">
+                  <input type="text" 
+                         class="form-control" 
+                         name="search" 
+                         th:value="${searchValue}"
+                         placeholder="Tìm theo ID vé..." 
+                         id="searchInput" />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-search me-1"></i>Tìm ID
+                </button>
+              </form>
+            </div>
+            
+            <!-- Tìm kiếm theo từ khóa -->
+            <div class="col-md-6">
+              <form method="get" action="/giave" class="d-flex gap-2">
+                <div class="flex-grow-1">
+                  <input type="text" 
+                         class="form-control" 
+                         name="keyword" 
+                         th:value="${keyword}"
+                         placeholder="Tìm theo loại vé..." />
+                </div>
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-search me-1"></i>Tìm loại
+                </button>
+              </form>
+            </div>
+          </div>
+          
+          <!-- Nút reset -->
+          <div class="text-center mt-2">
+            <a href="/giave" class="btn btn-outline-secondary btn-sm">
+              <i class="fas fa-list me-1"></i>Hiển thị tất cả
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thông báo kết quả tìm kiếm -->
+  <div th:if="${searchResult}" class="alert alert-info text-center mb-4" th:text="${searchResult}"></div>
+
+  <!-- Thông báo thành công -->
+  <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show mb-4">
+    <i class="fas fa-check-circle me-2"></i>Thêm vé thành công!
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div th:if="${param.updated}" class="alert alert-success alert-dismissible fade show mb-4">
+    <i class="fas fa-check-circle me-2"></i>Cập nhật vé thành công!
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div th:if="${param.deleted}" class="alert alert-success alert-dismissible fade show mb-4">
+    <i class="fas fa-check-circle me-2"></i>Xóa vé thành công!
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div th:if="${param.notfound}" class="alert alert-warning alert-dismissible fade show mb-4">
+    <i class="fas fa-exclamation-triangle me-2"></i>Không tìm thấy vé!
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
   <!-- Nút thao tác -->
   <div class="d-flex justify-content-center mb-4 gap-3 flex-wrap">
     <a href="/giave/add" class="btn btn-primary btn-lg"><i class="fas fa-plus me-2"></i> Thêm Loại Vé</a>
@@ -43,7 +118,9 @@
       </thead>
       <tbody>
       <tr th:each="ve : ${danhSachVe}">
-        <td th:text="${ve.id}">1</td>
+        <td>
+          <span th:text="${ve.id}" class="badge bg-primary">1</span>
+        </td>
         <td th:text="${ve.loaiVe}">Vé Người Lớn</td>
         <td th:text="${#numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</td>
         <td>
@@ -54,13 +131,25 @@
           <span th:if="${ve.phanTramGiamGia > 0}" class="text-danger fw-bold" th:text="${ve.phanTramGiamGia + '%'}">10%</span>
           <span th:unless="${ve.phanTramGiamGia > 0}" class="text-muted">0%</span>
         </td>
-        <td th:text="${#numbers.formatDecimal(ve.apDungKhuyenMai(), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">0 VNĐ</td>
+        <td>
+          <span th:text="${#numbers.formatDecimal(ve.apDungKhuyenMai(), 0, 'POINT', 0, 'COMMA')} + ' VNĐ'" 
+                th:classappend="${ve.phanTramGiamGia > 0} ? 'text-success fw-bold' : ''">0 VNĐ</span>
+        </td>
         <td>
           <div class="btn-group btn-group-sm" role="group">
-            <a th:href="@{/giave/edit/{id}(id=${ve.id})}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-            <a th:href="@{/giave/delete/{id}(id=${ve.id})}" class="btn btn-danger" onclick="return confirmDelete(event)"><i class="fas fa-trash-alt"></i></a>
-            <a th:href="@{'/giave/inve/' + ${ve.id}}" class="btn btn-secondary"><i class="fas fa-print"></i></a>
-            <a th:href="@{'/giave/print-pdf/' + ${ve.id}}" class="btn btn-outline-primary"><i class="fas fa-file-pdf"></i></a>
+            <a th:href="@{/giave/edit/{id}(id=${ve.id})}" class="btn btn-warning" title="Sửa">
+              <i class="fas fa-edit"></i>
+            </a>
+            <a th:href="@{/giave/delete/{id}(id=${ve.id})}" class="btn btn-danger" title="Xóa"
+               onclick="return confirmDelete(event)">
+              <i class="fas fa-trash-alt"></i>
+            </a>
+            <a th:href="@{'/giave/inve/' + ${ve.id}}" class="btn btn-secondary" title="Xem trước">
+              <i class="fas fa-print"></i>
+            </a>
+            <a th:href="@{'/giave/print-pdf/' + ${ve.id}}" class="btn btn-outline-primary" title="Xuất PDF">
+              <i class="fas fa-file-pdf"></i>
+            </a>
           </div>
         </td>
       </tr>
@@ -70,8 +159,8 @@
     <!-- Không có vé -->
     <div th:if="${#lists.isEmpty(danhSachVe)}" class="text-center p-5 bg-white rounded shadow-sm">
       <i class="fas fa-ticket-alt display-1 text-muted mb-3"></i>
-      <h4 class="text-muted">Chưa có vé nào</h4>
-      <p>Hãy thêm vé đầu tiên để bắt đầu quản lý.</p>
+      <h4 class="text-muted" th:text="${searchValue != null and !searchValue.isEmpty() or keyword != null and !keyword.isEmpty()} ? 'Không tìm thấy kết quả' : 'Chưa có vé nào'">Chưa có vé nào</h4>
+      <p th:text="${searchValue != null and !searchValue.isEmpty() or keyword != null and !keyword.isEmpty()} ? 'Thử tìm kiếm với từ khóa khác' : 'Hãy thêm vé đầu tiên để bắt đầu quản lý.'">Hãy thêm vé đầu tiên để bắt đầu quản lý.</p>
     </div>
   </div>
 </div>
@@ -89,11 +178,28 @@
 
   function confirmDelete(event) {
     event.preventDefault();
-    if (confirm('Bạn chắc chắn muốn xóa vé này?')) {
+    const veId = event.target.closest('a').href.split('/').pop();
+    if (confirm(`Bạn chắc chắn muốn xóa vé ID ${veId}?\n\nHành động này không thể hoàn tác!`)) {
       window.location.href = event.target.closest('a').href;
     }
     return false;
   }
+
+  // Focus vào ô tìm kiếm khi tải trang
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && !searchInput.value) {
+      searchInput.focus();
+    }
+
+    // Tự động ẩn alerts sau 5 giây
+    setTimeout(() => {
+      document.querySelectorAll('.alert-dismissible').forEach(alert => {
+        const bsAlert = new bootstrap.Alert(alert);
+        bsAlert.close();
+      });
+    }, 5000);
+  });
 </script>
 </body>
 </html>
