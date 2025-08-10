@@ -26,14 +26,36 @@ public class DongVatController {
         return isAdmin(user);
     }
 
-    // Hiển thị danh sách
+    // Hiển thị danh sách với tính năng tìm kiếm
     @GetMapping
-    public String hienThiDanhSach(Model model, HttpSession session) {
+    public String hienThiDanhSach(Model model, HttpSession session,
+                                 @RequestParam(value = "search", required = false) String searchId) {
         if (!isAuthorized(session)) {
             return "redirect:/error/505";
         }
         try {
-            model.addAttribute("danhSach", service.layTatCa());
+            if (searchId != null && !searchId.trim().isEmpty()) {
+                // Tìm kiếm theo ID
+                try {
+                    Long id = Long.parseLong(searchId.trim());
+                    DongVat foundDongVat = service.timTheoId(id);
+                    if (foundDongVat != null) {
+                        model.addAttribute("danhSach", java.util.Arrays.asList(foundDongVat));
+                        model.addAttribute("searchResult", "Tìm thấy 1 kết quả cho ID: " + searchId);
+                    } else {
+                        model.addAttribute("danhSach", java.util.Collections.emptyList());
+                        model.addAttribute("searchResult", "Không tìm thấy động vật với ID: " + searchId);
+                    }
+                    model.addAttribute("searchValue", searchId);
+                } catch (NumberFormatException e) {
+                    model.addAttribute("danhSach", java.util.Collections.emptyList());
+                    model.addAttribute("searchResult", "ID phải là một số nguyên hợp lệ");
+                    model.addAttribute("searchValue", searchId);
+                }
+            } else {
+                // Hiển thị tất cả
+                model.addAttribute("danhSach", service.layTatCa());
+            }
             return "dongvat/list";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi tải danh sách động vật: " + e.getMessage());

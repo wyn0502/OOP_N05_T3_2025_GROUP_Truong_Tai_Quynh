@@ -20,6 +20,35 @@
     <p class="text-muted">Tất cả động vật đang quản lý</p>
   </div>
 
+  <!-- Form tìm kiếm -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <form method="get" action="/dongvat" class="d-flex gap-2">
+            <div class="flex-grow-1">
+              <input type="text" 
+                     class="form-control" 
+                     name="search" 
+                     th:value="${searchValue}"
+                     placeholder="Nhập ID động vật cần tìm..." 
+                     id="searchInput" />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-search me-1"></i>Tìm kiếm
+            </button>
+            <a href="/dongvat" class="btn btn-outline-secondary" title="Hiển thị tất cả">
+              <i class="fas fa-list"></i>
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thông báo kết quả tìm kiếm -->
+  <div th:if="${searchResult}" class="alert alert-info text-center mb-4" th:text="${searchResult}"></div>
+
   <div class="d-flex justify-content-center mb-4 gap-3 flex-wrap">
     <a href="/dongvat/them" class="btn btn-success btn-lg shadow-sm">
       <i class="fas fa-plus me-2"></i> Thêm động vật mới
@@ -38,7 +67,7 @@
           <th>Tuổi</th>
           <th>Loài</th>
           <th>Sức khỏe</th>
-          <th>Khu vực</th>
+          <th>Mã chuồng</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -55,7 +84,9 @@
               Trạng thái
             </span>
           </td>
-          <td th:text="${dv.khuVuc}">Khu vực</td>
+          <td>
+            <span th:text="${dv.maChuong}" class="badge bg-info text-dark">Mã chuồng</span>
+          </td>
           <td>
             <div class="btn-group btn-group-sm" role="group">
               <a th:href="@{'/dongvat/sua/' + ${dv.id}}" class="btn btn-warning" title="Sửa">
@@ -73,8 +104,8 @@
 
     <div th:if="${#lists.isEmpty(danhSach)}" class="text-center p-5 bg-white rounded shadow-sm">
       <i class="fas fa-paw display-1 text-muted mb-3"></i>
-      <h4 class="text-muted">Chưa có động vật nào</h4>
-      <p>Hãy thêm động vật đầu tiên để bắt đầu quản lý.</p>
+      <h4 class="text-muted" th:text="${searchValue != null and !searchValue.isEmpty()} ? 'Không tìm thấy kết quả' : 'Chưa có động vật nào'">Chưa có động vật nào</h4>
+      <p th:text="${searchValue != null and !searchValue.isEmpty()} ? 'Thử tìm kiếm với ID khác' : 'Hãy thêm động vật đầu tiên để bắt đầu quản lý.'">Hãy thêm động vật đầu tiên để bắt đầu quản lý.</p>
     </div>
   </div>
 </div>
@@ -95,6 +126,14 @@
     }
     return false;
   }
+
+  // Focus vào ô tìm kiếm khi tải trang
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && !searchInput.value) {
+      searchInput.focus();
+    }
+  });
 </script>
 </body>
 </html>

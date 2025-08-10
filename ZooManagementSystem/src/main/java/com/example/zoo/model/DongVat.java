@@ -17,16 +17,17 @@ public class DongVat {
     @Column(name = "suc_khoe")
     private String sucKhoe;
 
-    private String khuVuc; 
+    @Column(name = "ma_chuong")  // Cập nhật tên cột trong database
+    private String maChuong;     // Thay đổi từ khuVuc thành maChuong
 
     public DongVat() {}
 
-    public DongVat(String ten, int tuoi, String loai, String sucKhoe, String khuVuc) {
+    public DongVat(String ten, int tuoi, String loai, String sucKhoe, String maChuong) {
         this.ten = ten;
         this.tuoi = tuoi;
         this.loai = loai;
         this.sucKhoe = sucKhoe;
-        this.khuVuc = khuVuc;
+        this.maChuong = maChuong;  // Thay đổi từ khuVuc thành maChuong
     }
 
     // GETTERS & SETTERS
@@ -71,12 +72,12 @@ public class DongVat {
         this.sucKhoe = sucKhoe;
     }
 
-    public String getKhuVuc() {
-        return khuVuc;
+    public String getMaChuong() {  // Thay đổi getter
+        return maChuong;
     }
 
-    public void setKhuVuc(String khuVuc) {
-        this.khuVuc = khuVuc;
+    public void setMaChuong(String maChuong) {  // Thay đổi setter
+        this.maChuong = maChuong;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class DongVat {
                 ", tuoi=" + tuoi +
                 ", loai='" + loai + '\'' +
                 ", sucKhoe='" + sucKhoe + '\'' +
-                ", khuVuc='" + khuVuc + '\'' +
+                ", maChuong='" + maChuong + '\'' +  // Thay đổi trong toString
                 '}';
     }
 }

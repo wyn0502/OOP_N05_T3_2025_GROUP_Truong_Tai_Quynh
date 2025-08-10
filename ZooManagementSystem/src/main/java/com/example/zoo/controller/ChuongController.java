@@ -27,12 +27,29 @@ public class ChuongController {
     }
 
     @GetMapping
-    public String list(Model model, HttpSession session) {
+    public String list(Model model, HttpSession session,
+                      @RequestParam(value = "search", required = false) String searchId) {
         try {
             if (!isAuthorized(session)) {
                 return "redirect:/error/505";
             }
-            model.addAttribute("danhSach", service.hienThi());
+            
+            if (searchId != null && !searchId.trim().isEmpty()) {
+                // Tìm kiếm theo ID
+                Chuong foundChuong = service.timTheoMa(searchId.trim());
+                if (foundChuong != null) {
+                    model.addAttribute("danhSach", java.util.Arrays.asList(foundChuong));
+                    model.addAttribute("searchResult", "Tìm thấy 1 kết quả cho mã chuồng: " + searchId);
+                } else {
+                    model.addAttribute("danhSach", java.util.Collections.emptyList());
+                    model.addAttribute("searchResult", "Không tìm thấy chuồng với mã: " + searchId);
+                }
+                model.addAttribute("searchValue", searchId);
+            } else {
+                // Hiển thị tất cả
+                model.addAttribute("danhSach", service.hienThi());
+            }
+            
             return "chuong/list";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi lấy danh sách: " + e.getMessage());

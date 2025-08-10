@@ -261,9 +261,10 @@
                                                 th:classappend="${dongVat.sucKhoe.toLowerCase().contains('khỏe') ? 'text-success' : 'text-danger'}">...</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between">
-                                            <span>Khu vực</span><span
-                                                th:text="${dongVat.khuVuc != null ? dongVat.khuVuc : 'Không xác định'}">...</span>
-                                        </li>
+    <span>Mã chuồng</span><span
+        th:text="${dongVat.maChuong != null ? dongVat.maChuong : 'Không xác định'}">...</span>
+</li>
+
                                     </ul>
                                     <div class="p-2 text-danger fw-bold" th:if="${dongVat == null}">
                                         Không có dữ liệu động vật trong hệ thống!
@@ -390,7 +391,7 @@
                     </div>
                 </div>
                 <!-- BÊN PHẢI: Thao tác nhanh -->
-                <div class="right-actions" th:if="${session.loggedInUser.role == 'admin'}">
+                <div class="right-actions">
                     <div class="card gradient-card p-4 d-flex flex-column align-items-stretch">
                         <h5 class="text-center fw-bold mb-3">
                             <i class="fas fa-rocket me-2"></i>Thao tác nhanh
