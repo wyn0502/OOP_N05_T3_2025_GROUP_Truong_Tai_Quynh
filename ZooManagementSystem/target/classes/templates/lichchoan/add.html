@@ -2,72 +2,73 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Thêm Lịch Cho Ăn</title>
+    <title>Thêm Lịch Cho Ăn Mới</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </head>
 <body>
 <div class="container mt-4" style="max-width: 600px;">
-    <h2 class="text-center text-success mb-4 fw-bold">
-        <i class="bi bi-house-fill"></i> Thêm Lịch Cho Ăn Mới
+
+    <!-- Tiêu đề màu xanh đậm -->
+    <h2 class="text-center mb-4 fw-bold text-success">
+        <i class="bi bi-calendar-check-fill"></i> Thêm Lịch Cho Ăn Mới
     </h2>
 
     <form th:action="@{/lichchoan/them}" th:object="${lich}" method="post" novalidate>
-        <div class="mb-3">
-            <label for="maLich" class="form-label fw-semibold">
-                <i class="bi bi-upc-scan"></i> Mã lịch
-            </label>
-            <input type="text" id="maLich" name="maLich" th:field="*{maLich}" 
-                   class="form-control" placeholder="Nhập mã lịch" />
-            <div class="text-danger" th:if="${#fields.hasErrors('maLich')}" th:errors="*{maLich}"></div>
-        </div>
+    <div class="mb-3">
+        <label for="maLich" class="form-label fw-semibold text-success">
+            <i class="bi bi-hash"></i> Mã lịch
+        </label>
+        <input type="text" id="maLich" name="maLich" th:field="*{maLich}"
+               class="form-control" placeholder="Nhập mã lịch" />
+        <div class="text-danger" th:if="${#fields.hasErrors('maLich')}" th:errors="*{maLich}"></div>
+    </div>
 
-        <div class="mb-3">
-            <label for="dongVat" class="form-label fw-semibold">
-                <i class="bi bi-paw"></i> Động vật
-            </label>
-            <input type="text" id="dongVat" name="dongVat" th:field="*{dongVat}" 
-                   class="form-control" placeholder="Nhập tên động vật" />
-            <div class="text-danger" th:if="${#fields.hasErrors('dongVat')}" th:errors="*{dongVat}"></div>
-        </div>
+    <div class="mb-3">
+        <label for="dongVat" class="form-label fw-semibold text-success">
+            <i class="bi bi-bug-fill"></i> Động vật
+        </label>
+        <input type="text" id="dongVat" name="dongVat" th:field="*{dongVat}"
+               class="form-control" placeholder="Nhập tên động vật" />
+        <div class="text-danger" th:if="${#fields.hasErrors('dongVat')}" th:errors="*{dongVat}"></div>
+    </div>
 
-        <div class="mb-3">
-            <label for="thucAn" class="form-label fw-semibold">
-                <i class="bi bi-basket3"></i> Thức ăn
-            </label>
-            <input type="text" id="thucAn" name="thucAn" th:field="*{thucAn}" 
-                   class="form-control" placeholder="Nhập thức ăn" />
-            <div class="text-danger" th:if="${#fields.hasErrors('thucAn')}" th:errors="*{thucAn}"></div>
-        </div>
+    <div class="mb-3">
+        <label for="thucAn" class="form-label fw-semibold text-success">
+            <i class="bi bi-egg-fried"></i> Thức ăn
+        </label>
+        <input type="text" id="thucAn" name="thucAn" th:field="*{thucAn}"
+               class="form-control" placeholder="Nhập thức ăn" />
+        <div class="text-danger" th:if="${#fields.hasErrors('thucAn')}" th:errors="*{thucAn}"></div>
+    </div>
 
-        <div class="mb-3">
-            <label for="nhanVien" class="form-label fw-semibold">
-                <i class="bi bi-person-badge"></i> Nhân viên
-            </label>
-            <input type="text" id="nhanVien" name="nhanVien" th:field="*{nhanVien}" 
-                   class="form-control" placeholder="Nhập tên nhân viên" />
-            <div class="text-danger" th:if="${#fields.hasErrors('nhanVien')}" th:errors="*{nhanVien}"></div>
-        </div>
+    <div class="mb-3">
+        <label for="nhanVien" class="form-label fw-semibold text-success">
+            <i class="bi bi-person-fill"></i> Nhân viên
+        </label>
+        <input type="text" id="nhanVien" name="nhanVien" th:field="*{nhanVien}"
+               class="form-control" placeholder="Nhập tên nhân viên" />
+        <div class="text-danger" th:if="${#fields.hasErrors('nhanVien')}" th:errors="*{nhanVien}"></div>
+    </div>
 
-        <div class="mb-3">
-            <label for="thoiGian" class="form-label fw-semibold">
-                <i class="bi bi-clock-history"></i> Thời gian (yyyy-MM-ddTHH:mm)
-            </label>
-            <input type="datetime-local" id="thoiGian" name="thoiGian" th:field="*{thoiGian}" 
-                   class="form-control" />
-            <div class="text-danger" th:if="${#fields.hasErrors('thoiGian')}" th:errors="*{thoiGian}"></div>
-        </div>
+    <div class="mb-3">
+        <label for="thoiGian" class="form-label fw-semibold text-success">
+            <i class="bi bi-clock-fill"></i> Thời gian (yyyy-MM-ddTHH:mm)
+        </label>
+        <input type="datetime-local" id="thoiGian" name="thoiGian" th:field="*{thoiGian}"
+               class="form-control" />
+        <div class="text-danger" th:if="${#fields.hasErrors('thoiGian')}" th:errors="*{thoiGian}"></div>
+    </div>
 
-        <button type="submit" class="btn btn-success w-100 fw-bold">
-            <i class="bi bi-save"></i> Lưu Lại
-        </button>
+    <button type="submit" class="btn btn-success w-100 fw-bold">
+        <i class="bi bi-save-fill"></i> Lưu Lại
+    </button>
 
-        <a href="/lichchoan" class="d-block text-center mt-3 text-decoration-none text-secondary">
-            ← Quay lại danh sách
-        </a>
-    </form>
+    <a href="/lichchoan" class="d-block text-center mt-3 text-decoration-none text-secondary">
+        ← Quay lại danh sách
+    </a>
+</form>
+
 </div>
-
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </body>
 </html>
