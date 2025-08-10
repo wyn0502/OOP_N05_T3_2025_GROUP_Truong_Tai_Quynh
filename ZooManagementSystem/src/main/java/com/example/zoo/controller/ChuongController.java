@@ -27,7 +27,6 @@ public class ChuongController {
     @Autowired
     private DongVatService dongVatService;
 
-    // Kiểm tra quyền admin
     private boolean isAdmin(User user) {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
@@ -46,7 +45,6 @@ public class ChuongController {
             }
             
             if (searchId != null && !searchId.trim().isEmpty()) {
-                // Tìm kiếm theo ID
                 Chuong foundChuong = service.timTheoMa(searchId.trim());
                 if (foundChuong != null) {
                     model.addAttribute("danhSach", java.util.Arrays.asList(foundChuong));
@@ -57,7 +55,6 @@ public class ChuongController {
                 }
                 model.addAttribute("searchValue", searchId);
             } else {
-                // Hiển thị tất cả
                 List<Chuong> danhSach = service.hienThi();
                 System.out.println("DEBUG Controller: Số chuồng nhận được: " + danhSach.size());
                 model.addAttribute("danhSach", danhSach);
@@ -69,40 +66,6 @@ public class ChuongController {
             e.printStackTrace();
             model.addAttribute("error", "Lỗi lấy danh sách: " + e.getMessage());
             return "error/general";
-        }
-    }
-
-    // THÊM ENDPOINT TEST
-    @GetMapping("/test")
-    @ResponseBody
-    public String testConnections() {
-        try {
-            // Test ChuongService
-            long totalChuong = service.demTongSoChuong();
-            List<Chuong> allChuong = service.hienThi();
-            
-            // Test DongVatService
-            long totalDongVat = dongVatService.demTongSoDongVat();
-            List<DongVat> allDongVat = dongVatService.layTatCa();
-            
-            StringBuilder result = new StringBuilder();
-            result.append("=== KIỂM TRA KẾT NỐI ===\n");
-            result.append("Tổng số chuồng: ").append(totalChuong).append("\n");
-            result.append("Tổng số động vật: ").append(totalDongVat).append("\n\n");
-            
-            result.append("=== DANH SÁCH CHUỒNG ===\n");
-            for (Chuong c : allChuong) {
-                result.append("- ").append(c.getMaChuong()).append(": ").append(c.getTenKhuVuc()).append("\n");
-            }
-            
-            result.append("\n=== DANH SÁCH ĐỘNG VẬT ===\n");
-            for (DongVat dv : allDongVat) {
-                result.append("- ").append(dv.getTen()).append(" (Chuồng: ").append(dv.getMaChuong()).append(")\n");
-            }
-            
-            return result.toString();
-        } catch (Exception e) {
-            return "LỖI: " + e.getMessage();
         }
     }
 

@@ -26,16 +26,14 @@ public class DongVatController {
         return isAdmin(user);
     }
 
-    // Hiển thị danh sách với tính năng tìm kiếm
     @GetMapping
     public String hienThiDanhSach(Model model, HttpSession session,
-                                 @RequestParam(value = "search", required = false) String searchId) {
+            @RequestParam(value = "search", required = false) String searchId) {
         if (!isAuthorized(session)) {
             return "redirect:/error/505";
         }
         try {
             if (searchId != null && !searchId.trim().isEmpty()) {
-                // Tìm kiếm theo ID
                 try {
                     Long id = Long.parseLong(searchId.trim());
                     DongVat foundDongVat = service.timTheoId(id);
@@ -53,7 +51,6 @@ public class DongVatController {
                     model.addAttribute("searchValue", searchId);
                 }
             } else {
-                // Hiển thị tất cả
                 model.addAttribute("danhSach", service.layTatCa());
             }
             return "dongvat/list";
@@ -63,7 +60,6 @@ public class DongVatController {
         }
     }
 
-    // Form thêm động vật
     @GetMapping("/them")
     public String hienThiFormThem(Model model, HttpSession session) {
         if (!isAuthorized(session)) {
@@ -78,7 +74,6 @@ public class DongVatController {
         }
     }
 
-    // Form sửa động vật
     @GetMapping("/sua/{id}")
     public String hienThiFormSua(@PathVariable Long id, Model model, HttpSession session) {
         if (!isAuthorized(session)) {

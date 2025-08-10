@@ -55,10 +55,6 @@ public class DongVatService {
             throw new RuntimeException("Xóa động vật thất bại.", e);
         }
     }
-
-    // ===== THÊM CÁC METHOD THIẾU =====
-
-    // THÊM METHOD ĐẾM THEO MÃ CHUỒNG
     public long demDongVatTheoMaChuong(String maChuong) {
         try {
             long count = dongVatRepository.countByMaChuong(maChuong);
@@ -70,7 +66,6 @@ public class DongVatService {
         }
     }
 
-    // LẤY DANH SÁCH ĐỘNG VẬT THEO CHUỒNG
     public List<DongVat> layDongVatTheoMaChuong(String maChuong) {
         try {
             List<DongVat> result = dongVatRepository.findByMaChuong(maChuong);
@@ -86,7 +81,6 @@ public class DongVatService {
         }
     }
 
-    // THÊM CÁC METHOD HỖ TRỢ KHÁC
     public List<DongVat> timTheoLoai(String loai) {
         try {
             return dongVatRepository.findByLoai(loai);
@@ -114,7 +108,6 @@ public class DongVatService {
         }
     }
 
-    // THỐNG KÊ
     public long demTongSoDongVat() {
         try {
             return dongVatRepository.count();

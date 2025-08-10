@@ -67,7 +67,6 @@ public class ChuongService {
         }
     }
 
-    // PHƯƠNG THỨC HỖ TRỢ KIỂM TRA CHUỒNG
     public boolean chuongTonTai(String maChuong) {
         try {
             return repository.existsById(maChuong);
@@ -77,7 +76,6 @@ public class ChuongService {
         }
     }
 
-    // THỐNG KÊ
     public long demTongSoChuong() {
         try {
             return repository.count();
@@ -87,7 +85,6 @@ public class ChuongService {
         }
     }
 
-    // LẤY CHUỒNG CÓ CHỖ TRỐNG
     public List<Chuong> layChuongCoChoTrong() {
         try {
             return repository.findAll().stream()
@@ -99,7 +96,6 @@ public class ChuongService {
         }
     }
 
-    // CẬP NHẬT SỐ LƯỢNG ĐỘNG VẬT TRONG CHUỒNG
     public void capNhatSoLuongDongVat(String maChuong, int soLuongMoi) {
         try {
             repository.findById(maChuong).ifPresent(c -> {

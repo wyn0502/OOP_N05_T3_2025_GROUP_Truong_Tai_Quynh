@@ -318,10 +318,9 @@
         </div>
       </div>
 
-      <!-- Right quick actions: chỉ admin thấy -->
+      <!-- Right quick actions -->
       <div class="right-actions">
-        <div class="card gradient-card p-4 d-flex flex-column align-items-stretch"
-             th:if="${session.loggedInUser != null and session.loggedInUser.role == 'admin'}">
+        <div class="card gradient-card p-4 d-flex flex-column align-items-stretch">
           <h5 class="text-center fw-bold mb-3"><i class="fas fa-rocket me-2"></i>Thao tác nhanh</h5>
           <div class="d-flex flex-column gap-3">
             <a href="/nhanvien" class="btn btn-gradient w-100"><i class="fas fa-user-tie me-1"></i> Quản lý Nhân viên</a>
