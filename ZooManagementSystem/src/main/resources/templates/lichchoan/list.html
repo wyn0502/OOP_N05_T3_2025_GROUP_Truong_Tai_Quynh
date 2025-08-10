@@ -4,17 +4,32 @@
     <meta charset="UTF-8" />
     <title>Quản lý Lịch Cho Ăn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .page-title {
+            color: #2c3e50; /* Màu chữ đậm */
+            font-weight: bold;
+            text-align: center;
+        }
+        .page-title i {
+            color: #2c3e50; /* Màu icon cùng màu chữ */
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
 
-    <a href="/" class="btn btn-outline-primary mb-3">
+    <a href="/greeting" class="btn btn-outline-primary mb-3">
         ← Quay lại Dashboard
     </a>
 
-    <h2 class="mb-3 text-center fw-bold text-primary">
-        <i class="bi bi-house-fill"></i> Quản Lý Lịch Cho Ăn
+    <h2 class="page-title mb-4">
+        <i class="bi bi-calendar-check-fill"></i> Quản Lý Lịch Cho Ăn
     </h2>
+
     <p class="text-center text-muted mb-4">Danh sách tất cả lịch cho ăn đã tạo</p>
 
     <div class="d-flex justify-content-center gap-2 mb-3">
@@ -61,8 +76,5 @@
         </tbody>
     </table>
 </div>
-
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </body>
 </html>
