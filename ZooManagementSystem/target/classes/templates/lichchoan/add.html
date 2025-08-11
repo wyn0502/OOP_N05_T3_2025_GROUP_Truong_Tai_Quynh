@@ -5,6 +5,33 @@
   <title>Thêm Lịch Cho Ăn Mới</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <style>
+    .suggestions { 
+      background: #e3f2fd; 
+      padding: 10px; 
+      border-radius: 8px; 
+      margin-top: 10px; 
+    }
+    .suggestion-btn { 
+      margin: 3px; 
+      padding: 4px 8px; 
+      background: #1976d2; 
+      color: white; 
+      border: none; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      font-size: 12px; 
+    }
+    .suggestion-btn:hover { background: #1565c0; }
+    .current-time-display { 
+      background: #e7f3ff; 
+      padding: 10px; 
+      border-radius: 6px; 
+      border: 1px solid #b3d9ff; 
+      margin: 10px 0;
+    }
+    .time-info { color: #0066cc; font-weight: bold; }
+  </style>
 </head>
 <body>
 <div class="container mt-4" style="max-width: 600px;">
@@ -13,76 +40,276 @@
     <i class="bi bi-calendar-check-fill"></i> Thêm Lịch Cho Ăn Mới
   </h2>
 
-  <form th:action="@{/lichchoan/them}" th:object="${lich}" method="post" novalidate>
+  <!-- Hiển thị thông báo -->
+  <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${successMessage}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <span th:text="${warningMessage}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${errorMessage}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <form th:action="@{/lichchoan/them}" th:object="${lich}" method="post" novalidate id="lichForm">
 
     <div class="mb-3">
       <label for="maLich" class="form-label fw-semibold text-success">
-        <i class="bi bi-hash"></i> Mã lịch
+        <i class="bi bi-hash"></i> Mã lịch *
       </label>
-      <input type="text" id="maLich" th:field="*{maLich}" class="form-control" placeholder="Ví dụ: L001" />
+      <input type="text" id="maLich" th:field="*{maLich}" class="form-control" 
+             placeholder="Ví dụ: L001" required />
+      <div class="form-text">Định dạng: L00 + số (ví dụ: L001, L002, L003...)</div>
       <div class="text-danger" th:if="${#fields.hasErrors('maLich')}" th:errors="*{maLich}"></div>
     </div>
 
     <div class="mb-3">
-      <label for="dongVat" class="form-label fw-semibold text-success">
-        <i class="bi bi-bug-fill"></i> Động vật
+      <label for="nhanVien" class="form-label fw-semibold text-success">
+        <i class="bi bi-person-fill"></i> Nhân viên phụ trách *
       </label>
-      <input type="text" id="dongVat" th:field="*{dongVat}" class="form-control" placeholder="Nhập tên động vật" />
+      <select id="nhanVien" th:field="*{nhanVien.id}" class="form-control" required>
+        <option value="">-- Chọn nhân viên --</option>
+        <option th:each="nv : ${danhSachNhanVien}" 
+                th:value="${nv.id}" 
+                th:text="${nv.fullname + ' (' + nv.username + ') - ' + nv.role + (nv.chuong != null ? ' - Chuồng ' + nv.chuong : '')}">
+        </option>
+      </select>
+      <div class="form-text">Chọn nhân viên sẽ phụ trách cho ăn</div>
+      <div class="text-danger" th:if="${#fields.hasErrors('nhanVien')}" th:errors="*{nhanVien}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label for="dongVat" class="form-label fw-semibold text-success">
+        <i class="bi bi-bug-fill"></i> Động vật *
+      </label>
+      <select id="dongVat" th:field="*{dongVat.id}" class="form-control" required onchange="loadFoodSuggestions()">
+        <option value="">-- Chọn động vật --</option>
+        <option th:each="dv : ${danhSachDongVat}" 
+                th:value="${dv.id}" 
+                th:data-species="${dv.loai}">
+          <span th:text="${(dv.ten ?: dv.loai) + ' (' + dv.loai + ') - Chuồng ' + dv.maChuong + ' - ' + dv.tuoi + ' tuổi'}"></span>
+          <span th:if="${dv.sucKhoe == 'Tốt'}" style="color: green;"> - ✅ Tốt</span>
+          <span th:if="${dv.sucKhoe == 'Trung bình'}" style="color: orange;"> - ⚠️ Trung bình</span>
+        </option>
+      </select>
+      <div class="form-text">Chỉ hiển thị động vật có sức khỏe Tốt và Trung bình</div>
       <div class="text-danger" th:if="${#fields.hasErrors('dongVat')}" th:errors="*{dongVat}"></div>
     </div>
 
     <div class="mb-3">
       <label for="thucAn" class="form-label fw-semibold text-success">
-        <i class="bi bi-egg-fried"></i> Thức ăn
+        <i class="bi bi-egg-fried"></i> Thức ăn *
       </label>
-      <input type="text" id="thucAn" th:field="*{thucAn}" class="form-control" placeholder="Nhập thức ăn" />
+      <input type="text" id="thucAn" th:field="*{thucAn}" class="form-control" 
+             placeholder="Nhập thức ăn" required />
+      <div id="foodSuggestions" class="suggestions" style="display: none;"></div>
       <div class="text-danger" th:if="${#fields.hasErrors('thucAn')}" th:errors="*{thucAn}"></div>
     </div>
 
-    <div class="mb-3">
-      <label for="nhanVien" class="form-label fw-semibold text-success">
-        <i class="bi bi-person-fill"></i> Nhân viên
-      </label>
-      <input type="text" id="nhanVien" th:field="*{nhanVien}" class="form-control" placeholder="Nhập tên nhân viên" />
-      <div class="text-danger" th:if="${#fields.hasErrors('nhanVien')}" th:errors="*{nhanVien}"></div>
+    <div class="row">
+      <div class="col-8">
+        <div class="mb-3">
+          <label for="soLuong" class="form-label fw-semibold text-success">
+            <i class="bi bi-scales"></i> Số lượng *
+          </label>
+          <input type="number" id="soLuong" th:field="*{soLuong}" class="form-control" 
+                 step="0.1" min="0.1" placeholder="Ví dụ: 2.5" required />
+          <div class="text-danger" th:if="${#fields.hasErrors('soLuong')}" th:errors="*{soLuong}"></div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="mb-3">
+          <label for="donVi" class="form-label fw-semibold text-success">Đơn vị</label>
+          <select id="donVi" th:field="*{donVi}" class="form-control">
+            <option value="kg">kg</option>
+            <option value="g">g</option>
+            <option value="lít">lít</option>
+            <option value="ml">ml</option>
+            <option value="phần">phần</option>
+            <option value="con">con</option>
+          </select>
+        </div>
+      </div>
     </div>
 
+    <!-- ===== THỜI GIAN VỚI FIX HOÀN TOÀN ===== -->
     <div class="mb-3">
-      <label for="thoiGianStr" class="form-label fw-semibold text-success">
-        <i class="bi bi-clock-fill"></i> Thời gian (dd/MM/yyyy HH:mm · 24h)
+      <label for="thoiGian" class="form-label fw-semibold text-success">
+        <i class="bi bi-clock-fill"></i> Thời gian cho ăn * (dd/MM/yyyy HH:mm)
       </label>
-
+      
+      <!-- Hiển thị thời gian hiện tại -->
+      <div class="current-time-display">
+        <div class="time-info">
+          <i class="bi bi-clock-history"></i> <strong>Thời gian hiện tại:</strong> 
+          <span id="currentTimeDisplay"></span>
+        </div>
+      </div>
+      
       <input type="text"
-             id="thoiGianStr"
-             name="thoiGianStr"
+             id="thoiGian"
+             th:field="*{thoiGian}"
              class="form-control"
              placeholder="VD: 11/08/2025 16:30"
-             th:value="${lich.thoiGian != null ? #temporals.format(lich.thoiGian, 'dd/MM/yyyy HH:mm') : ''}" />
+             required />
+      
+      <div class="form-text">
+        <span class="text-muted">Nhập thời gian theo định dạng: dd/MM/yyyy HH:mm</span>
+      </div>
       <div class="text-danger" th:if="${#fields.hasErrors('thoiGian')}" th:errors="*{thoiGian}"></div>
     </div>
 
-    <button type="submit" class="btn btn-success w-100 fw-bold">
-      <i class="bi bi-save-fill"></i> Lưu Lại
-    </button>
-
-    <a href="/lichchoan" class="d-block text-center mt-3 text-decoration-none text-secondary">
-      ← Quay lại danh sách
-    </a>
+    <div class="row">
+      <div class="col-md-8">
+        <button type="submit" class="btn btn-success w-100 fw-bold" id="submitBtn">
+          <i class="bi bi-save-fill"></i> Tạo Lịch Cho Ăn
+        </button>
+      </div>
+      <div class="col-md-4">
+        <a href="/lichchoan" class="btn btn-outline-secondary w-100">
+          <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+      </div>
+    </div>
   </form>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+// ===== REAL-TIME CLOCK =====
+function updateCurrentTime() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const timeStr = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   
-  (function () {
-    const el = document.getElementById('thoiGianStr');
-    if (el && !el.value) {
-      const d = new Date();
-      const pad = n => String(n).padStart(2, '0');
-      const formatted = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      el.value = formatted;
+  const display = document.getElementById('currentTimeDisplay');
+  if (display) {
+    display.textContent = timeStr;
+  }
+}
+
+// ===== FOOD SUGGESTIONS =====
+function loadFoodSuggestions() {
+  const animalSelect = document.getElementById('dongVat');
+  const selectedAnimalId = animalSelect.value;
+  const suggestionsDiv = document.getElementById('foodSuggestions');
+  
+  if (!selectedAnimalId || selectedAnimalId === "" || selectedAnimalId === "0") {
+    suggestionsDiv.style.display = 'none';
+    return;
+  }
+
+  fetch(`/lichchoan/api/food-suggestions/${selectedAnimalId}`)
+    .then(response => response.json())
+    .then(suggestions => {
+      let html = '<p><strong><i class="bi bi-lightbulb-fill"></i> Gợi ý thức ăn phù hợp:</strong></p>';
+      suggestions.forEach(food => {
+        html += `<button type="button" class="suggestion-btn" onclick="selectFood('${food}')">${food}</button>`;
+      });
+      suggestionsDiv.innerHTML = html;
+      suggestionsDiv.style.display = 'block';
+    })
+    .catch(error => {
+      console.error('Error loading food suggestions:', error);
+      suggestionsDiv.style.display = 'none';
+    });
+}
+
+function selectFood(foodName) {
+  document.getElementById('thucAn').value = foodName;
+}
+
+// ===== FORM VALIDATION =====
+function validateForm() {
+  let hasError = false;
+  let errorMessage = '';
+  
+  const maLich = document.getElementById('maLich').value.trim();
+  const nhanVien = document.getElementById('nhanVien').value;
+  const dongVat = document.getElementById('dongVat').value;
+  const thucAn = document.getElementById('thucAn').value.trim();
+  const soLuong = document.getElementById('soLuong').value;
+  const thoiGian = document.getElementById('thoiGian').value.trim();
+  
+  if (!maLich || !maLich.match(/^L00\d+$/)) {
+    errorMessage += '• Mã lịch phải có định dạng L00 + số (ví dụ: L001)\n';
+    hasError = true;
+  }
+  
+  if (!nhanVien || nhanVien === "" || nhanVien === "0") {
+    errorMessage += '• Vui lòng chọn nhân viên\n';
+    hasError = true;
+  }
+  
+  if (!dongVat || dongVat === "" || dongVat === "0") {
+    errorMessage += '• Vui lòng chọn động vật\n';
+    hasError = true;
+  }
+  
+  if (!thucAn) {
+    errorMessage += '• Vui lòng nhập thức ăn\n';
+    hasError = true;
+  }
+  
+  if (!soLuong || parseFloat(soLuong) <= 0) {
+    errorMessage += '• Số lượng phải lớn hơn 0\n';
+    hasError = true;
+  }
+  
+  if (!thoiGian) {
+    errorMessage += '• Vui lòng nhập thời gian\n';
+    hasError = true;
+  }
+  
+  if (hasError) {
+    alert('Vui lòng kiểm tra lại:\n\n' + errorMessage);
+    return false;
+  }
+  
+  return true;
+}
+
+// ===== KHỞI TẠO =====
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. Start real-time clock
+  updateCurrentTime();
+  setInterval(updateCurrentTime, 1000);
+  
+  // 2. Set default time (1 giờ từ bây giờ)
+  const timeInput = document.getElementById('thoiGian');
+  if (!timeInput.value) {
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+    const pad = n => String(n).padStart(2, '0');
+    timeInput.value = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  }
+  
+  // 3. Load food suggestions nếu đã chọn động vật
+  if (document.getElementById('dongVat').value) {
+    loadFoodSuggestions();
+  }
+  
+  // 4. Form validation on submit
+  document.getElementById('lichForm').addEventListener('submit', function(e) {
+    if (!validateForm()) {
+      e.preventDefault();
+      return false;
     }
-  })();
+    
+    // Disable submit button để tránh double-click
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang lưu...';
+  });
+  
+  console.log('✅ Form initialized successfully');
+});
 </script>
 </body>
 </html>
