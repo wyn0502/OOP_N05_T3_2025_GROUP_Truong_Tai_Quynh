@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,18 +9,25 @@
 </head>
 
 <body class="bg-light">
-
   <div class="container my-5" style="max-width: 520px;">
     <h2 class="text-center text-success mb-4">
       <i class="fas fa-paw fa-lg me-2"></i>
       <span th:text="${dongVat.id == null} ? 'Thêm Động Vật Mới' : 'Chỉnh Sửa Động Vật'">Thêm Động Vật Mới</span>
     </h2>
 
+    <!-- Thông báo cảnh báo (nếu không có chuồng trống) -->
+    <div th:if="${warning}" class="alert alert-warning mb-4">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      <span th:text="${warning}"></span>
+    </div>
+
     <!-- Thông báo lỗi (nếu có) -->
-    <div th:if="${error}" class="alert alert-danger mb-4" th:text="${error}"></div>
+    <div th:if="${error}" class="alert alert-danger mb-4">
+      <i class="fas fa-times-circle me-2"></i>
+      <span th:text="${error}"></span>
+    </div>
 
     <form th:action="@{/dongvat/luu}" th:object="${dongVat}" method="post" novalidate id="dongVatForm">
-
       <input type="hidden" th:field="*{id}" th:if="${dongVat.id != null}" />
       
       <!-- Tên động vật -->
@@ -29,7 +35,8 @@
         <label for="ten" class="form-label fw-semibold">
           <i class="fas fa-signature me-2"></i>Tên động vật
         </label>
-        <input type="text" class="form-control" id="ten" th:field="*{ten}" placeholder="Nhập tên động vật" required />
+        <input type="text" class="form-control" id="ten" th:field="*{ten}" 
+               placeholder="Nhập tên động vật" required />
         <div class="invalid-feedback">Vui lòng nhập tên động vật.</div>
       </div>
 
@@ -38,8 +45,8 @@
         <label for="tuoi" class="form-label fw-semibold">
           <i class="fas fa-birthday-cake me-2"></i>Tuổi
         </label>
-        <input type="number" class="form-control" id="tuoi" th:field="*{tuoi}" placeholder="Nhập tuổi" min="0"
-          required />
+        <input type="number" class="form-control" id="tuoi" th:field="*{tuoi}" 
+               placeholder="Nhập tuổi" min="0" required />
         <div class="invalid-feedback">Vui lòng nhập tuổi hợp lệ (>= 0).</div>
       </div>
 
@@ -48,8 +55,8 @@
         <label for="loai" class="form-label fw-semibold">
           <i class="fas fa-dna me-2"></i>Loài
         </label>
-        <input type="text" class="form-control" id="loai" th:field="*{loai}" placeholder="Nhập loài động vật"
-          required />
+        <input type="text" class="form-control" id="loai" th:field="*{loai}" 
+               placeholder="Nhập loài động vật" required />
         <div class="invalid-feedback">Vui lòng nhập loài động vật.</div>
       </div>
 
@@ -72,15 +79,44 @@
         <label for="maChuong" class="form-label fw-semibold">
           <i class="fas fa-home me-2"></i>Mã chuồng
         </label>
-        <input type="text" class="form-control" id="maChuong" th:field="*{maChuong}"
-          placeholder="Nhập mã chuồng (vd: C001)" required />
-        <div class="invalid-feedback">Vui lòng nhập mã chuồng.</div>
-        <div class="form-text">Mã chuồng phải tồn tại trong hệ thống</div>
+        
+        <!-- Hiển thị dropdown nếu có danh sách chuồng -->
+        <div th:if="${danhSachChuong != null and not #lists.isEmpty(danhSachChuong)}">
+          <select class="form-control" id="maChuong" th:field="*{maChuong}" required onchange="checkCageCapacity()">
+            <option value="">Chọn chuồng</option>
+            <option th:each="chuong : ${danhSachChuong}" 
+                    th:value="${chuong.maChuong}" 
+                    th:text="|${chuong.maChuong} - ${chuong.tenKhuVuc} (${chuong.soLuongHienTai}/${chuong.sucChuaToiDa})|">
+            </option>
+          </select>
+          <div class="form-text text-success">
+            <i class="fas fa-info-circle me-1"></i>
+            Chỉ hiển thị chuồng còn chỗ trống
+          </div>
+        </div>
+        
+        <!-- Hiển thị input text nếu không có chuồng trống -->
+        <div th:if="${danhSachChuong == null or #lists.isEmpty(danhSachChuong)}">
+          <input type="text" class="form-control" id="maChuong" th:field="*{maChuong}" 
+                 placeholder="Nhập mã chuồng" required readonly />
+          <div class="form-text text-warning">
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            Không có chuồng nào còn chỗ trống. Vui lòng tạo chuồng mới hoặc mở rộng chuồng hiện có.
+          </div>
+        </div>
+        
+        <div class="invalid-feedback">Vui lòng chọn chuồng.</div>
+        
+        <!-- Thông tin chi tiết chuồng được chọn -->
+        <div id="cageInfo" class="mt-2" style="display: none;"></div>
       </div>
 
-      <button type="submit" class="btn btn-success w-100 fw-semibold mb-2" id="submitBtn">
+      <!-- Nút submit -->
+      <button type="submit" class="btn btn-success w-100 fw-semibold mb-2" id="submitBtn"
+              th:disabled="${danhSachChuong == null or #lists.isEmpty(danhSachChuong)}">
         <i class="fas fa-save me-2"></i>Lưu Lại
       </button>
+      
       <div class="text-center">
         <a href="/dongvat" class="text-success text-decoration-none fw-semibold">
           <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
@@ -98,11 +134,67 @@
         if (!form.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
+        } else {
+          const submitBtn = document.getElementById('submitBtn');
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang lưu...';
         }
         form.classList.add('was-validated');
       }, false);
     })();
+
+    // Kiểm tra sức chứa chuồng khi chọn
+    function checkCageCapacity() {
+      const maChuong = document.getElementById('maChuong').value;
+      const cageInfo = document.getElementById('cageInfo');
+      
+      if (!maChuong) {
+        cageInfo.style.display = 'none';
+        return;
+      }
+
+      // Lấy thông tin từ option được chọn
+      const selectedOption = document.querySelector(`#maChuong option[value="${maChuong}"]`);
+      if (selectedOption) {
+        const optionText = selectedOption.textContent;
+        const matches = optionText.match(/\((\d+)\/(\d+)\)/);
+        
+        if (matches) {
+          const current = parseInt(matches[1]);
+          const max = parseInt(matches[2]);
+          const remaining = max - current;
+          
+          let statusClass = 'text-success';
+          let statusIcon = 'fas fa-check-circle';
+          let statusText = 'Còn chỗ trống';
+          
+          if (remaining <= 2) {
+            statusClass = 'text-warning';
+            statusIcon = 'fas fa-exclamation-triangle';
+            statusText = 'Sắp đầy';
+          }
+          
+          cageInfo.innerHTML = `
+            <div class="alert alert-info alert-sm">
+              <i class="${statusIcon} me-2"></i>
+              <strong>Thông tin chuồng:</strong><br>
+              <span class="${statusClass}">
+                • ${statusText}: ${remaining} chỗ<br>
+                • Hiện tại: ${current}/${max} động vật
+              </span>
+            </div>
+          `;
+          cageInfo.style.display = 'block';
+        }
+      }
+
+    // Auto-check cage nếu đã có giá trị
+    document.addEventListener('DOMContentLoaded', function() {
+      const maChuong = document.getElementById('maChuong');
+      if (maChuong && maChuong.value) {
+        checkCageCapacity();
+      }
+    });
   </script>
 </body>
-
 </html>

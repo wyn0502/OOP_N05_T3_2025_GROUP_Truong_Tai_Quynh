@@ -129,11 +129,35 @@
 
   // Focus vào ô tìm kiếm khi tải trang
   document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput && !searchInput.value) {
-      searchInput.focus();
-    }
-  });
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput && !searchInput.value) {
+    searchInput.focus();
+  }
+
+  // Hiển thị thông báo thành công
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('success')) {
+    showAlert('success', 'Lưu động vật thành công!');
+  }
+  if (urlParams.has('deleted')) {
+    showAlert('success', 'Xóa động vật thành công!');
+  }
+});
+
+function showAlert(type, message) {
+  const alert = document.createElement('div');
+  alert.className = `alert alert-${type} alert-dismissible fade show`;
+  alert.innerHTML = `
+    <i class="fas fa-check-circle me-2"></i>
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  document.querySelector('.container').insertBefore(alert, document.querySelector('.text-center'));
+  
+  setTimeout(() => {
+    alert.remove();
+  }, 5000);
+}
 </script>
 </body>
 </html>
