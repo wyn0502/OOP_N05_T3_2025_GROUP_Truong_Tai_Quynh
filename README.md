@@ -14,19 +14,21 @@
 2. 🎯 Mục tiêu và phạm vi
 3. ⚙️ Yêu cầu chức năng
 4. 🏗️ Phân tích và thiết kế hướng đối tượng
-   - 4.1 📦 Các class chính
-   - 4.2 🔗 Mối quan hệ giữa các class
+   - 4.1. 📦 Các class chính
+   - 4.2. 🔗 Mối quan hệ giữa các class
 5. 💡 Các nguyên lý OOP áp dụng
-6. 📊 Sơ đồ UML và Activity diagrams
-7. 🗂️ Cấu trúc thư mục & mô tả tập tin quan trọng
-8. ▶️ Hướng dẫn chạy chương trình
+6. 📊 Sơ đồ Thiết kế hệ thống
+    - 6.1. 📐 Class diagram
+    - 6.2. 🔁 Activity diagrams
+8. 🗂️ Cấu trúc thư mục & mô tả file quan trọng
+9. ▶️ Hướng dẫn chạy chương trình
    - 8.1. Chạy bằng IDE
    - 8.2. Chạy bằng Maven CLI
    - 8.3. Chạy bằng Codespaces
-9. 🧪 Kiểm thử & ví dụ đầu vào/đầu ra
-10. 🚀 Ghi chú triển khai và hướng phát triển tiếp
-11. 👨‍👩‍👧‍👦 Thành viên nhóm
-12. 📚 Tài liệu tham khảo & link repository
+10. 🧪 Test & ví dụ đầu vào/đầu ra
+11. 🚀 Ghi chú triển khai và hướng phát triển tiếp
+12. 👨‍👩‍👧‍👦 Thành viên nhóm
+13. 📚 Tài liệu tham khảo & link repository
 
 ---
 
@@ -62,10 +64,10 @@
 
 | 📦 Class              | 📝 Mô tả chức năng |
 |------------------------|--------------------|
-| `DongVat`              | Quản lý thông tin động vật: mã, tên, loài, tuổi, chuồng, giờ ăn, loại thức ăn. |
+| `DongVat`              | Quản lý thông tin động vật: mã, tên, loài, tuổi, chuồng. |
 | `Chuong`               | Quản lý chuồng nuôi: mã chuồng, khu vực, sức chứa, số lượng hiện tại. |
-| `NhanVien`             | Lưu thông tin nhân viên chăm sóc: mã, họ tên, tuổi, danh sách thú phụ trách. |
-| `GiaVe`                | Tính giá vé theo loại khách: trẻ em, sinh viên, người lớn, người già. |
+| `NhanVien`             | Lưu thông tin nhân viên chăm sóc: mã, họ tên, tuổi, danh sách chuồng phụ trách. |
+| `GiaVe`                | Áp dụng giảm cho mỗi đối tượng: trẻ em, sinh viên, người lớn, người già, đặc biệt. |
 | `LichChoAn`            | Quản lý lịch cho ăn: ngày giờ, loại thức ăn, mã thú. |
 
 ### 4.2. 🔗 Mối quan hệ giữa các class
@@ -80,13 +82,12 @@
 - 📜 **Trừu tượng (Abstraction)**
 
 
-## 6. 📊 Sơ đồ UML và Activity diagrams
-## 📐 Sơ đồ UML
+## 6. 📊 Sơ đồ Thiết kế Hệ thống
 
-### 📊 Class Diagram
+### 6.1. 📐 Class Diagram
 <img width="2048" height="509" alt="Image" src="https://github.com/user-attachments/assets/7dcd7797-b558-4564-8bc6-315fc68e5d84" />
 
-### 🔁 Activity Diagrams
+### 6.2. 🔁 Activity Diagrams
 <details>
 <summary>Click để xem các sơ đồ</summary>
 
@@ -167,10 +168,15 @@ OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/<br>
    ```bash
    git clone https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh.git
    ```
+2. Tải extention phù hợp
+3. Tạo PORT 8088 hoặc khác nếu muốn
+4. Run
 ### 8.2 Chạy bằng Maven CLI
 ```bash
   git clone https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh.git
+
   cd ZooManagementSystem
+
   mvn clean compile exec:java
 ```
 ### 8.3 Chạy trực tiếp bằng Codespaces
@@ -178,11 +184,12 @@ OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/<br>
   - Tải extention Java
   - Run
 
-## 9. 🧪 Kiểm thử
+## 9. 🧪 Test
 - JUnit cho các phương thức CRUD, kiểm tra sức chứa, tính giá vé.
+- Unit test đầy đủ
 
 ## 10. 🚀 Hướng phát triển
-- 💾 Lưu dữ liệu vào DB
+- 💾 Lưu dữ liệu vào DataBase (sql)
 - 🖥️ Giao diện GUI/REST API
 - 🛡️ Validation & Exception handling
   
