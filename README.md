@@ -44,10 +44,15 @@
 <summary>Click để xem các sơ đồ</summary>
 
 <img width="582" height="737" alt="Activity Diagram 1" src="https://github.com/user-attachments/assets/4b13c5e2-b075-4019-8df4-849b0b95ba85" />
+Activity GiaVe
 <img width="393" height="706" alt="Activity Diagram 2" src="https://github.com/user-attachments/assets/bc42dae3-ffb3-4eb5-889c-82c032fc2acf" />
+Activity Chuong
 <img width="629" height="683" alt="Activity Diagram 3" src="https://github.com/user-attachments/assets/946fc813-4757-4e8d-be5f-1b1838697849" />
-<img width="474" height="627" alt="Activity Diagram 4" src="https://github.com/user-attachments/assets/04166dc4-4de6-47d2-97b9-0cb4dd0fbbd6" />
+Activity LichChoAn
+<img width="533" height="789" alt="Activity Diagram 4"src="https://github.com/user-attachments/assets/27379e37-8611-40f0-ad22-746c08189bfd" />
+Activity DongVat
 <img width="857" height="736" alt="Activity Diagram 5" src="https://github.com/user-attachments/assets/2a66e0e5-fd64-48c5-898c-70276ae92f37" />
+Activity
 </details>
 
 ---
