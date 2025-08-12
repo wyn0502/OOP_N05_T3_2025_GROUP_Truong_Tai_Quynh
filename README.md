@@ -37,13 +37,13 @@
 ## 📐 Sơ đồ UML
 
 ### 📊 Class Diagram
-<img width="677" height="748" alt="Class Diagram" src="https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/blob/main/ZooManagementSystem/image/class%20diagram.png?raw=true"/>
+<img width="2048" height="509" alt="Image" src="https://github.com/user-attachments/assets/7dcd7797-b558-4564-8bc6-315fc68e5d84" />
 
 ### 🔁 Activity Diagrams
 <details>
 <summary>Click để xem các sơ đồ</summary>
 
-<img width="696" height="732" alt="Activity Diagram 1" src="https://github.com/user-attachments/assets/1630336a-5629-46f6-8ef2-4865798ce0ad" />
+<img width="582" height="737" alt="Activity Diagram 1" src="https://github.com/user-attachments/assets/4b13c5e2-b075-4019-8df4-849b0b95ba85" />
 <img width="393" height="706" alt="Activity Diagram 2" src="https://github.com/user-attachments/assets/bc42dae3-ffb3-4eb5-889c-82c032fc2acf" />
 <img width="629" height="683" alt="Activity Diagram 3" src="https://github.com/user-attachments/assets/946fc813-4757-4e8d-be5f-1b1838697849" />
 <img width="474" height="627" alt="Activity Diagram 4" src="https://github.com/user-attachments/assets/04166dc4-4de6-47d2-97b9-0cb4dd0fbbd6" />
