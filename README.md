@@ -44,6 +44,24 @@
 🔧 Dự án được phát triển bằng **Java (OOP)**, với trọng tâm là:
 - 🎯 Luyện tập các khái niệm: **Class, Đối tượng, Đóng gói, Kế thừa, Đa hình**.
 - 🔁 Mô hình hóa sát thực tế với các **class**: ***DongVat, Chuong, NhanVien, LichChoAn, GiaVe***.
+  
+<img width="18" height="18" alt="image" src="https://github.com/user-attachments/assets/ac5b2855-e636-42fd-bc6d-1d8ede65ce32" /> Tổng quan giao diện dự án
+
+<img width="1004" height="474" alt="dangnhap" src="https://github.com/user-attachments/assets/52cda291-82b8-4721-89ab-b406d5b92755" /><br>Màn hình đăng nhập
+
+<img width="1004" height="439" alt="dangky" src="https://github.com/user-attachments/assets/08100863-0047-4afc-8306-6f0ee26e8fce" /><br>Nơi để đăng kí tài khoản
+
+<img width="1004" height="423" alt="main" src="https://github.com/user-attachments/assets/d5071ec2-99b6-4c08-abe1-ef6b9bfb8bba" /><br>Giao diện chính hiển thị thông tin
+
+<img width="1004" height="554" alt="user" src="https://github.com/user-attachments/assets/a821b85e-7491-404f-90f3-41a54da5f9c9" /><br>Giao diện nhân viên<br>Vì chính sách bảo mật nên 1 số thông tin được che.
+
+<img width="1004" height="415" alt="chuong" src="https://github.com/user-attachments/assets/12ff6640-db71-40fb-96a6-fbc5f2523865" /><br>Giao diện Quản lý Chuồng
+
+<img width="1004" height="493" alt="dongvat" src="https://github.com/user-attachments/assets/9698052f-bfc6-41af-a314-ca5019df48ff" /><br>Giao diện Quản lý Động vật
+
+<img width="1004" height="471" alt="ve" src="https://github.com/user-attachments/assets/22c9a04f-6148-41ca-8058-caf64ca27378" /><br>Giao diện Quản lý Vé
+
+<img width="1004" height="405" alt="lichchoan" src="https://github.com/user-attachments/assets/41b6ca8c-ece8-4219-8fb7-826e05330590" /><br>Giao diện Quản lý Lịch cho ăn
 
 ## 2. 🎯 Mục tiêu và phạm vi
 - 🐵 Mô tả, lưu trữ và thao tác thông tin động vật.
@@ -88,20 +106,17 @@
 <img width="2048" height="509" alt="Image" src="https://github.com/user-attachments/assets/7dcd7797-b558-4564-8bc6-315fc68e5d84" />
 
 ### 6.2. 🔁 Activity Diagrams
-<details>
-<summary>Click để xem các sơ đồ</summary>
 
-<img width="582" height="737" alt="Activity Diagram 1" src="https://github.com/user-attachments/assets/4b13c5e2-b075-4019-8df4-849b0b95ba85" />
-Activity GiaVe
-<img width="393" height="706" alt="Activity Diagram 2" src="https://github.com/user-attachments/assets/bc42dae3-ffb3-4eb5-889c-82c032fc2acf" />
-Activity Chuong
-<img width="629" height="683" alt="Activity Diagram 3" src="https://github.com/user-attachments/assets/946fc813-4757-4e8d-be5f-1b1838697849" />
-Activity LichChoAn
-<img width="533" height="789" alt="Activity Diagram 4"src="https://github.com/user-attachments/assets/27379e37-8611-40f0-ad22-746c08189bfd" />
-Activity DongVat
-<img width="857" height="736" alt="Activity Diagram 5" src="https://github.com/user-attachments/assets/2a66e0e5-fd64-48c5-898c-70276ae92f37" />
-Activity
-</details>
+<img width="582" height="737" alt="Activity Diagram 1" src="https://github.com/user-attachments/assets/4b13c5e2-b075-4019-8df4-849b0b95ba85" /><br>Activity GiaVe
+
+<img width="393" height="706" alt="Activity Diagram 2" src="https://github.com/user-attachments/assets/bc42dae3-ffb3-4eb5-889c-82c032fc2acf" /><br>Activity Chuong
+
+<img width="629" height="683" alt="Activity Diagram 3" src="https://github.com/user-attachments/assets/946fc813-4757-4e8d-be5f-1b1838697849" /><br>Activity LichChoAn
+
+<img width="533" height="789" alt="Activity Diagram 4" src="https://github.com/user-attachments/assets/27379e37-8611-40f0-ad22-746c08189bfd" /><br>Activity DongVat
+
+<img width="857" height="736" alt="Activity Diagram 5" src="https://github.com/user-attachments/assets/2a66e0e5-fd64-48c5-898c-70276ae92f37" /><br>Activity
+
 
 ## 7. 🗂️ Cấu trúc thư mục
 
@@ -213,8 +228,9 @@ OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/<br>
 📁 **Thư mục chứa mã nguồn chính:**  
 👉 [`/ZooManagementSystem/src/main/java/com/example/zoo`](https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/tree/main/ZooManagementSystem/src/main/java/com/example/zoo)
 
-**Link web:**
-[`WEB`](https://wyn0502.id.vn/login)
+<img src="https://img.icons8.com/color/26/internet--v1.png" width="22"/> **Link web:**  
+👉 [`WEB`](https://wyn0502.id.vn/login)
+
 ---
 
 💡 **Nếu bạn thấy dự án hữu ích, hãy nhấn 🌟 star để ủng hộ nhóm nhé!**
