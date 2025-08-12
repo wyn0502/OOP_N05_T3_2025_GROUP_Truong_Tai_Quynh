@@ -1,13 +1,36 @@
-<h1 align="center">🐾 Ứng Dụng Quản Lý Sở Thú</h1>
+<h1 align="center">🐾 Ứng Dụng Quản Lý Sở Thú (Zoo Management System)</h1>
 
 <p align="center">
   📚 <strong>Java OOP Project</strong> – Nhóm: <code>OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh</code><br>
-  🎓 Môn học: Lập trình Hướng Đối Tượng
+  🎓 Môn học: Lập trình Hướng Đối Tượng (OOP)<br>
+  👩‍🏫 Giảng viên hướng dẫn: TS. Nguyễn Lệ Thu<br>
+  📅 Học kỳ III Năm học 2024-2025
 </p>
 
 ---
 
-## 📌 Giới thiệu dự án
+## 📑 Mục lục
+1. 📖 Giới thiệu
+2. 🎯 Mục tiêu và phạm vi
+3. ⚙️ Yêu cầu chức năng
+4. 🏗️ Phân tích và thiết kế hướng đối tượng
+   - 4.1 📦 Các class chính
+   - 4.2 🔗 Mối quan hệ giữa các class
+5. 💡 Các nguyên lý OOP áp dụng
+6. 📊 Sơ đồ UML và Activity diagrams
+7. 🗂️ Cấu trúc thư mục & mô tả tập tin quan trọng
+8. ▶️ Hướng dẫn chạy chương trình
+   - 8.1. Chạy bằng IDE
+   - 8.2. Chạy bằng Maven CLI
+   - 8.3. Chạy bằng Codespaces
+9. 🧪 Kiểm thử & ví dụ đầu vào/đầu ra
+10. 🚀 Ghi chú triển khai và hướng phát triển tiếp
+11. 👨‍👩‍👧‍👦 Thành viên nhóm
+12. 📚 Tài liệu tham khảo & link repository
+
+---
+
+## 1. 📌 Giới thiệu dự án
 
 🎯 Đây là một ứng dụng mô phỏng hệ thống quản lý trong một sở thú, nơi người dùng có thể:
 - Quản lý thông tin các 🦁 động vật (mã, tên, loại, tuổi, chuồng...).
@@ -20,9 +43,22 @@
 - 🎯 Luyện tập các khái niệm: **Class, Đối tượng, Đóng gói, Kế thừa, Đa hình**.
 - 🔁 Mô hình hóa sát thực tế với các **class**: ***DongVat, Chuong, NhanVien, LichChoAn, GiaVe***.
 
----
+## 2. 🎯 Mục tiêu và phạm vi
+- 🐵 Mô tả, lưu trữ và thao tác thông tin động vật.
+- 🏠 Quản lý chuồng nuôi.
+- 👨‍🌾 Quản lý nhân viên chăm sóc.
+- 🥕 Quản lý lịch cho ăn.
+- 🎟️ Tính toán giá vé.
 
-## 🧱 Main class
+## 3. ⚙️ Yêu cầu chức năng
+- ➕➖ Thêm / sửa / xóa / tìm kiếm động vật.
+- 🏠 Thêm / sửa / xóa / kiểm tra chuồng.
+- 👨‍🌾 Thêm / sửa / gán nhân viên cho động vật.
+- 📅 Lên lịch cho ăn.
+- 💰 Tính tiền vé.
+
+## 4. 🏗️ Phân tích và thiết kế hướng đối tượng
+### 4.1. 🧱 Main class
 
 | 📦 Class              | 📝 Mô tả chức năng |
 |------------------------|--------------------|
@@ -32,8 +68,19 @@
 | `GiaVe`                | Tính giá vé theo loại khách: trẻ em, sinh viên, người lớn, người già. |
 | `LichChoAn`            | Quản lý lịch cho ăn: ngày giờ, loại thức ăn, mã thú. |
 
----
+### 4.2. 🔗 Mối quan hệ giữa các class
+- `DongVat` → `Chuong`
+- `NhanVien` → `DongVat`
+- `LichChoAn` ↔ `DongVat`
 
+## 5. 💡 Các nguyên lý OOP áp dụng
+- 🔒 **Đóng gói (Encapsulation)**
+- 🧬 **Kế thừa (Inheritance)**
+- 🎭 **Đa hình (Polymorphism)**
+- 📜 **Trừu tượng (Abstraction)**
+
+
+## 6. 📊 Sơ đồ UML và Activity diagrams
 ## 📐 Sơ đồ UML
 
 ### 📊 Class Diagram
@@ -55,6 +102,90 @@ Activity DongVat
 Activity
 </details>
 
+## 7. 🗂️ Cấu trúc thư mục
+
+OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/<br>
+└── ZooManagementSystem/<br>
+    ├── src/main/java/com/example/zoo/<br>
+    │   │                   ├── ZooManagementApplication.java     # Main Spring Boot App<br>
+    │   │                   ├── GreetingController.java<br>
+    │   │                   ├── controller/                      # REST Controllers<br>
+    │   │                   │   ├── ChuongController.java<br>
+    │   │                   │   ├── DongVatController.java<br>
+    │   │                   │   ├── GiaVeController.java<br>
+    │   │                   │   ├── LichChoAnController.java<br>
+    │   │                   │   ├── NhanVienController.java<br>
+    │   │                   │   ├── LoginController.java<br>
+    │   │                   │   ├── RegisterController.java<br>
+    │   │                   │   ├── RedirectController.java<br>
+    │   │                   │   └── ErrorControllerCustom.java<br>
+    │   │                   ├── model/                           # Entity Classes<br>
+    │   │                   │   ├── DongVat.java<br>
+    │   │                   │   ├── Chuong.java<br>
+    │   │                   │   ├── NhanVien.java<br>
+    │   │                   │   ├── LichChoAn.java<br>
+    │   │                   │   ├── GiaVe.java<br>
+    │   │                   │   ├── User.java<br>
+    │   │                   │   └── RegisterForm.java<br>
+    │   │                   ├── service/                         # Business Logic<br>
+    │   │                   │   ├── DongVatService.java<br>
+    │   │                   │   ├── ChuongService.java<br>
+    │   │                   │   ├── NhanVienService.java<br>
+    │   │                   │   ├── LichChoAnService.java<br>
+    │   │                   │   └── GiaVeService.java<br>
+    │   │                   ├── repository/                      # Data Access Layer<br>
+    │   │                   │   ├── DongVatRepository.java<br>
+    │   │                   │   ├── ChuongRepository.java<br>
+    │   │                   │   ├── NhanVienRepository.java<br>
+    │   │                   │   ├── LichChoAnRepository.java<br>
+    │   │                   │   ├── GiaVeRepository.java<br>
+    │   │                   │   └── UserRepository.java<br>
+    │   │                   ├── interfaces/                      # Interface Definitions<br>
+    │   │                   │   ├── IHasId.java<br>
+    │   │                   │   └── IManager.java<br>
+    │   │                   └── database/                        # Database Configuration<br>
+    │   │                       ├── MyDBConnection.java<br>
+    │   │                       └── AivenConnection.java<br>
+    │   └── test/java/com/example/zoo/<br>
+    │                       ├── ServingWebContentApplicationTest.java<br>
+    │                       └── test/                            # Unit Tests<br>
+    │                           ├── DongVatControllerTest.java<br>
+    │                           ├── DongVatServiceTest.java<br>
+    │                           ├── ChuongControllerTest.java<br>
+    │                           ├── ChuongServiceTest.java<br>
+    │                           ├── GiaVeControllerTest.java<br>
+    │                           ├── GiaVeServiceTest.java<br>
+    │                           └── GiaVeTest.java<br>
+    └── review/Start/test/                                                  # Development/Testing Files<br>
+            ├── quynh/<br>
+            ├── tai/<br>
+            └── truong/<br>
+
+## 8. ▶️ Hướng dẫn chạy
+### 8.1 Chạy bằng IDE (IntelliJ IDEA / Eclipse)
+1. Clone repo:  
+   ```bash
+   git clone https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh.git
+   ```
+### 8.2 Chạy bằng Maven CLI
+```bash
+  git clone https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh.git
+  cd ZooManagementSystem
+  mvn clean compile exec:java
+```
+### 8.3 Chạy trực tiếp bằng Codespaces
+  - Tạo Codespaces
+  - Tải extention Java
+  - Run
+
+## 9. 🧪 Kiểm thử
+- JUnit cho các phương thức CRUD, kiểm tra sức chứa, tính giá vé.
+
+## 10. 🚀 Hướng phát triển
+- 💾 Lưu dữ liệu vào DB
+- 🖥️ Giao diện GUI/REST API
+- 🛡️ Validation & Exception handling
+  
 ---
 
 ## 👨‍👩‍👧‍👦 Thành viên nhóm
@@ -73,8 +204,10 @@ Activity
 👉 [`github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh`](https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh)
 
 📁 **Thư mục chứa mã nguồn chính:**  
-👉 [`/ZooManagementSystem/src`](https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/tree/main/ZooManagementSystem/src)
+👉 [`/ZooManagementSystem/src/main/java/com/example/zoo`](https://github.com/wyn0502/OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/tree/main/ZooManagementSystem/src/main/java/com/example/zoo)
 
+**Link web:**
+[`WEB`](https://wyn0502.id.vn/login)
 ---
 
 💡 **Nếu bạn thấy dự án hữu ích, hãy nhấn 🌟 star để ủng hộ nhóm nhé!**
