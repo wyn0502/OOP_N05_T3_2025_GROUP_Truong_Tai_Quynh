@@ -115,7 +115,7 @@
 
 <img width="533" height="789" alt="Activity Diagram 4" src="https://github.com/user-attachments/assets/27379e37-8611-40f0-ad22-746c08189bfd" /><br>Activity DongVat
 
-<img width="857" height="736" alt="Activity Diagram 5" src="https://github.com/user-attachments/assets/2a66e0e5-fd64-48c5-898c-70276ae92f37" /><br>Activity
+<img width="810" height="1202" alt="Image" src="https://github.com/user-attachments/assets/9a50c52b-c408-4810-90f2-d1184876bc06" /><br>Activity NhanVien
 
 
 ## 7. 🗂️ Cấu trúc thư mục
