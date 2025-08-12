@@ -106,4 +106,11 @@ public class NhanVienService {
             return "staff";
         return role.equalsIgnoreCase("admin") ? "admin" : "staff";
     }
+
+    @Transactional(readOnly = true)
+public NhanVien timTheoUsername(String username) {
+    if (username == null || username.trim().isEmpty()) return null;
+    return repo.findByUsername(username.trim());
+}
+
 }

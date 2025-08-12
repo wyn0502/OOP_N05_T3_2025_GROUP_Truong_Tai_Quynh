@@ -26,15 +26,30 @@ public class LichChoAnController {
     private boolean isAdmin(User user) {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
+
+    // Cho phép admin + staff xem danh sách
+    private boolean canView(User user) {
+        return user != null && (
+                "admin".equalsIgnoreCase(user.getRole()) ||
+                "staff".equalsIgnoreCase(user.getRole())
+        );
+    }
+
+    // Admin-only
     private boolean isAuthorized(HttpSession session) {
         User u = (User) session.getAttribute("loggedInUser");
         return isAdmin(u);
     }
 
-    // ===== Danh sách (ai cũng xem được) =====
+    // ===== Danh sách (admin + staff xem được) =====
     @GetMapping
-    public String danhSach(Model model) {
+    public String danhSach(Model model, HttpSession session) {
+        User u = (User) session.getAttribute("loggedInUser");
+        if (!canView(u)) {
+            return "redirect:/error/505";
+        }
         model.addAttribute("danhSachLich", lichChoAnService.getAll());
+        model.addAttribute("role", u.getRole()); // truyền role sang view
         return "lichchoan/list";
     }
 
@@ -56,14 +71,14 @@ public class LichChoAnController {
                            HttpSession session) {
         if (!isAuthorized(session)) return "redirect:/error/505";
 
-        // Mã lịch
+        // Validate mã lịch
         if (lich.getMaLich() == null || !lich.getMaLich().matches("^L00\\d+$")) {
             result.rejectValue("maLich", "error.lich", "Mã lịch phải có định dạng L00 + số (ví dụ L001)");
         } else if (lichChoAnService.timTheoId(lich.getMaLich()) != null) {
             result.rejectValue("maLich", "error.lich", "Mã lịch đã tồn tại");
         }
 
-        // Thời gian: chuẩn hoá về phút & phải > hiện tại (tối thiểu +1 phút)
+        // Validate thời gian
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         if (lich.getThoiGian() == null) {
             lich.setThoiGian(now.plusMinutes(1));

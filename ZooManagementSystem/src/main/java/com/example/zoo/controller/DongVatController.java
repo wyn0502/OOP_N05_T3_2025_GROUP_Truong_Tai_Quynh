@@ -26,11 +26,18 @@ public class DongVatController {
     @Autowired
     private ChuongService chuongService;
 
-    // Kiểm tra quyền admin
+    // Chỉ admin
     private boolean isAdmin(User user) {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
 
+    // Admin hoặc staff đều xem được
+    private boolean canView(User user) {
+        return user != null && ("admin".equalsIgnoreCase(user.getRole())
+                || "staff".equalsIgnoreCase(user.getRole()));
+    }
+
+    // Chỉ admin mới thêm/sửa/xóa
     private boolean isAuthorized(HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
         return isAdmin(user);
@@ -39,7 +46,8 @@ public class DongVatController {
     @GetMapping
     public String hienThiDanhSach(Model model, HttpSession session,
             @RequestParam(value = "search", required = false) String searchId) {
-        if (!isAuthorized(session)) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (!canView(user)) {
             return "redirect:/error/505";
         }
         try {
@@ -63,6 +71,8 @@ public class DongVatController {
             } else {
                 model.addAttribute("danhSach", service.layTatCa());
             }
+            // truyền role sang view
+            model.addAttribute("role", user.getRole());
             return "dongvat/list";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi tải danh sách động vật: " + e.getMessage());
@@ -77,14 +87,11 @@ public class DongVatController {
         }
         try {
             model.addAttribute("dongVat", new DongVat());
-            
             List<Chuong> chuongCoChoTrong = chuongService.layChuongCoChoTrong();
             model.addAttribute("danhSachChuong", chuongCoChoTrong);
-            
             if (chuongCoChoTrong.isEmpty()) {
-                model.addAttribute("warning", "Hiện tại không có chuồng nào còn chỗ trống! Vui lòng tạo chuồng mới hoặc mở rộng sức chứa chuồng hiện có.");
+                model.addAttribute("warning", "Hiện tại không có chuồng nào còn chỗ trống! Vui lòng tạo mới hoặc mở rộng.");
             }
-            
             return "dongvat/form";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi tạo mới động vật: " + e.getMessage());
@@ -100,22 +107,16 @@ public class DongVatController {
         try {
             DongVat dv = service.timTheoId(id);
             if (dv == null) {
-                model.addAttribute("error", "Không tìm thấy động vật.");
                 return "redirect:/dongvat?notfound";
             }
-            
             model.addAttribute("dongVat", dv);
-            
             List<Chuong> chuongCoChoTrong = chuongService.layChuongCoChoTrong();
             Chuong chuongHienTai = chuongService.timTheoMa(dv.getMaChuong());
-            
-            if (chuongHienTai != null && 
-                chuongCoChoTrong.stream().noneMatch(c -> c.getMaChuong().equals(chuongHienTai.getMaChuong()))) {
+            if (chuongHienTai != null
+                    && chuongCoChoTrong.stream().noneMatch(c -> c.getMaChuong().equals(chuongHienTai.getMaChuong()))) {
                 chuongCoChoTrong.add(chuongHienTai);
             }
-            
             model.addAttribute("danhSachChuong", chuongCoChoTrong);
-            
             return "dongvat/form";
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi tải thông tin động vật: " + e.getMessage());
@@ -130,24 +131,20 @@ public class DongVatController {
             @PathVariable String maChuong,
             @RequestParam(required = false) Long dongVatId) {
         Map<String, Object> result = new HashMap<>();
-        
         try {
             Chuong chuong = chuongService.timTheoMa(maChuong);
             if (chuong == null) {
                 result.put("error", "Chuồng không tồn tại");
                 return ResponseEntity.badRequest().body(result);
             }
-            
             boolean coChoTrong = service.kiemTraSucChua(maChuong, dongVatId);
             long soDongVatHienTai = service.demDongVatTheoMaChuong(maChuong);
-            
             result.put("coChoTrong", coChoTrong);
             result.put("soDongVatHienTai", soDongVatHienTai);
             result.put("sucChuaToiDa", chuong.getSucChuaToiDa());
-            result.put("message", coChoTrong ? 
-                "Chuồng còn chỗ trống" : 
-                "Chuồng đã đầy (" + soDongVatHienTai + "/" + chuong.getSucChuaToiDa() + ")");
-            
+            result.put("message", coChoTrong
+                    ? "Chuồng còn chỗ trống"
+                    : "Chuồng đã đầy (" + soDongVatHienTai + "/" + chuong.getSucChuaToiDa() + ")");
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             result.put("error", e.getMessage());
@@ -155,7 +152,6 @@ public class DongVatController {
         }
     }
 
-    // Lưu động vật (thêm/sửa)
     @PostMapping("/luu")
     public String xuLyLuu(@ModelAttribute DongVat dongVat, Model model, HttpSession session) {
         if (!isAuthorized(session)) {
@@ -167,23 +163,16 @@ public class DongVatController {
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("dongVat", dongVat);
-            
-            if (dongVat.getId() == null) {
-                List<Chuong> chuongCoChoTrong = chuongService.layChuongCoChoTrong();
-                model.addAttribute("danhSachChuong", chuongCoChoTrong);
-            } else {
-                List<Chuong> chuongCoChoTrong = chuongService.layChuongCoChoTrong();
-                Chuong chuongHienTai = chuongService.timTheoMa(dongVat.getMaChuong());
-                if (chuongHienTai != null && 
-                    chuongCoChoTrong.stream().noneMatch(c -> c.getMaChuong().equals(chuongHienTai.getMaChuong()))) {
-                    chuongCoChoTrong.add(chuongHienTai);
-                }
-                model.addAttribute("danhSachChuong", chuongCoChoTrong);
+            List<Chuong> chuongCoChoTrong = chuongService.layChuongCoChoTrong();
+            Chuong chuongHienTai = chuongService.timTheoMa(dongVat.getMaChuong());
+            if (chuongHienTai != null
+                    && chuongCoChoTrong.stream().noneMatch(c -> c.getMaChuong().equals(chuongHienTai.getMaChuong()))) {
+                chuongCoChoTrong.add(chuongHienTai);
             }
-            
+            model.addAttribute("danhSachChuong", chuongCoChoTrong);
             return "dongvat/form";
         } catch (Exception e) {
-            model.addAttribute("error", "Không thể lưu động vật. Vui lòng thử lại! " + e.getMessage());
+            model.addAttribute("error", "Không thể lưu động vật: " + e.getMessage());
             model.addAttribute("dongVat", dongVat);
             return "dongvat/form";
         }

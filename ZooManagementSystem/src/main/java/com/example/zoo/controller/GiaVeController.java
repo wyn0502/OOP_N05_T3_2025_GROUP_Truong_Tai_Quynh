@@ -32,24 +32,31 @@ public class GiaVeController {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
 
+// Cho phép admin và staff xem danh sách
+    private boolean canView(User user) {
+        return user != null && ("admin".equalsIgnoreCase(user.getRole())
+                || "staff".equalsIgnoreCase(user.getRole()));
+    }
+
+// Chỉ admin mới được thêm/sửa/xóa
     private boolean isAuthorized(HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
         return isAdmin(user);
     }
 
-    // ======== CRUD với tìm kiếm ========
+// ======== CRUD với tìm kiếm ========
     @GetMapping
     public String danhSachVe(@RequestParam(name = "search", required = false) String searchId,
-                            @RequestParam(name = "keyword", required = false) String keyword,
-                            Model model, HttpSession session) {
-        if (!isAuthorized(session)) {
+            @RequestParam(name = "keyword", required = false) String keyword,
+            Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (!canView(user)) {
             return "redirect:/error/505";
         }
         try {
             List<GiaVe> danhSachVe;
-            
+
             if (searchId != null && !searchId.trim().isEmpty()) {
-                // Tìm kiếm theo ID
                 try {
                     Long id = Long.parseLong(searchId.trim());
                     GiaVe foundVe = giaVeService.timTheoId(id);
@@ -67,18 +74,19 @@ public class GiaVeController {
                     model.addAttribute("searchValue", searchId);
                 }
             } else if (keyword != null && !keyword.isBlank()) {
-                // Tìm kiếm theo từ khóa (loại vé)
                 danhSachVe = giaVeService.layTatCa().stream()
-                        .filter(ve -> ve.getLoaiVe().toLowerCase().contains(keyword.toLowerCase()))
+                        .filter(ve -> ve.getLoaiVe() != null
+                        && ve.getLoaiVe().toLowerCase().contains(keyword.toLowerCase()))
                         .collect(Collectors.toList());
                 model.addAttribute("keyword", keyword);
                 model.addAttribute("searchResult", "Tìm thấy " + danhSachVe.size() + " kết quả cho từ khóa: " + keyword);
             } else {
-                // Hiển thị tất cả
                 danhSachVe = giaVeService.layTatCa();
             }
-            
+
             model.addAttribute("danhSachVe", danhSachVe);
+            model.addAttribute("role", user != null ? user.getRole() : null);
+
             return "giave/list";
         } catch (Exception ex) {
             model.addAttribute("error", "Đã xảy ra lỗi khi tải danh sách vé: " + ex.getMessage());
@@ -162,7 +170,7 @@ public class GiaVeController {
         }
     }
 
-    // ======== Xem và In vé ========
+// ======== Xem và In vé ========
     @GetMapping("/inve/{id}")
     public String xemTruocVe(@PathVariable("id") Long id, Model model) {
         GiaVe ve = giaVeService.timTheoId(id);
@@ -185,10 +193,15 @@ public class GiaVeController {
         response.setHeader("Content-Disposition", "attachment; filename=ve_" + ve.getId() + ".pdf");
 
         Document document = new Document(PageSize.A5);
-        PdfWriter.getInstance(document, response.getOutputStream());
-        document.open();
-        addVeToPdf(document, ve);
-        document.close();
+        try {
+            PdfWriter.getInstance(document, response.getOutputStream());
+            document.open();
+            addVeToPdf(document, ve);
+        } catch (DocumentException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            document.close();
+        }
     }
 
     @PostMapping("/print-many")
@@ -197,21 +210,25 @@ public class GiaVeController {
         List<GiaVe> veList = giaVeService.layTatCa()
                 .stream()
                 .filter(ve -> ids.contains(ve.getId()))
-                .collect(Collectors.toList());
+                .toList();
 
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=danhsach_ve.pdf");
 
         Document document = new Document(PageSize.A5);
-        PdfWriter.getInstance(document, response.getOutputStream());
-        document.open();
+        try {
+            PdfWriter.getInstance(document, response.getOutputStream());
+            document.open();
 
-        for (GiaVe ve : veList) {
-            addVeToPdf(document, ve);
-            document.add(new Paragraph("---------------", new Font(Font.HELVETICA, 12, Font.ITALIC)));
+            for (GiaVe ve : veList) {
+                addVeToPdf(document, ve);
+                document.add(new Paragraph("---------------", new Font(Font.HELVETICA, 12, Font.ITALIC)));
+            }
+        } catch (DocumentException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            document.close();
         }
-
-        document.close();
     }
 
     @PostMapping("/print-multiple-copies/{id}")
@@ -228,15 +245,19 @@ public class GiaVeController {
         response.setHeader("Content-Disposition", "attachment; filename=ve_" + ve.getId() + "_x" + soLuong + ".pdf");
 
         Document document = new Document(PageSize.A5);
-        PdfWriter.getInstance(document, response.getOutputStream());
-        document.open();
+        try {
+            PdfWriter.getInstance(document, response.getOutputStream());
+            document.open();
 
-        for (int i = 0; i < soLuong; i++) {
-            addVeToPdf(document, ve);
-            document.add(new Paragraph("---------------", new Font(Font.HELVETICA, 12, Font.ITALIC)));
+            for (int i = 0; i < soLuong; i++) {
+                addVeToPdf(document, ve);
+                document.add(new Paragraph("---------------", new Font(Font.HELVETICA, 12, Font.ITALIC)));
+            }
+        } catch (DocumentException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            document.close();
         }
-
-        document.close();
     }
 
     private void addVeToPdf(Document document, GiaVe ve) throws DocumentException {

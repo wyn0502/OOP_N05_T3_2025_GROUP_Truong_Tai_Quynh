@@ -1,7 +1,6 @@
 package com.example.zoo.controller;
 
 import com.example.zoo.model.Chuong;
-import com.example.zoo.model.DongVat;
 import com.example.zoo.model.User;
 import com.example.zoo.service.ChuongService;
 import com.example.zoo.service.DongVatService;
@@ -31,6 +30,13 @@ public class ChuongController {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
 
+    // admin và staff đều xem được
+    private boolean canView(User user) {
+        return user != null && ("admin".equalsIgnoreCase(user.getRole())
+                || "staff".equalsIgnoreCase(user.getRole()));
+    }
+
+    // chỉ admin
     private boolean isAuthorized(HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
         return isAdmin(user);
@@ -38,12 +44,13 @@ public class ChuongController {
 
     @GetMapping
     public String list(Model model, HttpSession session,
-                      @RequestParam(value = "search", required = false) String searchId) {
+            @RequestParam(value = "search", required = false) String searchId) {
         try {
-            if (!isAuthorized(session)) {
+            User user = (User) session.getAttribute("loggedInUser");
+            if (!canView(user)) {
                 return "redirect:/error/505";
             }
-            
+
             if (searchId != null && !searchId.trim().isEmpty()) {
                 Chuong foundChuong = service.timTheoMa(searchId.trim());
                 if (foundChuong != null) {
@@ -56,14 +63,13 @@ public class ChuongController {
                 model.addAttribute("searchValue", searchId);
             } else {
                 List<Chuong> danhSach = service.hienThi();
-                System.out.println("DEBUG Controller: Số chuồng nhận được: " + danhSach.size());
                 model.addAttribute("danhSach", danhSach);
             }
-            
+
+            model.addAttribute("role", user.getRole());
+
             return "chuong/list";
         } catch (Exception e) {
-            System.err.println("Lỗi trong controller: " + e.getMessage());
-            e.printStackTrace();
             model.addAttribute("error", "Lỗi lấy danh sách: " + e.getMessage());
             return "error/general";
         }
@@ -132,21 +138,17 @@ public class ChuongController {
         }
     }
 
-    // API kiểm tra trước khi xóa
     @GetMapping("/kiem-tra/{maChuong}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> kiemTraChuong(@PathVariable String maChuong) {
         Map<String, Object> result = new HashMap<>();
-        
         try {
             var danhSachDongVat = dongVatService.layDongVatTheoMaChuong(maChuong);
-            
             result.put("coDongVat", !danhSachDongVat.isEmpty());
             result.put("soDongVat", danhSachDongVat.size());
             result.put("tenDongVat", danhSachDongVat.stream()
-                .map(dv -> dv.getTen())
-                .collect(Collectors.toList()));
-            
+                    .map(dv -> dv.getTen())
+                    .collect(Collectors.toList()));
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             result.put("error", e.getMessage());
@@ -160,23 +162,18 @@ public class ChuongController {
             if (!isAuthorized(session)) {
                 return "redirect:/error/505";
             }
-            
-            // KIỂM TRA TRƯỚC KHI XÓA
             long soDongVat = dongVatService.demDongVatTheoMaChuong(maChuong);
             if (soDongVat > 0) {
                 var danhSachDongVat = dongVatService.layDongVatTheoMaChuong(maChuong);
                 String tenDongVat = danhSachDongVat.stream()
-                    .map(dv -> dv.getTen())
-                    .collect(Collectors.joining(", "));
-                    
-                model.addAttribute("error", 
-                    String.format("Không thể xóa chuồng %s vì còn %d động vật bên trong: %s. " +
-                                "Hãy di chuyển hoặc xóa động vật trước khi xóa chuồng.", 
+                        .map(dv -> dv.getTen())
+                        .collect(Collectors.joining(", "));
+                model.addAttribute("error",
+                        String.format("Không thể xóa chuồng %s vì còn %d động vật bên trong: %s. ",
                                 maChuong, soDongVat, tenDongVat));
                 model.addAttribute("danhSach", service.hienThi());
                 return "chuong/list";
             }
-            
             service.xoa(maChuong);
             return "redirect:/chuong?deleted";
         } catch (Exception e) {
