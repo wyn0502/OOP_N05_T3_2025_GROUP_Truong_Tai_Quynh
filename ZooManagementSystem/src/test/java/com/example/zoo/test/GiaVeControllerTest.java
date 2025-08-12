@@ -67,8 +67,8 @@ class GiaVeControllerTest {
         // Act & Assert
         mockMvc.perform(get("/giave").session(staffSession))
                 .andExpect(status().isOk())
-                .andExpected(model().attributeExists("danhSachVe"))
-                .andExpected(view().name("giave/list"));
+                .andExpect(model().attributeExists("danhSachVe"))
+                .andExpect(view().name("giave/list"));
     }
 
     @Test
@@ -132,7 +132,7 @@ class GiaVeControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/giave?deleted"));
         
-        verify(giaVeService, times(1)).xoaTheoId(1L); // Sửa method name
+        verify(giaVeService, times(1)).xoaTheoId(1L);
     }
 
     @Test
