@@ -19,7 +19,16 @@ public class ChuongService {
 
     public void them(Chuong c) {
         try {
+            // SỬA: Đảm bảo chuồng mới luôn có soLuongHienTai = 0
+            c.setSoLuongHienTai(0);
+            
+            // Validation bổ sung
+            if (c.getSucChuaToiDa() <= 0) {
+                throw new IllegalArgumentException("Sức chứa tối đa phải lớn hơn 0");
+            }
+            
             repository.save(c);
+            System.out.println("Đã thêm chuồng mới: " + c.getMaChuong() + " với 0 động vật");
         } catch (Exception e) {
             System.err.println("Lỗi khi thêm chuồng: " + e.getMessage());
             throw new RuntimeException("Không thể thêm chuồng.", e);
@@ -40,12 +49,26 @@ public class ChuongService {
             repository.findById(ma).ifPresent(c -> {
                 c.setTenKhuVuc(newChuong.getTenKhuVuc());
                 c.setSucChuaToiDa(newChuong.getSucChuaToiDa());
-                c.setSoLuongHienTai(newChuong.getSoLuongHienTai());
+                
+                // SỬA: KHÔNG cập nhật soLuongHienTai từ form
+                // soLuongHienTai chỉ được cập nhật thông qua capNhatSoLuongDongVat()
+                // c.setSoLuongHienTai(newChuong.getSoLuongHienTai()); // BỎ DÒNG NÀY
+                
+                // Validation: Không cho phép sức chứa nhỏ hơn số lượng hiện tại
+                if (newChuong.getSucChuaToiDa() < c.getSoLuongHienTai()) {
+                    throw new IllegalArgumentException(
+                        String.format("Sức chứa tối đa (%d) không thể nhỏ hơn số lượng động vật hiện tại (%d)", 
+                                     newChuong.getSucChuaToiDa(), c.getSoLuongHienTai()));
+                }
+                
                 repository.save(c);
+                System.out.println("Đã cập nhật chuồng: " + ma + 
+                                 " - Sức chứa: " + c.getSucChuaToiDa() + 
+                                 " - Hiện tại: " + c.getSoLuongHienTai());
             });
         } catch (Exception e) {
             System.err.println("Lỗi khi sửa chuồng: " + e.getMessage());
-            throw new RuntimeException("Không thể cập nhật chuồng.", e);
+            throw new RuntimeException("Không thể cập nhật chuồng: " + e.getMessage(), e);
         }
     }
 
@@ -99,12 +122,24 @@ public class ChuongService {
     public void capNhatSoLuongDongVat(String maChuong, int soLuongMoi) {
         try {
             repository.findById(maChuong).ifPresent(c -> {
+                // Validation
+                if (soLuongMoi < 0) {
+                    throw new IllegalArgumentException("Số lượng động vật không thể âm");
+                }
+                if (soLuongMoi > c.getSucChuaToiDa()) {
+                    throw new IllegalArgumentException(
+                        String.format("Số lượng động vật (%d) vượt quá sức chứa tối đa (%d)", 
+                                     soLuongMoi, c.getSucChuaToiDa()));
+                }
+                
                 c.setSoLuongHienTai(soLuongMoi);
                 repository.save(c);
+                System.out.println("Đã cập nhật số lượng động vật trong chuồng " + 
+                                 maChuong + ": " + soLuongMoi);
             });
         } catch (Exception e) {
             System.err.println("Lỗi khi cập nhật số lượng động vật: " + e.getMessage());
-            throw new RuntimeException("Không thể cập nhật số lượng động vật trong chuồng.", e);
+            throw new RuntimeException("Không thể cập nhật số lượng động vật trong chuồng: " + e.getMessage(), e);
         }
     }
 }

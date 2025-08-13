@@ -206,4 +206,42 @@ public class DongVatService {
             return 0;
         }
     }
+
+    // =======================================
+    // METHODS MỚI CHO LICHCHOAN
+    // =======================================
+    
+    /**
+     * Tìm động vật theo tên chính xác
+     * @param ten Tên động vật cần tìm
+     * @return DongVat nếu tìm thấy, null nếu không
+     */
+    public DongVat timTheoTen(String ten) {
+        try {
+            if (ten == null || ten.trim().isEmpty()) {
+                return null;
+            }
+            return dongVatRepository.findByTen(ten.trim());
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tìm động vật theo tên: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Tìm động vật theo tên gần đúng (không phân biệt hoa thường)
+     * @param ten Tên động vật cần tìm (có thể là một phần)
+     * @return Danh sách động vật có tên chứa từ khóa
+     */
+    public List<DongVat> timTheoTenGanDung(String ten) {
+        try {
+            if (ten == null || ten.trim().isEmpty()) {
+                return Collections.emptyList();
+            }
+            return dongVatRepository.findByTenContainingIgnoreCase(ten.trim());
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tìm động vật theo tên gần đúng: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
 }

@@ -1,8 +1,10 @@
 package com.example.zoo.controller;
 
 import com.example.zoo.model.LichChoAn;
+import com.example.zoo.model.DongVat;
 import com.example.zoo.model.User;
 import com.example.zoo.service.LichChoAnService;
+import com.example.zoo.service.DongVatService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -12,15 +14,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Controller
 @RequestMapping("/lichchoan")
 public class LichChoAnController {
 
     private final LichChoAnService lichChoAnService;
+    private final DongVatService dongVatService;
 
-    public LichChoAnController(LichChoAnService lichChoAnService) {
+    public LichChoAnController(LichChoAnService lichChoAnService, DongVatService dongVatService) {
         this.lichChoAnService = lichChoAnService;
+        this.dongVatService = dongVatService;
     }
 
     private boolean isAdmin(User user) {
@@ -60,6 +65,11 @@ public class LichChoAnController {
         if (!model.containsAttribute("lich")) {
             model.addAttribute("lich", new LichChoAn());
         }
+        
+        // THÊM DANH SÁCH ĐỘNG VẬT VÀO MODEL
+        List<DongVat> danhSachDongVat = dongVatService.layTatCa();
+        model.addAttribute("danhSachDongVat", danhSachDongVat);
+        
         return "lichchoan/add";
     }
 
@@ -78,6 +88,33 @@ public class LichChoAnController {
             result.rejectValue("maLich", "error.lich", "Mã lịch đã tồn tại");
         }
 
+        // THÊM LOGIC TÌM ĐỘNG VẬT VÀ SET DONG_VAT_ID
+        if (lich.getDongVat() != null && !lich.getDongVat().trim().isEmpty()) {
+            DongVat dongVat = dongVatService.timTheoTen(lich.getDongVat().trim());
+            if (dongVat != null) {
+                lich.setDongVatId(dongVat.getId());
+            } else {
+                // Nếu không tìm thấy chính xác, thử tìm gần đúng
+                List<DongVat> danhSachGanDung = dongVatService.timTheoTenGanDung(lich.getDongVat().trim());
+                if (!danhSachGanDung.isEmpty()) {
+                    lich.setDongVatId(danhSachGanDung.get(0).getId()); // Lấy kết quả đầu tiên
+                } else {
+                    // Nếu vẫn không tìm thấy, set default value
+                    lich.setDongVatId(1L);
+                }
+            }
+        } else {
+            lich.setDongVatId(1L); // Set default value nếu không có tên động vật
+        }
+
+        // THÊM LOGIC SET NHAN_VIEN_ID
+        User currentUser = (User) session.getAttribute("loggedInUser");
+        if (currentUser != null && currentUser.getId() != null) {
+            lich.setNhanVienId(currentUser.getId()); // Lấy ID từ user hiện tại
+        } else {
+            lich.setNhanVienId(1L); // Default ID nếu không có user
+        }
+
         // Validate thời gian
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         if (lich.getThoiGian() == null) {
@@ -93,6 +130,9 @@ public class LichChoAnController {
 
         if (result.hasErrors()) {
             model.addAttribute("lich", lich);
+            // THÊM LẠI DANH SÁCH ĐỘNG VẬT KHI CÓ LỖI
+            List<DongVat> danhSachDongVat = dongVatService.layTatCa();
+            model.addAttribute("danhSachDongVat", danhSachDongVat);
             return "lichchoan/add";
         }
 
@@ -107,6 +147,11 @@ public class LichChoAnController {
         LichChoAn lich = lichChoAnService.timTheoId(id);
         if (lich == null) return "redirect:/lichchoan";
         model.addAttribute("lich", lich);
+        
+        // THÊM DANH SÁCH ĐỘNG VẬT VÀO MODEL
+        List<DongVat> danhSachDongVat = dongVatService.layTatCa();
+        model.addAttribute("danhSachDongVat", danhSachDongVat);
+        
         return "lichchoan/edit";
     }
 
@@ -124,6 +169,31 @@ public class LichChoAnController {
             return "redirect:/lichchoan";
         }
 
+        // THÊM LOGIC TÌM ĐỘNG VẬT VÀ SET DONG_VAT_ID (GIỐNG METHOD THÊM)
+        if (lich.getDongVat() != null && !lich.getDongVat().trim().isEmpty()) {
+            DongVat dongVat = dongVatService.timTheoTen(lich.getDongVat().trim());
+            if (dongVat != null) {
+                lich.setDongVatId(dongVat.getId());
+            } else {
+                List<DongVat> danhSachGanDung = dongVatService.timTheoTenGanDung(lich.getDongVat().trim());
+                if (!danhSachGanDung.isEmpty()) {
+                    lich.setDongVatId(danhSachGanDung.get(0).getId());
+                } else {
+                    lich.setDongVatId(1L);
+                }
+            }
+        } else {
+            lich.setDongVatId(1L);
+        }
+
+        // THÊM LOGIC SET NHAN_VIEN_ID (GIỐNG METHOD THÊM)
+        User currentUser = (User) session.getAttribute("loggedInUser");
+        if (currentUser != null && currentUser.getId() != null) {
+            lich.setNhanVienId(currentUser.getId());
+        } else {
+            lich.setNhanVienId(1L);
+        }
+
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         if (lich.getThoiGian() == null || !lich.getThoiGian().truncatedTo(ChronoUnit.MINUTES).isAfter(now)) {
             result.rejectValue("thoiGian", "error.lich", "Thời gian phải lớn hơn hiện tại (tối thiểu +1 phút).");
@@ -133,6 +203,9 @@ public class LichChoAnController {
 
         if (result.hasErrors()) {
             model.addAttribute("lich", lich);
+            // THÊM LẠI DANH SÁCH ĐỘNG VẬT KHI CÓ LỖI
+            List<DongVat> danhSachDongVat = dongVatService.layTatCa();
+            model.addAttribute("danhSachDongVat", danhSachDongVat);
             return "lichchoan/edit";
         }
 

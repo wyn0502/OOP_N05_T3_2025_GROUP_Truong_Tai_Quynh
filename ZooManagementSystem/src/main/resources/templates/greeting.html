@@ -215,22 +215,23 @@
             </div>
 
             <!-- Động vật -->
-            <div class="col-12 col-md-6">
-              <div class="card h-100">
-                <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
-                  <span><i class="fas fa-paw me-2"></i>Thông tin động vật</span>
-                  <form method="get" action="/greeting" class="d-inline">
-                    <input type="hidden" name="giaVeId"    th:value="${giaVe?.id}" />
-                    <input type="hidden" name="chuongId"   th:value="${chuong?.maChuong}" />
-                    <input type="hidden" name="lichChoAnId" th:value="${lichChoAn?.maLich}" />
-                    <select name="dongVatId" class="form-select form-select-sm d-inline w-auto"
-                            onchange="this.form.submit()"
-                            th:if="${not #lists.isEmpty(danhSachDongVat)}">
-                      <option th:each="dv : ${danhSachDongVat}" th:value="${dv.id}"
-                              th:text="${dv.ten}" th:selected="${dv.id == dongVat?.id}">Động vật</option>
-                    </select>
-                  </form>
-                </div>
+<div class="col-12 col-md-6">
+  <div class="card h-100">
+    <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
+      <span><i class="fas fa-paw me-2"></i>Thông tin động vật</span>
+      <form method="get" action="/greeting" class="d-inline">
+        <input type="hidden" name="giaVeId"    th:value="${giaVe?.id}" />
+        <input type="hidden" name="chuongId"   th:value="${chuong?.maChuong}" />
+        <input type="hidden" name="lichChoAnId" th:value="${lichChoAn?.maLich}" />
+        <select name="dongVatId" class="form-select form-select-sm d-inline w-auto"
+                onchange="this.form.submit()"
+                th:if="${not #lists.isEmpty(danhSachDongVat)}">
+          <option th:each="dv : ${danhSachDongVat}" th:value="${dv.id}"
+                  th:text="${dv.ten + ' (ID: ' + dv.id + ')'}" 
+                  th:selected="${dv.id == dongVat?.id}">Động vật</option>
+        </select>
+      </form>
+    </div>
                 <ul class="list-group list-group-flush" th:if="${dongVat != null}">
                   <li class="list-group-item d-flex justify-content-between">
                     <span>Tên</span><span th:text="${dongVat.ten}">...</span>
@@ -269,9 +270,10 @@
                             onchange="this.form.submit()"
                             th:if="${not #lists.isEmpty(danhSachGiaVe)}">
                       <option th:each="ve : ${danhSachGiaVe}" th:value="${ve.id}"
-                              th:text="${ve.loaiVe + ' - ' + #numbers.formatDecimal(ve.giaCoBan, 0, 'POINT', 0, 'COMMA') + ' VNĐ'}"
+                              th:text="${ve.loaiVe} + '  (ID: ' + ${ve.id} + ')'"
                               th:selected="${ve.id == giaVe?.id}">Vé</option>
                     </select>
+
                   </form>
                 </div>
                 <ul class="list-group list-group-flush" th:if="${giaVe != null}">
@@ -307,7 +309,7 @@
                             onchange="this.form.submit()"
                             th:if="${not #lists.isEmpty(danhSachChuong)}">
                       <option th:each="c : ${danhSachChuong}" th:value="${c.maChuong}"
-                              th:text="${c.tenKhuVuc + ' (' + c.maChuong + ')'}"
+                              th:text="${c.tenKhuVuc + ' (ID: ' + c.maChuong + ')'}"
                               th:selected="${c.maChuong == chuong?.maChuong}">Chuồng</option>
                     </select>
                   </form>
@@ -336,7 +338,7 @@
                       <option th:each="lca : ${danhSachLichChoAn}"
                               th:value="${lca.maLich}"
                               th:selected="${lichChoAn != null ? lca.maLich == lichChoAn.maLich : false}"
-                              th:text="${lca.maLich + ' - ' + lca.dongVat + ' (' + #temporals.format(lca.thoiGian, 'dd/MM/yyyy HH:mm') + ')'}">
+                              th:text="${lca.dongVat + ' (' + #temporals.format(lca.thoiGian, 'dd/MM/yyyy HH:mm') + ')' + ' (ID: ' + lca.maLich + ')' }">
                         Lịch
                       </option>
                     </select>

@@ -10,8 +10,11 @@ import java.util.List;
 public interface DongVatRepository extends JpaRepository<DongVat, Long> {
     long countByMaChuong(String maChuong);
     List<DongVat> findByMaChuong(String maChuong);
-        boolean existsByMaChuong(String maChuong);
-        List<DongVat> findByLoai(String loai);
-        List<DongVat> findBySucKhoe(String sucKhoe);
-        List<DongVat> findByTuoiBetween(int minTuoi, int maxTuoi);
+    boolean existsByMaChuong(String maChuong);
+    List<DongVat> findByLoai(String loai);
+    List<DongVat> findBySucKhoe(String sucKhoe);
+    List<DongVat> findByTuoiBetween(int minTuoi, int maxTuoi);
+    
+    DongVat findByTen(String ten);
+    List<DongVat> findByTenContainingIgnoreCase(String ten);
 }

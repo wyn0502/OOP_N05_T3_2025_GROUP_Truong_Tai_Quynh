@@ -1,6 +1,8 @@
 package com.example.zoo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -9,22 +11,26 @@ public class Chuong {
 
     @Id
     @Column(name = "ma_chuong")
+    @NotBlank(message = "Mã chuồng không được để trống")
     private String maChuong;
 
     @Column(name = "ten_khu_vuc")
+    @NotBlank(message = "Tên khu vực không được để trống")
     private String tenKhuVuc;
 
     @Column(name = "suc_chua_toi_da")
+    @Min(value = 1, message = "Sức chứa tối đa phải lớn hơn 0")
     private int sucChuaToiDa;
 
     @Column(name = "so_luong_hien_tai")
+    @Min(value = 0, message = "Số lượng hiện tại không được âm")
     private int soLuongHienTai;
 
     // Mối quan hệ One-to-Many với DongVat
     @OneToMany(mappedBy = "chuong", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DongVat> danhSachDongVat;
 
-    // Constructors, getters, setters...
+    // Constructors
     public Chuong() {
     }
 
@@ -33,6 +39,28 @@ public class Chuong {
         this.tenKhuVuc = tenKhuVuc;
         this.sucChuaToiDa = sucChuaToiDa;
         this.soLuongHienTai = soLuongHienTai;
+    }
+
+    // SỬA: Thêm validation methods
+    @PrePersist
+    @PreUpdate
+    private void validateChuong() {
+        // Đảm bảo số lượng hiện tại không âm
+        if (soLuongHienTai < 0) {
+            soLuongHienTai = 0;
+        }
+        
+        // Đảm bảo số lượng hiện tại không vượt quá sức chứa
+        if (soLuongHienTai > sucChuaToiDa) {
+            throw new IllegalStateException(
+                String.format("Số lượng hiện tại (%d) không thể lớn hơn sức chứa tối đa (%d)", 
+                             soLuongHienTai, sucChuaToiDa));
+        }
+        
+        // Đảm bảo sức chứa tối đa > 0
+        if (sucChuaToiDa <= 0) {
+            throw new IllegalStateException("Sức chứa tối đa phải lớn hơn 0");
+        }
     }
 
     // Getters và Setters
@@ -74,5 +102,24 @@ public class Chuong {
 
     public void setDanhSachDongVat(List<DongVat> danhSachDongVat) {
         this.danhSachDongVat = danhSachDongVat;
+    }
+
+    // Utility methods
+    public boolean coChoTrong() {
+        return soLuongHienTai < sucChuaToiDa;
+    }
+
+    public int soChoTrong() {
+        return sucChuaToiDa - soLuongHienTai;
+    }
+
+    @Override
+    public String toString() {
+        return "Chuong{" +
+                "maChuong='" + maChuong + '\'' +
+                ", tenKhuVuc='" + tenKhuVuc + '\'' +
+                ", sucChuaToiDa=" + sucChuaToiDa +
+                ", soLuongHienTai=" + soLuongHienTai +
+                '}';
     }
 }

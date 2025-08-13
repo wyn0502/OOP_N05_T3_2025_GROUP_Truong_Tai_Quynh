@@ -18,6 +18,14 @@ public class LichChoAn {
     @Size(max = 20)
     private String maLich;
 
+    // Trường đã có
+    @Column(name = "dong_vat_id")
+    private Long dongVatId;
+
+    // THÊM TRƯỜNG MỚI CHO NHAN_VIEN_ID
+    @Column(name = "nhan_vien_id")
+    private Long nhanVienId;
+
     @Column(name = "dong_vat", length = 100, nullable = false)
     @NotBlank
     @Size(max = 100)
@@ -49,6 +57,17 @@ public class LichChoAn {
         this.thoiGian = thoiGian;
     }
 
+    // Constructor đầy đủ
+    public LichChoAn(String maLich, Long dongVatId, Long nhanVienId, String dongVat, String thucAn, String nhanVien, LocalDateTime thoiGian) {
+        this.maLich    = maLich;
+        this.dongVatId = dongVatId;
+        this.nhanVienId = nhanVienId;
+        this.dongVat   = dongVat;
+        this.thucAn    = thucAn;
+        this.nhanVien  = nhanVien;
+        this.thoiGian  = thoiGian;
+    }
+
     public String getId() { return maLich; }
 
     @PrePersist
@@ -64,6 +83,13 @@ public class LichChoAn {
     // Getters/Setters
     public String getMaLich() { return maLich; }
     public void setMaLich(String maLich) { this.maLich = maLich; }
+
+    public Long getDongVatId() { return dongVatId; }
+    public void setDongVatId(Long dongVatId) { this.dongVatId = dongVatId; }
+
+    // THÊM GETTER/SETTER CHO NHAN_VIEN_ID
+    public Long getNhanVienId() { return nhanVienId; }
+    public void setNhanVienId(Long nhanVienId) { this.nhanVienId = nhanVienId; }
 
     public String getDongVat() { return dongVat; }
     public void setDongVat(String dongVat) { this.dongVat = dongVat; }
