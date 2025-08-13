@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>Sửa Nhân Viên - Zoo Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
@@ -15,54 +15,72 @@
       <i class="fas fa-arrow-left me-2"></i> Quay lại danh sách nhân viên
     </a>
 
-    <h2 class="text-center text-warning mb-4"><i class="fas fa-user-edit me-2"></i>Cập Nhật Thông Tin Nhân Viên</h2>
+    <h2 class="text-center text-success mb-4">
+      <i class="fas fa-user-edit me-2"></i>Cập Nhật Thông Tin Nhân Viên
+    </h2>
 
     <form th:action="@{/nhanvien/update}" th:object="${user}" method="post"
-      class="row g-3 bg-white p-4 rounded shadow-sm">
+      class="needs-validation row g-3 bg-white p-4 rounded shadow-sm" novalidate>
+
       <input type="hidden" th:field="*{id}" />
 
+      <!-- Họ tên -->
       <div class="col-md-6">
-        <label class="form-label">Họ tên</label>
-        <input type="text" class="form-control" th:field="*{fullname}" required>
+        <label for="fullname" class="form-label">Họ tên</label>
+        <input type="text" th:field="*{fullname}" id="fullname" class="form-control" required minlength="2">
+        <div class="invalid-feedback">Vui lòng nhập họ tên hợp lệ.</div>
       </div>
 
+      <!-- Tên đăng nhập -->
       <div class="col-md-6">
-        <label class="form-label">Tên đăng nhập</label>
-        <input type="text" class="form-control" th:field="*{username}" readonly>
+        <label for="username" class="form-label">Tên đăng nhập</label>
+        <input type="text" th:field="*{username}" id="username" class="form-control" readonly>
       </div>
 
+      <!-- Cấp bậc -->
       <div class="col-md-6">
-        <label class="form-label">Mật khẩu</label>
-        <div class="input-group">
-          <input type="password" class="form-control" value="********" disabled>
-          <a th:href="@{/nhanvien/reset-password/{id}(id=${user.id})}" class="btn btn-outline-primary">Đổi mật khẩu</a>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">Cấp bậc</label>
-        <select class="form-select" th:field="*{role}" required>
+        <label for="role" class="form-label">Cấp bậc</label>
+        <select th:field="*{role}" id="role" class="form-select" required>
           <option value="admin">Quản lý</option>
           <option value="staff">Nhân viên</option>
         </select>
+        <div class="invalid-feedback">Vui lòng chọn cấp bậc.</div>
       </div>
 
+      <!-- Ngày vào làm -->
       <div class="col-md-6">
-        <label class="form-label">Ngày vào làm</label>
-        <input type="date" class="form-control" th:field="*{datework}">
+        <label for="datework" class="form-label">Ngày vào làm</label>
+        <input type="date" th:field="*{datework}" id="datework" class="form-control" required>
+        <div class="invalid-feedback">Ngày vào làm không được bỏ trống.</div>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label">SĐT</label>
-        <input type="text" class="form-control" th:field="*{phone}">
+      <!-- SĐT -->
+      <div class="col-md-4">
+        <label for="phone" class="form-label">Số điện thoại</label>
+        <input type="text" th:field="*{phone}" id="phone" class="form-control" pattern="^\d{10}$"
+          placeholder="VD: 0987654321" required>
+        <div class="invalid-feedback">SĐT phải gồm 10 chữ số.</div>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label">Chuồng phụ trách</label>
-        <input type="text" class="form-control" th:field="*{chuong}">
+      <!-- Chuồng phụ trách -->
+      <div class="col-md-4">
+        <label for="chuong" class="form-label">Chuồng phụ trách</label>
+        <input type="text" th:field="*{chuong}" id="chuong" class="form-control">
       </div>
 
-      <div class="col-12 text-end mt-3">
+      <!-- Mật khẩu -->
+      <div class="col-md-4">
+        <label class="form-label d-block">Mật khẩu</label>
+        <div class="input-group">
+          <input type="password" value="********" class="form-control" disabled>
+          <a th:href="@{/nhanvien/reset-password/{id}(id=${user.id})}" class="btn btn-outline-warning">
+            Đổi mật khẩu
+          </a>
+        </div>
+      </div>
+
+      <!-- Nút -->
+      <div class="col-12 text-end mt-4">
         <button type="submit" class="btn btn-success me-2">
           <i class="fas fa-save me-2"></i> Cập nhật
         </button>
@@ -72,6 +90,23 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
 </body>
 
 </html>
