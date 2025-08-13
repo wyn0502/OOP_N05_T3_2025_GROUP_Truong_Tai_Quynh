@@ -19,10 +19,8 @@ public class ChuongService {
 
     public void them(Chuong c) {
         try {
-            // SỬA: Đảm bảo chuồng mới luôn có soLuongHienTai = 0
             c.setSoLuongHienTai(0);
             
-            // Validation bổ sung
             if (c.getSucChuaToiDa() <= 0) {
                 throw new IllegalArgumentException("Sức chứa tối đa phải lớn hơn 0");
             }
@@ -49,12 +47,6 @@ public class ChuongService {
             repository.findById(ma).ifPresent(c -> {
                 c.setTenKhuVuc(newChuong.getTenKhuVuc());
                 c.setSucChuaToiDa(newChuong.getSucChuaToiDa());
-                
-                // SỬA: KHÔNG cập nhật soLuongHienTai từ form
-                // soLuongHienTai chỉ được cập nhật thông qua capNhatSoLuongDongVat()
-                // c.setSoLuongHienTai(newChuong.getSoLuongHienTai()); // BỎ DÒNG NÀY
-                
-                // Validation: Không cho phép sức chứa nhỏ hơn số lượng hiện tại
                 if (newChuong.getSucChuaToiDa() < c.getSoLuongHienTai()) {
                     throw new IllegalArgumentException(
                         String.format("Sức chứa tối đa (%d) không thể nhỏ hơn số lượng động vật hiện tại (%d)", 
@@ -122,7 +114,6 @@ public class ChuongService {
     public void capNhatSoLuongDongVat(String maChuong, int soLuongMoi) {
         try {
             repository.findById(maChuong).ifPresent(c -> {
-                // Validation
                 if (soLuongMoi < 0) {
                     throw new IllegalArgumentException("Số lượng động vật không thể âm");
                 }

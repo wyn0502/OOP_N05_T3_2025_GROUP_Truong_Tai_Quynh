@@ -45,9 +45,15 @@
         <label for="tuoi" class="form-label fw-semibold">
           <i class="fas fa-birthday-cake me-2"></i>Tuổi
         </label>
-        <input type="number" class="form-control" id="tuoi" th:field="*{tuoi}" 
-               placeholder="Nhập tuổi" min="0" required />
+        <input type="number" class="form-control" id="tuoi" 
+               th:field="*{tuoi}" 
+               th:placeholder="${dongVat.id == null} ? 'Nhập tuổi (VD: 2.5)' : ''"
+               min="0" step="0.1" required />
         <div class="invalid-feedback">Vui lòng nhập tuổi hợp lệ (>= 0).</div>
+        <div class="form-text text-muted">
+          <i class="fas fa-info-circle me-1"></i>
+          Có thể nhập số thập phân (VD: 1.5 tuổi, 0.3 tuổi)
+        </div>
       </div>
 
       <!-- Loài -->
@@ -80,7 +86,7 @@
           <i class="fas fa-home me-2"></i>Mã chuồng
         </label>
         
-        <!-- Hiển thị dropdown nếu có danh sách chuồng -->
+        <!-- dropdown nếu có danh sách chuồng -->
         <div th:if="${danhSachChuong != null and not #lists.isEmpty(danhSachChuong)}">
           <select class="form-control" id="maChuong" th:field="*{maChuong}" required onchange="checkCageCapacity()">
             <option value="">Chọn chuồng</option>
@@ -95,7 +101,7 @@
           </div>
         </div>
         
-        <!-- Hiển thị input text nếu không có chuồng trống -->
+        <!-- input text nếu không có chuồng trống -->
         <div th:if="${danhSachChuong == null or #lists.isEmpty(danhSachChuong)}">
           <input type="text" class="form-control" id="maChuong" th:field="*{maChuong}" 
                  placeholder="Nhập mã chuồng" required readonly />
@@ -107,7 +113,7 @@
         
         <div class="invalid-feedback">Vui lòng chọn chuồng.</div>
         
-        <!-- Thông tin chi tiết chuồng được chọn -->
+        <!-- Thông tin chi tiết chuồng chọn -->
         <div id="cageInfo" class="mt-2" style="display: none;"></div>
       </div>
 
@@ -143,6 +149,35 @@
       }, false);
     })();
 
+    function formatAge(value) {
+      const num = parseFloat(value);
+      if (isNaN(num)) return '';
+      if (num % 1 === 0) {
+        return Math.floor(num).toString();
+      }
+      return num.toFixed(1);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const tuoiInput = document.getElementById('tuoi');
+      if (tuoiInput && tuoiInput.value) {
+        tuoiInput.value = formatAge(tuoiInput.value);
+      }
+
+      // Xử lý khi user nhập tuổi
+      tuoiInput.addEventListener('blur', function() {
+        if (this.value) {
+          this.value = formatAge(this.value);
+        }
+      });
+
+      // Auto-check cage nếu đã có giá trị
+      const maChuong = document.getElementById('maChuong');
+      if (maChuong && maChuong.value) {
+        checkCageCapacity();
+      }
+    });
+
     // Kiểm tra sức chứa chuồng khi chọn
     function checkCageCapacity() {
       const maChuong = document.getElementById('maChuong').value;
@@ -153,7 +188,7 @@
         return;
       }
 
-      // Lấy thông tin từ option được chọn
+      // thông tin từ option chọn
       const selectedOption = document.querySelector(`#maChuong option[value="${maChuong}"]`);
       if (selectedOption) {
         const optionText = selectedOption.textContent;
@@ -187,14 +222,7 @@
           cageInfo.style.display = 'block';
         }
       }
-
-    // Auto-check cage nếu đã có giá trị
-    document.addEventListener('DOMContentLoaded', function() {
-      const maChuong = document.getElementById('maChuong');
-      if (maChuong && maChuong.value) {
-        checkCageCapacity();
-      }
-    });
+    }
   </script>
 </body>
 </html>

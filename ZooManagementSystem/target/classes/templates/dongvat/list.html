@@ -75,7 +75,12 @@
         <tr th:each="dv : ${danhSach}">
           <td th:text="${dv.id}">1</td>
           <td th:text="${dv.ten}">Tên</td>
-          <td th:text="${dv.tuoi}">0</td>
+          <td>
+            <span th:if="${dv.tuoi % 1 == 0}" 
+                  th:text="${#numbers.formatInteger(dv.tuoi, 0)}"></span>
+            <span th:unless="${dv.tuoi % 1 == 0}" 
+                  th:text="${#numbers.formatDecimal(dv.tuoi, 1, 1)}"></span>
+          </td>
           <td th:text="${dv.loai}">Loài</td>
           <td>
             <span th:text="${dv.sucKhoe}"
@@ -119,6 +124,7 @@
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tải...';
     setTimeout(() => location.reload(), 800);
   }
+  
   function confirmDelete(event) {
     event.preventDefault();
     if (confirm('Bạn chắc chắn muốn xóa động vật này?')) {
@@ -129,35 +135,35 @@
 
   // Focus vào ô tìm kiếm khi tải trang
   document.addEventListener('DOMContentLoaded', function() {
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput && !searchInput.value) {
-    searchInput.focus();
-  }
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && !searchInput.value) {
+      searchInput.focus();
+    }
 
-  // Hiển thị thông báo thành công
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('success')) {
-    showAlert('success', 'Lưu động vật thành công!');
-  }
-  if (urlParams.has('deleted')) {
-    showAlert('success', 'Xóa động vật thành công!');
-  }
-});
+    // Hiển thị thông báo thành công
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success')) {
+      showAlert('success', 'Lưu động vật thành công!');
+    }
+    if (urlParams.has('deleted')) {
+      showAlert('success', 'Xóa động vật thành công!');
+    }
+  });
 
-function showAlert(type, message) {
-  const alert = document.createElement('div');
-  alert.className = `alert alert-${type} alert-dismissible fade show`;
-  alert.innerHTML = `
-    <i class="fas fa-check-circle me-2"></i>
-    ${message}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  `;
-  document.querySelector('.container').insertBefore(alert, document.querySelector('.text-center'));
-  
-  setTimeout(() => {
-    alert.remove();
-  }, 5000);
-}
+  function showAlert(type, message) {
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show`;
+    alert.innerHTML = `
+      <i class="fas fa-check-circle me-2"></i>
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.querySelector('.container').insertBefore(alert, document.querySelector('.text-center'));
+    
+    setTimeout(() => {
+      alert.remove();
+    }, 5000);
+  }
 </script>
 </body>
 </html>

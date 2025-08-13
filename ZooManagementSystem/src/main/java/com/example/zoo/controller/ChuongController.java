@@ -81,7 +81,6 @@ public class ChuongController {
             if (!isAuthorized(session)) {
                 return "redirect:/error/505";
             }
-            // SỬA: Tạo chuồng mới với soLuongHienTai = 0 (không cho user nhập)
             model.addAttribute("chuong", new Chuong("", "", 0, 0));
             model.addAttribute("mode", "add");
             return "chuong/form";
@@ -122,7 +121,6 @@ public class ChuongController {
             chuong.setMaChuong(sanitizeMaChuong(chuong.getMaChuong()));
 
             if ("add".equals(mode)) {
-                // SỬA: Khi thêm mới, BUỘC soLuongHienTai = 0
                 chuong.setSoLuongHienTai(0);
                 
                 if (service.timTheoMa(chuong.getMaChuong()) != null) {
@@ -133,8 +131,6 @@ public class ChuongController {
                 }
                 service.them(chuong);
             } else if ("edit".equals(mode)) {
-                // SỬA: Khi edit, KHÔNG cho phép thay đổi soLuongHienTai từ form
-                // Lấy giá trị hiện tại từ database
                 Chuong chuongCu = service.timTheoMa(chuong.getMaChuong());
                 if (chuongCu != null) {
                     chuong.setSoLuongHienTai(chuongCu.getSoLuongHienTai());

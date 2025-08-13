@@ -44,7 +44,7 @@ public class GiaVeController {
         return isAdmin(user);
     }
 
-// ======== CRUD với tìm kiếm ========
+// CRUD với tìm kiếm 
     @GetMapping
     public String danhSachVe(@RequestParam(name = "search", required = false) String searchId,
             @RequestParam(name = "keyword", required = false) String keyword,
@@ -170,7 +170,7 @@ public class GiaVeController {
         }
     }
 
-// ======== Xem và In vé ========
+// Xem và In vé
     @GetMapping("/inve/{id}")
     public String xemTruocVe(@PathVariable("id") Long id, Model model) {
         GiaVe ve = giaVeService.timTheoId(id);

@@ -71,7 +71,6 @@ public class DongVatController {
             } else {
                 model.addAttribute("danhSach", service.layTatCa());
             }
-            // truyền role sang view
             model.addAttribute("role", user.getRole());
             return "dongvat/list";
         } catch (Exception e) {

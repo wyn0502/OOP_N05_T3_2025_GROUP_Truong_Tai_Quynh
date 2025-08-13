@@ -66,7 +66,6 @@ public class LichChoAnController {
             model.addAttribute("lich", new LichChoAn());
         }
         
-        // THÊM DANH SÁCH ĐỘNG VẬT VÀO MODEL
         List<DongVat> danhSachDongVat = dongVatService.layTatCa();
         model.addAttribute("danhSachDongVat", danhSachDongVat);
         
@@ -81,25 +80,21 @@ public class LichChoAnController {
                            HttpSession session) {
         if (!isAuthorized(session)) return "redirect:/error/505";
 
-        // Validate mã lịch
         if (lich.getMaLich() == null || !lich.getMaLich().matches("^L00\\d+$")) {
             result.rejectValue("maLich", "error.lich", "Mã lịch phải có định dạng L00 + số (ví dụ L001)");
         } else if (lichChoAnService.timTheoId(lich.getMaLich()) != null) {
             result.rejectValue("maLich", "error.lich", "Mã lịch đã tồn tại");
         }
 
-        // THÊM LOGIC TÌM ĐỘNG VẬT VÀ SET DONG_VAT_ID
         if (lich.getDongVat() != null && !lich.getDongVat().trim().isEmpty()) {
             DongVat dongVat = dongVatService.timTheoTen(lich.getDongVat().trim());
             if (dongVat != null) {
                 lich.setDongVatId(dongVat.getId());
             } else {
-                // Nếu không tìm thấy chính xác, thử tìm gần đúng
                 List<DongVat> danhSachGanDung = dongVatService.timTheoTenGanDung(lich.getDongVat().trim());
                 if (!danhSachGanDung.isEmpty()) {
                     lich.setDongVatId(danhSachGanDung.get(0).getId()); // Lấy kết quả đầu tiên
                 } else {
-                    // Nếu vẫn không tìm thấy, set default value
                     lich.setDongVatId(1L);
                 }
             }
@@ -107,7 +102,6 @@ public class LichChoAnController {
             lich.setDongVatId(1L); // Set default value nếu không có tên động vật
         }
 
-        // THÊM LOGIC SET NHAN_VIEN_ID
         User currentUser = (User) session.getAttribute("loggedInUser");
         if (currentUser != null && currentUser.getId() != null) {
             lich.setNhanVienId(currentUser.getId()); // Lấy ID từ user hiện tại
@@ -130,7 +124,6 @@ public class LichChoAnController {
 
         if (result.hasErrors()) {
             model.addAttribute("lich", lich);
-            // THÊM LẠI DANH SÁCH ĐỘNG VẬT KHI CÓ LỖI
             List<DongVat> danhSachDongVat = dongVatService.layTatCa();
             model.addAttribute("danhSachDongVat", danhSachDongVat);
             return "lichchoan/add";
@@ -169,7 +162,6 @@ public class LichChoAnController {
             return "redirect:/lichchoan";
         }
 
-        // THÊM LOGIC TÌM ĐỘNG VẬT VÀ SET DONG_VAT_ID (GIỐNG METHOD THÊM)
         if (lich.getDongVat() != null && !lich.getDongVat().trim().isEmpty()) {
             DongVat dongVat = dongVatService.timTheoTen(lich.getDongVat().trim());
             if (dongVat != null) {
@@ -186,7 +178,6 @@ public class LichChoAnController {
             lich.setDongVatId(1L);
         }
 
-        // THÊM LOGIC SET NHAN_VIEN_ID (GIỐNG METHOD THÊM)
         User currentUser = (User) session.getAttribute("loggedInUser");
         if (currentUser != null && currentUser.getId() != null) {
             lich.setNhanVienId(currentUser.getId());
@@ -203,7 +194,6 @@ public class LichChoAnController {
 
         if (result.hasErrors()) {
             model.addAttribute("lich", lich);
-            // THÊM LẠI DANH SÁCH ĐỘNG VẬT KHI CÓ LỖI
             List<DongVat> danhSachDongVat = dongVatService.layTatCa();
             model.addAttribute("danhSachDongVat", danhSachDongVat);
             return "lichchoan/edit";

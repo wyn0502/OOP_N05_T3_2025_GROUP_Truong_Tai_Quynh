@@ -66,7 +66,6 @@
       <div class="invalid-feedback">Vui lòng nhập sức chứa lớn hơn 0.</div>
     </div>
 
-    <!-- SỬA: Chỉ hiển thị "Số lượng hiện tại" khi EDIT -->
     <div th:if="${mode == 'edit'}" class="mb-3">
       <label for="soLuongHienTai" class="form-label fw-semibold">
         <i class="fas fa-dog me-2"></i>Số lượng hiện tại
@@ -83,7 +82,7 @@
       </small>
     </div>
 
-    <!-- SỬA: Thông báo khi thêm mới -->
+    <!-- Thông báo khi thêm mới -->
     <div th:if="${mode == 'add'}" class="alert alert-info mb-3">
       <i class="fas fa-info-circle me-2"></i>
       <strong>Lưu ý:</strong> Chuồng mới sẽ bắt đầu với 0 động vật. 

@@ -78,8 +78,7 @@ public class DongVatService {
                             "Chuồng %s đã đầy! Sức chứa tối đa: %d, hiện tại: %d động vật.",
                             dv.getMaChuong(),
                             chuong != null ? chuong.getSucChuaToiDa() : 0,
-                            soDongVatHienTai
-                    ));
+                            soDongVatHienTai));
                 }
             }
 
@@ -94,7 +93,8 @@ public class DongVatService {
             System.out.println("Đã lưu động vật: " + dv.getTen() + " vào chuồng: " + dv.getMaChuong());
         } catch (Exception e) {
             System.err.println("Lỗi khi lưu động vật: " + e.getMessage());
-            throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException("Không thể lưu động vật.", e);
+            throw e instanceof RuntimeException ? (RuntimeException) e
+                    : new RuntimeException("Không thể lưu động vật.", e);
         }
     }
 
@@ -189,7 +189,7 @@ public class DongVatService {
         }
     }
 
-    public List<DongVat> timTheoKhoangTuoi(int minTuoi, int maxTuoi) {
+    public List<DongVat> timTheoKhoangTuoi(double minTuoi, double maxTuoi) {
         try {
             return dongVatRepository.findByTuoiBetween(minTuoi, maxTuoi);
         } catch (Exception e) {
@@ -207,15 +207,6 @@ public class DongVatService {
         }
     }
 
-    // =======================================
-    // METHODS MỚI CHO LICHCHOAN
-    // =======================================
-    
-    /**
-     * Tìm động vật theo tên chính xác
-     * @param ten Tên động vật cần tìm
-     * @return DongVat nếu tìm thấy, null nếu không
-     */
     public DongVat timTheoTen(String ten) {
         try {
             if (ten == null || ten.trim().isEmpty()) {
@@ -228,11 +219,6 @@ public class DongVatService {
         }
     }
 
-    /**
-     * Tìm động vật theo tên gần đúng (không phân biệt hoa thường)
-     * @param ten Tên động vật cần tìm (có thể là một phần)
-     * @return Danh sách động vật có tên chứa từ khóa
-     */
     public List<DongVat> timTheoTenGanDung(String ten) {
         try {
             if (ten == null || ten.trim().isEmpty()) {

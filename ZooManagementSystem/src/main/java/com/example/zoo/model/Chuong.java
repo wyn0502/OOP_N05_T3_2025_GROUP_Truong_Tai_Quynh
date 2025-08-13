@@ -41,23 +41,19 @@ public class Chuong {
         this.soLuongHienTai = soLuongHienTai;
     }
 
-    // SỬA: Thêm validation methods
     @PrePersist
     @PreUpdate
     private void validateChuong() {
-        // Đảm bảo số lượng hiện tại không âm
         if (soLuongHienTai < 0) {
             soLuongHienTai = 0;
         }
         
-        // Đảm bảo số lượng hiện tại không vượt quá sức chứa
         if (soLuongHienTai > sucChuaToiDa) {
             throw new IllegalStateException(
                 String.format("Số lượng hiện tại (%d) không thể lớn hơn sức chứa tối đa (%d)", 
                              soLuongHienTai, sucChuaToiDa));
         }
         
-        // Đảm bảo sức chứa tối đa > 0
         if (sucChuaToiDa <= 0) {
             throw new IllegalStateException("Sức chứa tối đa phải lớn hơn 0");
         }

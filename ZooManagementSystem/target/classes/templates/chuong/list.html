@@ -151,7 +151,6 @@
             loadingModal.hide();
             
             if (data.coDongVat) {
-                // Tạo thông báo chi tiết
                 const animalList = data.tenDongVat.join('\n• ');
                 const message = `⚠️ KHÔNG THỂ XÓA CHUỒNG ${maChuong}\n\n` +
                                `📊 Thống kê:\n` +
@@ -172,7 +171,6 @@
                                      `Bạn có chắc chắn muốn xóa không?`;
                 
                 if (confirm(confirmMessage)) {
-                    // Hiển thị thông báo đang xóa
                     const deleteBtn = event.target.closest('a');
                     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                     deleteBtn.classList.add('disabled');
@@ -213,7 +211,6 @@
       `;
       document.querySelector('.container').insertBefore(alert, document.querySelector('.text-center'));
       
-      // Tự động ẩn sau 5 giây
       setTimeout(() => {
         alert.remove();
       }, 5000);

@@ -18,7 +18,6 @@ public class LichChoAn {
     @Size(max = 20)
     private String maLich;
 
-    // Trường đã có
     @Column(name = "dong_vat_id")
     private Long dongVatId;
 

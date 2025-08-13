@@ -18,7 +18,6 @@ public class LichChoAnService implements IManager<LichChoAn> {
         this.repo = repo;
     }
 
-    // ===== IManager impl =====
     @Override
     public void them(LichChoAn lich) {
         repo.save(lich);
@@ -46,7 +45,6 @@ public class LichChoAnService implements IManager<LichChoAn> {
         }
     }
 
-    // ===== API dùng trong controller =====
     @Transactional(readOnly = true)
     public List<LichChoAn> getAll() {
         return hienThi();

@@ -11,7 +11,9 @@ public class DongVat {
     private Long id;
 
     private String ten;
-    private int tuoi;
+    
+    private double tuoi;
+    
     private String loai;
 
     @Column(name = "suc_khoe")
@@ -20,7 +22,7 @@ public class DongVat {
     @Column(name = "ma_chuong")
     private String maChuong;
 
-    // Thiết lập mối quan hệ Many-to-One với Chuong
+    // mối quan hệ Many-to-One với Chuong
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ma_chuong", referencedColumnName = "ma_chuong",
             insertable = false, updatable = false)
@@ -30,7 +32,7 @@ public class DongVat {
     public DongVat() {
     }
 
-    public DongVat(String ten, int tuoi, String loai, String sucKhoe, String maChuong) {
+    public DongVat(String ten, double tuoi, String loai, String sucKhoe, String maChuong) {
         this.ten = ten;
         this.tuoi = tuoi;
         this.loai = loai;
@@ -55,11 +57,11 @@ public class DongVat {
         this.ten = ten;
     }
 
-    public int getTuoi() {
+    public double getTuoi() {
         return tuoi;
     }
 
-    public void setTuoi(int tuoi) {
+    public void setTuoi(double tuoi) {
         this.tuoi = tuoi;
     }
 
@@ -97,13 +99,13 @@ public class DongVat {
 
     @Override
     public String toString() {
-        return "DongVat{"
-                + "id=" + id
-                + ", ten='" + ten + '\''
-                + ", tuoi=" + tuoi
-                + ", loai='" + loai + '\''
-                + ", sucKhoe='" + sucKhoe + '\''
-                + ", maChuong='" + maChuong + '\''
-                + '}';
+        return "DongVat{" +
+                "id=" + id +
+                ", ten='" + ten + '\'' +
+                ", tuoi=" + tuoi +
+                ", loai='" + loai + '\'' +
+                ", sucKhoe='" + sucKhoe + '\'' +
+                ", maChuong='" + maChuong + '\'' +
+                '}';
     }
 }
