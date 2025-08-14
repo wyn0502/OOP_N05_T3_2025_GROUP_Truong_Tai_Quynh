@@ -1,2 +1,8 @@
-com\example\zoo\test\ChuongControllerTest.class
-com\example\zoo\ServingWebContentApplicationTest.class
+com/example/zoo/test/ChuongControllerTest.class
+com/example/zoo/test/DongVatTest.class
+com/example/zoo/test/DongVatControllerTest.class
+com/example/zoo/test/DongVatServiceTest.class
+com/example/zoo/test/ChuongServiceTest.class
+com/example/zoo/test/GiaVeServiceTest.class
+com/example/zoo/test/ChuongTest.class
+com/example/zoo/test/GiaVeTest.class
