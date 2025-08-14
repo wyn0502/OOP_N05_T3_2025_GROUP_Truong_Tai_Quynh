@@ -4,8 +4,24 @@
 <head>
     <meta charset="UTF-8" />
     <title>Đăng ký - Zoo</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .strength-checklist li {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .strength-checklist i {
+            width: 18px;
+        }
+
+        .progress-sm {
+            height: 10px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -13,31 +29,35 @@
         <a href="/login" class="btn btn-outline-secondary mb-3">← Quay lại đăng nhập</a>
         <h2 class="text-center mb-3 text-primary">Đăng ký tài khoản</h2>
 
-        <!-- Ghi chú quan trọng -->
-        <div class="alert alert-danger" role="alert">
-            <strong>Lưu ý:</strong> Sau khi đăng ký tài khoản, hệ thống công nhận bạn là <strong>nhân viên của sở
-                thú</strong>.
-            <br />Ngày vào làm sẽ tính theo <strong>thời điểm bạn đăng ký tài khoản</strong>.
-            <br />Nếu cần chỉnh sửa thông tin cá nhân trong tương lai, vui lòng <strong>liên hệ quản lý</strong>.
+        <div class="alert alert-danger">
+            <strong>Lưu ý:</strong> Sau khi đăng ký, bạn sẽ trở thành <strong>nhân viên sở thú</strong>.
+            <br />Ngày vào làm tính từ <strong>thời điểm đăng ký</strong>.
+            <br />Chỉnh sửa thông tin cá nhân cần <strong>liên hệ quản lý</strong>.
         </div>
 
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-        <!-- Nếu controller dùng @GetMapping("/register") -> return "register" và addAttribute("form", new RegisterForm()) -->
-        <form th:action="@{/register}" th:object="${form}" method="post" class="bg-white p-4 rounded shadow-sm row g-3">
+        <form th:action="@{/register}" th:object="${form}" method="post"
+            class="needs-validation bg-white p-4 rounded shadow-sm row g-3" novalidate>
 
+            <!-- Họ tên -->
             <div class="col-md-6">
                 <label class="form-label">Họ tên</label>
-                <input class="form-control" th:field="*{fullname}" required>
+                <input type="text" th:field="*{fullname}" class="form-control" placeholder="Nhập họ tên" required
+                    minlength="2" />
+                <div class="invalid-feedback">Họ tên là bắt buộc.</div>
             </div>
 
-
+            <!-- Tên đăng nhập -->
             <div class="col-md-6">
                 <label class="form-label">Tên đăng nhập</label>
-                <input class="form-control" th:field="*{username}" required>
+                <input type="text" th:field="*{username}" class="form-control" placeholder="Tên đăng nhập" required
+                    minlength="4" maxlength="30" />
+                <div class="invalid-feedback">Tên đăng nhập là bắt buộc và hợp lệ.</div>
             </div>
 
+            <!-- Cấp bậc -->
             <div class="col-md-6">
                 <label class="form-label">Cấp bậc</label>
                 <select class="form-select" th:field="*{role}" id="roleSelect">
@@ -46,30 +66,50 @@
                 </select>
             </div>
 
+            <!-- Mật khẩu -->
             <div class="col-md-6">
                 <label class="form-label">Mật khẩu</label>
-                <input type="password" class="form-control" th:field="*{password}" minlength="6" required>
-                <div class="form-text">Tối thiểu 6 ký tự.</div>
+                <input type="password" th:field="*{password}" class="form-control" placeholder="••••••••" required />
+
+                <div class="progress mt-2 progress-sm">
+                    <div id="pwBar" class="progress-bar" role="progressbar" style="width:0%"></div>
+                </div>
+                <small id="pwLabel" class="form-text text-muted">Độ mạnh: Kém</small>
+
+                <ul class="strength-checklist small mt-2 list-unstyled">
+                    <li id="rLower" class="text-muted"><i class="bi bi-dot"></i> Có chữ thường</li>
+                    <li id="rUpper" class="text-muted"><i class="bi bi-dot"></i> Có chữ hoa</li>
+                    <li id="rDigit" class="text-muted"><i class="bi bi-dot"></i> Có số</li>
+                    <li id="rSpecial" class="text-muted"><i class="bi bi-dot"></i> Có ký tự đặc biệt</li>
+                    <li id="rLen" class="text-muted"><i class="bi bi-dot"></i> Độ dài ≥ 8 ký tự</li>
+                </ul>
             </div>
 
+            <!-- Xác nhận mật khẩu -->
             <div class="col-md-6">
                 <label class="form-label">Xác nhận mật khẩu</label>
-                <input type="password" class="form-control" th:field="*{confirmPassword}" minlength="6" required>
+                <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="••••••••"
+                    required />
+                <div class="invalid-feedback">Xác nhận mật khẩu không khớp.</div>
             </div>
 
-            <!-- Chỉ hiển thị khi chọn Admin -->
+            <!-- Mã mời admin -->
             <div class="col-12 d-none" id="inviteWrap">
                 <label class="form-label">Mã mời Admin</label>
-                <input class="form-control" th:field="*{invite}" placeholder="Nhập mã mời từ quản trị viên">
-                <div class="form-text">Chỉ cần khi chọn vai trò Quản lý.</div>
+                <input type="text" th:field="*{invite}" class="form-control"
+                    placeholder="Nhập mã mời từ quản trị viên" />
+                <div class="form-text">Chỉ cần khi chọn Quản lý.</div>
             </div>
 
+            <!-- SĐT -->
             <div class="col-md-6">
-                <label class="form-label">SĐT</label>
-                <input class="form-control" th:field="*{phone}">
+                <label class="form-label">Số điện thoại</label>
+                <input type="tel" id="phone" th:field="*{phone}" class="form-control" placeholder="Nhập số điện thoại"
+                    required pattern="[0-9]{10}" minlength="10" maxlength="10" />
+                <div class="invalid-feedback">Vui lòng nhập đúng 10 chữ số.</div>
             </div>
 
-
+            <!-- Nút -->
             <div class="col-12 text-end">
                 <a href="/login" class="btn btn-outline-secondary">Hủy</a>
                 <button type="submit" class="btn btn-primary">Đăng ký</button>
@@ -77,12 +117,70 @@
         </form>
     </div>
 
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <script>
-        const roleSelect = document.getElementById('roleSelect');
-        const inviteWrap = document.getElementById('inviteWrap');
-        function toggleInvite() { inviteWrap.classList.toggle('d-none', roleSelect.value !== 'admin'); }
-        roleSelect && roleSelect.addEventListener('change', toggleInvite);
-        toggleInvite();
+        const pw = document.querySelector('[name="password"]');
+        const cpw = document.querySelector('[name="confirmPassword"]');
+        const bar = document.getElementById('pwBar');
+        const lbl = document.getElementById('pwLabel');
+
+        const rLower = document.getElementById('rLower');
+        const rUpper = document.getElementById('rUpper');
+        const rDigit = document.getElementById('rDigit');
+        const rSpecial = document.getElementById('rSpecial');
+        const rLen = document.getElementById('rLen');
+
+        function check(val, regex) { return regex.test(val); }
+        function updateStrength() {
+            const v = pw.value || '';
+            const checks = [
+                check(v, /[a-z]/),
+                check(v, /[A-Z]/),
+                check(v, /\d/),
+                check(v, /[^A-Za-z0-9]/),
+                v.length >= 8
+            ];
+
+            const list = [rLower, rUpper, rDigit, rSpecial, rLen];
+            checks.forEach((ok, i) => {
+                list[i].classList.toggle('text-success', ok);
+                list[i].classList.toggle('text-muted', !ok);
+                list[i].querySelector('i').className = ok ? 'bi bi-check-circle-fill text-success' : 'bi bi-dot';
+            });
+
+            const score = checks.filter(Boolean).length;
+            const colors = ['bg-danger', 'bg-danger', 'bg-warning', 'bg-info', 'bg-success'];
+            const labels = ['Kém', 'Kém', 'Trung bình', 'Mạnh', 'Rất mạnh'];
+            bar.style.width = (score / 5 * 100) + '%';
+            bar.className = 'progress-bar ' + colors[score - 1];
+            lbl.textContent = 'Độ mạnh: ' + labels[score - 1];
+        }
+
+        pw.addEventListener('input', updateStrength);
+        cpw.addEventListener('input', () => cpw.setCustomValidity(cpw.value === pw.value ? '' : 'notmatch'));
+        updateStrength();
+
+        document.getElementById('roleSelect').addEventListener('change', function () {
+            document.getElementById('inviteWrap').classList.toggle('d-none', this.value !== 'admin');
+        });
+
+        // Form validation
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    cpw.setCustomValidity(cpw.value === pw.value ? '' : 'notmatch');
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
     </script>
 </body>
 

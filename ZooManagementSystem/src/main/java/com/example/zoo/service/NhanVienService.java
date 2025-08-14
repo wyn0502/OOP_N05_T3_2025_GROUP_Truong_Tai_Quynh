@@ -2,6 +2,7 @@ package com.example.zoo.service;
 
 import com.example.zoo.model.NhanVien;
 import com.example.zoo.repository.NhanVienRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +13,11 @@ import java.util.List;
 public class NhanVienService {
 
     private final NhanVienRepository repo;
+    private final PasswordEncoder passwordEncoder;
 
-    public NhanVienService(NhanVienRepository repo) {
+    public NhanVienService(NhanVienRepository repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // ======== READ ========
@@ -30,26 +33,35 @@ public class NhanVienService {
         return repo.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public NhanVien timTheoUsername(String username) {
+        if (isBlank(username)) return null;
+        return repo.findByUsername(username.trim());
+    }
+
     // ======== CREATE ========
     public NhanVien them(NhanVien nv) {
         if (nv == null) return null;
 
-        // Không động vào id (DB tự sinh)
         nv.setFullname(safe(nv.getFullname()));
         nv.setUsername(safe(nv.getUsername()));
         nv.setPhone(safe(nv.getPhone()));
         nv.setChuong(safe(nv.getChuong()));
         nv.setRole(normalizeRole(nv.getRole()));
-        nv.setPassword(safe(nv.getPassword())); 
+        nv.setPassword(safe(nv.getPassword()));
 
-         if (!isBlank(nv.getUsername()) && repo.existsByUsername(nv.getUsername())) {
-             throw new IllegalArgumentException("Username đã tồn tại");
-         }
+        if (!isBlank(nv.getUsername()) && repo.existsByUsername(nv.getUsername())) {
+            throw new IllegalArgumentException("Username đã tồn tại");
+        }
 
-        
         if (isBlank(nv.getPassword())) {
-             throw new IllegalArgumentException("Password không được để trống");
-         }
+            throw new IllegalArgumentException("Password không được để trống");
+        }
+
+        // 🔐 Mã hoá mật khẩu nếu chưa được mã hoá
+        if (!isEncoded(nv.getPassword())) {
+            nv.setPassword(passwordEncoder.encode(nv.getPassword()));
+        }
 
         return repo.save(nv);
     }
@@ -76,8 +88,10 @@ public class NhanVienService {
                 nv.setDatework(patch.getDatework());
             if (!isBlank(role))
                 nv.setRole(normalizeRole(role));
-            if (!isBlank(password))
-                nv.setPassword(password);
+            if (!isBlank(password)) {
+                // 🔐 Mã hoá lại nếu chưa mã hoá
+                nv.setPassword(isEncoded(password) ? password : passwordEncoder.encode(password));
+            }
 
             return repo.save(nv);
         }).orElse(null);
@@ -85,11 +99,27 @@ public class NhanVienService {
 
     // ======== DELETE ========
     public void xoa(Long id) {
-        if (id == null)
-            return;
+        if (id == null) return;
         if (repo.existsById(id)) {
             repo.deleteById(id);
         }
+    }
+
+    // ======== BCRYPT MIGRATION ========
+    public void upgradeAllNhanVienPasswordsToBCrypt() {
+        List<NhanVien> list = repo.findAll();
+        int count = 0;
+
+        for (NhanVien nv : list) {
+            String pw = nv.getPassword();
+            if (!isBlank(pw) && !isEncoded(pw)) {
+                nv.setPassword(passwordEncoder.encode(pw));
+                count++;
+            }
+        }
+
+        repo.saveAll(list);
+        System.out.println("Đã mã hoá mật khẩu cho " + count + " nhân viên dưới dạng BCrypt.");
     }
 
     // ======== Helpers ========
@@ -107,10 +137,8 @@ public class NhanVienService {
         return role.equalsIgnoreCase("admin") ? "admin" : "staff";
     }
 
-    @Transactional(readOnly = true)
-public NhanVien timTheoUsername(String username) {
-    if (username == null || username.trim().isEmpty()) return null;
-    return repo.findByUsername(username.trim());
-}
-
+    private static boolean isEncoded(String password) {
+        // BCrypt password thường bắt đầu bằng $2a$, $2b$ hoặc $2y$
+        return password != null && password.startsWith("$2");
+    }
 }

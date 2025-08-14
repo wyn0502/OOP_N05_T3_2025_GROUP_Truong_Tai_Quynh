@@ -9,6 +9,9 @@
 
 ---
 
+👉 [`TRẢI NGHIỆM ỨNG DỤNG`](https://wyn0502.id.vn/login)
+
+
 ## 📑 Mục lục
 1. 📖 Giới thiệu
 2. 🎯 Mục tiêu và phạm vi
@@ -51,7 +54,7 @@
 
 <img width="1004" height="439" alt="dangky" src="https://github.com/user-attachments/assets/08100863-0047-4afc-8306-6f0ee26e8fce" /><br>Nơi để đăng kí tài khoản
 
-<img width="1004" height="423" alt="main" src="https://github.com/user-attachments/assets/d5071ec2-99b6-4c08-abe1-ef6b9bfb8bba" /><br>Giao diện chính hiển thị thông tin
+<img width="1004" height="700" alt="Image" src="https://github.com/user-attachments/assets/b0b3587d-0566-46b1-9652-b64c479bff1e" /><br>Giao diện chính hiển thị thông tin
 
 <img width="1004" height="554" alt="user" src="https://github.com/user-attachments/assets/a821b85e-7491-404f-90f3-41a54da5f9c9" /><br>Giao diện nhân viên<br>Vì chính sách bảo mật nên 1 số thông tin được che.
 
