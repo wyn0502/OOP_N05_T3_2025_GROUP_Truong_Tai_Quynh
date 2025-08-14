@@ -13,6 +13,11 @@
     <i class="bi bi-calendar-check-fill"></i> Chỉnh Sửa Lịch Cho Ăn
   </h2>
 
+  <!-- HIỂN THỊ LỖI CHUNG -->
+  <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-triangle-fill"></i> <span th:text="${errorMessage}"></span>
+  </div>
+
   <form th:action="@{/lichchoan/edit}" th:object="${lich}" method="post" novalidate>
 
     <div class="mb-3">
@@ -54,7 +59,7 @@
              id="thoiGianStr"
              name="thoiGianStr"
              class="form-control"
-             placeholder="VD: 11/08/2025 16:30"
+             placeholder="VD: 14/08/2025 16:30"
              th:value="${lich.thoiGian != null ? #temporals.format(lich.thoiGian, 'dd/MM/yyyy HH:mm') : ''}" />
       <div class="text-danger" th:if="${#fields.hasErrors('thoiGian')}" th:errors="*{thoiGian}"></div>
     </div>
