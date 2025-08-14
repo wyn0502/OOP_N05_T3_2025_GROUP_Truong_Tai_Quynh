@@ -2,22 +2,73 @@ package com.example.zoo.service;
 
 import com.example.zoo.model.NhanVien;
 import com.example.zoo.repository.NhanVienRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class NhanVienService {
 
+    @Autowired
+private NhanVienRepository nhanVienRepository;
+
     private final NhanVienRepository repo;
     private final PasswordEncoder passwordEncoder;
+
+   public List<NhanVien> timTheoFullname(String keyword) {
+        return nhanVienRepository.findByFullnameContainingIgnoreCase(keyword);
+    }
+
+    public List<NhanVien> timKiem(String type, String keyword) {
+        if (type == null || keyword == null || keyword.trim().isEmpty()) {
+            return nhanVienRepository.findAll();
+        }
+        
+
+        switch (type) {
+            case "id":
+                try {
+                    Long id = Long.parseLong(keyword);
+                    Optional<NhanVien> optional = nhanVienRepository.findById(id);
+                    return optional.map(List::of).orElse(Collections.emptyList());
+                } catch (NumberFormatException e) {
+                    return Collections.emptyList();
+                }
+
+            case "username":
+                NhanVien nv = nhanVienRepository.findByUsername(keyword);
+                return nv != null ? List.of(nv) : Collections.emptyList();
+
+            case "fullname":
+                return timTheoFullname(keyword);
+
+            default:
+                return Collections.emptyList();
+        }
+    }
+
+    public List<NhanVien> timKiem(String keyword) {
+    try {
+        Long id = Long.parseLong(keyword);
+        return nhanVienRepository.findByIdOrUsernameContainingIgnoreCaseOrFullnameContainingIgnoreCase(
+            id, keyword, keyword);
+    } catch (NumberFormatException e) {
+        return nhanVienRepository.findByIdOrUsernameContainingIgnoreCaseOrFullnameContainingIgnoreCase(
+            -1L, keyword, keyword);
+    }
+}
 
     public NhanVienService(NhanVienRepository repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
         this.passwordEncoder = passwordEncoder;
+        
     }
 
     // ======== READ ========

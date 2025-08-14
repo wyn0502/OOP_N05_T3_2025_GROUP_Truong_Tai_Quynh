@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/nhanvien")
 public class NhanVienController {
@@ -27,10 +30,8 @@ public class NhanVienController {
     }
 
     private boolean canView(User user) {
-        return user != null && (
-                "admin".equalsIgnoreCase(user.getRole()) ||
-                "staff".equalsIgnoreCase(user.getRole())
-        );
+        return user != null && ("admin".equalsIgnoreCase(user.getRole()) ||
+                "staff".equalsIgnoreCase(user.getRole()));
     }
 
     private boolean isAuthorized(HttpSession session) {
@@ -40,7 +41,8 @@ public class NhanVienController {
 
     // Tìm ID nhân viên từ username của User
     private Long resolveSelfNhanVienId(User user) {
-        if (user == null || user.getUsername() == null) return null;
+        if (user == null || user.getUsername() == null)
+            return null;
         try {
             NhanVien nhanVien = nhanVienService.timTheoUsername(user.getUsername());
             return nhanVien != null ? nhanVien.getId() : null;
@@ -52,9 +54,11 @@ public class NhanVienController {
 
     // Kiểm tra staff có được truy cập record này không
     private boolean canAccessRecord(User user, Long targetNhanVienId) {
-        if (user == null) return false;
-        if (isAdmin(user)) return true; // admin truy cập tất cả
-        
+        if (user == null)
+            return false;
+        if (isAdmin(user))
+            return true; // admin truy cập tất cả
+
         // Staff chỉ truy cập chính mình
         Long selfId = resolveSelfNhanVienId(user);
         return selfId != null && selfId.equals(targetNhanVienId);
@@ -64,8 +68,9 @@ public class NhanVienController {
     @GetMapping
     public String hienThiDanhSach(Model model, HttpSession session) {
         User u = (User) session.getAttribute("loggedInUser");
-        if (!canView(u)) return UNAUTHORIZED_REDIRECT;
-        
+        if (!canView(u))
+            return UNAUTHORIZED_REDIRECT;
+
         if (isAdmin(u)) {
             // Admin: xem tất cả
             model.addAttribute("danhSach", nhanVienService.hienThiTatCa());
@@ -85,24 +90,64 @@ public class NhanVienController {
                 }
             }
         }
-        
+
         model.addAttribute("role", u.getRole()); // Truyền role cho view
         return "nhanvien/list";
     }
 
+    // ======= SEARCH NHÂN VIÊN (admin: tất cả, staff: chỉ chính mình) =======
+    @GetMapping("/search")
+public String timKiemNhanVien(@RequestParam String type,
+                              @RequestParam String keyword,
+                              Model model,
+                              HttpSession session) {
+    User u = (User) session.getAttribute("loggedInUser");
+    if (!canView(u)) return UNAUTHORIZED_REDIRECT;
+
+    List<NhanVien> ketQua = new ArrayList<>(); // ✅ Chỉ khai báo 1 lần
+
+    if ("id".equals(type)) {
+        try {
+            Long id = Long.parseLong(keyword);
+            NhanVien nv = nhanVienService.timTheoId(id);
+            if (nv != null) {
+                ketQua.add(nv);
+            }
+        } catch (NumberFormatException e) {
+            // Ghi log hoặc bỏ qua
+        }
+    } else if ("username".equals(type)) {
+        NhanVien nv = nhanVienService.timTheoUsername(keyword);
+        if (nv != null) {
+            ketQua.add(nv);
+        }
+    } else if ("fullname".equals(type)) {
+        ketQua = nhanVienService.timTheoFullname(keyword); // ✅ Gán lại, không khai báo lại
+    }
+
+    model.addAttribute("danhSach", ketQua);
+    model.addAttribute("keyword", keyword);
+    model.addAttribute("searchType", type);
+    model.addAttribute("role", u.getRole());
+
+    return "nhanvien/list";
+}
+
     // ======= ADD (chỉ admin) =======
     @GetMapping("/add")
     public String hienThiFormThem(Model model, HttpSession session) {
-        if (!isAuthorized(session)) return UNAUTHORIZED_REDIRECT;
+        if (!isAuthorized(session))
+            return UNAUTHORIZED_REDIRECT;
         model.addAttribute("user", new NhanVien());
         return "nhanvien/add";
     }
 
     @PostMapping("/save")
     public String luuNhanVien(@ModelAttribute("user") NhanVien nv,
-                              HttpSession session,
-                              RedirectAttributes ra) {
-        if (!isAuthorized(session)) return UNAUTHORIZED_REDIRECT;
+            HttpSession session,
+            RedirectAttributes ra) {
+        if (!isAuthorized(session))
+            return UNAUTHORIZED_REDIRECT;
         try {
             NhanVien saved = nhanVienService.them(nv);
             if (saved == null) {
@@ -120,47 +165,61 @@ public class NhanVienController {
     // ======= EDIT (admin: tất cả, staff: chỉ chính mình) =======
     @GetMapping("/edit/{id}")
     public String hienThiFormSua(@PathVariable("id") Long id,
-                                 Model model,
-                                 HttpSession session,
-                                 RedirectAttributes ra) {
+            Model model,
+            HttpSession session,
+            RedirectAttributes ra) {
         User u = (User) session.getAttribute("loggedInUser");
-        if (!canView(u)) return UNAUTHORIZED_REDIRECT;
-        
+        if (!canView(u))
+            return UNAUTHORIZED_REDIRECT;
+
         // Kiểm tra quyền truy cập record này
         if (!canAccessRecord(u, id)) {
             ra.addFlashAttribute("error", "Bạn không có quyền chỉnh sửa thông tin nhân viên #" + id);
             return "redirect:/nhanvien?forbidden";
         }
-        
+
         NhanVien nv = nhanVienService.timTheoId(id);
         if (nv == null) {
             ra.addFlashAttribute("warning", "Không tìm thấy nhân viên #" + id);
             return "redirect:/nhanvien?notfound";
         }
-        
+
         model.addAttribute("user", nv);
         model.addAttribute("isStaffSelfEdit", !isAdmin(u)); // Để view biết là staff đang sửa chính mình
         return "nhanvien/edit";
     }
 
+    @GetMapping("/nhanvien")
+public String danhSachNhanVien(@RequestParam(value = "search", required = false) String keyword, Model model) {
+    List<NhanVien> danhSach;
+    if (keyword != null && !keyword.isBlank()) {
+        danhSach = nhanVienService.timKiem(keyword); // phải có hàm tìm kiếm
+    } else {
+        danhSach = nhanVienService.hienThiTatCa();
+    }
+    model.addAttribute("danhSachNhanVien", danhSach);
+    return "nhanvien/list"; // tên file html hiển thị danh sách
+}
+
     @PostMapping("/update")
     public String capNhatNhanVien(@ModelAttribute("user") NhanVien nv,
-                                  HttpSession session,
-                                  RedirectAttributes ra) {
+            HttpSession session,
+            RedirectAttributes ra) {
         User u = (User) session.getAttribute("loggedInUser");
-        if (!canView(u)) return UNAUTHORIZED_REDIRECT;
-        
+        if (!canView(u))
+            return UNAUTHORIZED_REDIRECT;
+
         if (nv.getId() == null) {
             ra.addFlashAttribute("error", "Thiếu ID nhân viên.");
             return "redirect:/nhanvien?bad_id";
         }
-        
+
         // Kiểm tra quyền truy cập record này
         if (!canAccessRecord(u, nv.getId())) {
             ra.addFlashAttribute("error", "Bạn không có quyền chỉnh sửa thông tin nhân viên #" + nv.getId());
             return "redirect:/nhanvien?forbidden";
         }
-        
+
         try {
             // Nếu là staff, chỉ cho phép sửa một số field nhất định
             if (!isAdmin(u)) {
@@ -172,20 +231,20 @@ public class NhanVienController {
                     nv.setRole(existing.getRole()); // giữ nguyên
                     nv.setDatework(existing.getDatework()); // giữ nguyên
                     nv.setChuong(existing.getChuong()); // giữ nguyên
-                    
+
                     // Nếu không nhập password mới thì giữ nguyên password cũ
                     if (nv.getPassword() == null || nv.getPassword().trim().isEmpty()) {
                         nv.setPassword(existing.getPassword());
                     }
                 }
             }
-            
+
             NhanVien updated = nhanVienService.capNhat(nv.getId(), nv);
             if (updated == null) {
                 ra.addFlashAttribute("warning", "Không tìm thấy nhân viên #" + nv.getId());
                 return "redirect:/nhanvien?notfound";
             }
-            
+
             ra.addFlashAttribute("success", "Cập nhật thông tin thành công.");
             return "redirect:/nhanvien?updated";
         } catch (Exception e) {
@@ -197,9 +256,10 @@ public class NhanVienController {
     // ======= DELETE (chỉ admin) =======
     @GetMapping("/delete/{id}")
     public String xoaNhanVien(@PathVariable("id") Long id,
-                              HttpSession session,
-                              RedirectAttributes ra) {
-        if (!isAuthorized(session)) return UNAUTHORIZED_REDIRECT;
+            HttpSession session,
+            RedirectAttributes ra) {
+        if (!isAuthorized(session))
+            return UNAUTHORIZED_REDIRECT;
         nhanVienService.xoa(id);
         ra.addFlashAttribute("success", "Đã xoá nhân viên #" + id);
         return "redirect:/nhanvien?deleted";
@@ -208,37 +268,39 @@ public class NhanVienController {
     // ======= RESET PASSWORD (admin: tất cả, staff: chỉ chính mình) =======
     @GetMapping("/reset-password/{id}")
     public String showResetPasswordForm(@PathVariable Long id,
-                                        Model model,
-                                        HttpSession session,
-                                        RedirectAttributes ra) {
+            Model model,
+            HttpSession session,
+            RedirectAttributes ra) {
         User u = (User) session.getAttribute("loggedInUser");
-        if (!canView(u)) return UNAUTHORIZED_REDIRECT;
-        
+        if (!canView(u))
+            return UNAUTHORIZED_REDIRECT;
+
         // Kiểm tra quyền truy cập record này
         if (!canAccessRecord(u, id)) {
             ra.addFlashAttribute("error", "Bạn không có quyền thao tác với nhân viên #" + id);
             return "redirect:/nhanvien?forbidden";
         }
-        
+
         NhanVien nv = nhanVienService.timTheoId(id);
         if (nv == null) {
             ra.addFlashAttribute("warning", "Không tìm thấy nhân viên #" + id);
             return "redirect:/nhanvien?notfound";
         }
-        
+
         model.addAttribute("userId", id);
         return "nhanvien/reset-password";
     }
 
     @PostMapping("/reset-password/{id}")
     public String doResetPassword(@PathVariable Long id,
-                                  @RequestParam String newPassword,
-                                  @RequestParam String confirmPassword,
-                                  HttpSession session,
-                                  RedirectAttributes ra) {
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword,
+            HttpSession session,
+            RedirectAttributes ra) {
         User u = (User) session.getAttribute("loggedInUser");
-        if (!canView(u)) return UNAUTHORIZED_REDIRECT;
-        
+        if (!canView(u))
+            return UNAUTHORIZED_REDIRECT;
+
         // Kiểm tra quyền truy cập record này
         if (!canAccessRecord(u, id)) {
             ra.addFlashAttribute("error", "Bạn không có quyền thao tác với nhân viên #" + id);

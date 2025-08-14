@@ -25,34 +25,30 @@ public class RegisterController {
     @Value("${app.admin.invite-code:}")
     private String adminInvite;
 
-    // ====== Precompiled patterns ======
-    private static final Pattern P_LOWER   = Pattern.compile(".*[a-z].*");
-    private static final Pattern P_UPPER   = Pattern.compile(".*[A-Z].*");
-    private static final Pattern P_DIGIT   = Pattern.compile(".*\\d.*");
-    private static final Pattern P_SPECIAL = Pattern.compile(".*[^A-Za-z0-9].*");
-
     public RegisterController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // === [GET] Hiển thị form đăng ký ===
+    private static final Pattern P_LOWER   = Pattern.compile(".*[a-z].*");
+    private static final Pattern P_UPPER   = Pattern.compile(".*[A-Z].*");
+    private static final Pattern P_DIGIT   = Pattern.compile(".*\\d.*");
+    private static final Pattern P_SPECIAL = Pattern.compile(".*[^A-Za-z0-9].*");
+
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         if (!model.containsAttribute("form")) {
             RegisterForm form = new RegisterForm();
-            form.setRole("staff"); // mặc định
+            form.setRole("staff");
             model.addAttribute("form", form);
         }
         return "register";
     }
 
-    // === [POST] Xử lý form đăng ký ===
     @PostMapping("/register")
     public String processRegister(@ModelAttribute("form") RegisterForm form,
                                   RedirectAttributes redirect) {
 
-        // Chuẩn hoá dữ liệu đầu vào
         String fullname = trim(form.getFullname());
         String username = normalizeUsername(form.getUsername());
         String password = trim(form.getPassword());
@@ -62,39 +58,30 @@ public class RegisterController {
         String roleIn   = trim(form.getRole());
         String invite   = trim(form.getInvite());
 
-        // Bắt buộc
         if (isBlank(fullname) || isBlank(username) || isBlank(password)) {
             return backWithError("Vui lòng nhập đầy đủ Họ tên, Tên đăng nhập và Mật khẩu.", form, redirect);
         }
 
-        // Xác nhận mật khẩu
         if (confirm != null && !password.equals(confirm)) {
             return backWithError("Mật khẩu xác nhận không khớp.", form, redirect);
         }
 
-        // Kiểm tra mật khẩu mạnh
-        String pwdMsg = validatePassword(password);
-        if (pwdMsg != null) {
-            return backWithError(pwdMsg, form, redirect);
-        }
-
-        // Username duy nhất
         if (userRepository.existsByUsername(username)) {
             return backWithError("Tên đăng nhập đã tồn tại.", form, redirect);
         }
 
-        // SĐT hợp lệ & duy nhất (10 chữ số)
         if (isBlank(phone)) {
             return backWithError("Vui lòng nhập số điện thoại.", form, redirect);
         }
+
         if (phone.length() != 10 || !phone.chars().allMatch(Character::isDigit)) {
             return backWithError("Số điện thoại phải đúng 10 chữ số.", form, redirect);
         }
+
         if (userRepository.existsByPhone(phone)) {
             return backWithError("Số điện thoại đã được sử dụng.", form, redirect);
         }
 
-        // Vai trò
         String role = "staff";
         if ("admin".equalsIgnoreCase(roleIn)) {
             if (isBlank(adminInvite) || isBlank(invite) || !invite.equals(adminInvite)) {
@@ -103,11 +90,16 @@ public class RegisterController {
             role = "admin";
         }
 
-        // Tạo user + mã hoá BCrypt
+
+        int strength = getPasswordStrength(password);
+        if (strength <= 2) {
+            redirect.addFlashAttribute("warning", "Mật khẩu của bạn khá yếu. Vui lòng cân nhắc sử dụng mật khẩu mạnh hơn.");
+        }
+
         User user = new User();
         user.setFullname(fullname);
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password)); // BCrypt
+        user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
         user.setPhone(phone);
         user.setDatework(LocalDate.now());
@@ -119,28 +111,15 @@ public class RegisterController {
         return "redirect:/login";
     }
 
-    // ===== Helpers =====
-
-    private static String validatePassword(String pwd) {
-        if (pwd == null || pwd.trim().isEmpty()) return "Mật khẩu không được để trống.";
-
-        boolean hasLower   = P_LOWER.matcher(pwd).matches();
-        boolean hasUpper   = P_UPPER.matcher(pwd).matches();
-        boolean hasDigit   = P_DIGIT.matcher(pwd).matches();
-        boolean hasSpecial = P_SPECIAL.matcher(pwd).matches();
-        boolean hasLen     = pwd.length() >= 8;
-
-        if (hasLower && hasUpper && hasDigit && hasSpecial && hasLen) return null;
-
-        StringBuilder sb = new StringBuilder("Mật khẩu chưa đạt yêu cầu: cần ");
-        boolean first = true;
-        if (!hasLen)     { sb.append("độ dài ≥ 8"); first = false; }
-        if (!hasLower)   { sb.append(first? "" : ", ").append("chữ thường"); first = false; }
-        if (!hasUpper)   { sb.append(first? "" : ", ").append("chữ hoa"); first = false; }
-        if (!hasDigit)   { sb.append(first? "" : ", ").append("chữ số"); first = false; }
-        if (!hasSpecial) { sb.append(first? "" : ", ").append("ký tự đặc biệt"); }
-        sb.append('.');
-        return sb.toString();
+    private static int getPasswordStrength(String pwd) {
+        if (pwd == null) return 0;
+        int score = 0;
+        if (pwd.length() >= 8) score++;
+        if (P_LOWER.matcher(pwd).matches()) score++;
+        if (P_UPPER.matcher(pwd).matches()) score++;
+        if (P_DIGIT.matcher(pwd).matches()) score++;
+        if (P_SPECIAL.matcher(pwd).matches()) score++;
+        return score;
     }
 
     private static String normalizeUsername(String s) {
