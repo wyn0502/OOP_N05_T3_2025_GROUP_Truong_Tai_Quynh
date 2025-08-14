@@ -1,110 +1,125 @@
-// package com.example.zoo.test;
+package com.example.zoo.test;
 
-// import com.example.zoo.controller.ChuongController;
-// import com.example.zoo.model.Chuong;
-// import com.example.zoo.model.User;
-// import com.example.zoo.service.ChuongService;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import org.mockito.MockitoAnnotations;
-// import org.springframework.ui.Model;
+import com.example.zoo.controller.ChuongController;
+import com.example.zoo.model.Chuong;
+import com.example.zoo.model.User;
+import com.example.zoo.service.ChuongService;
+import com.example.zoo.service.DongVatService;
 
-// import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ui.Model;
 
-// import java.util.Arrays;
+import java.util.Arrays;
+import java.util.Collections;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-// class ChuongControllerTest {
+@ExtendWith(MockitoExtension.class)
+class ChuongControllerTest {
 
-//     @Mock
-//     private ChuongService chuongService;
+    @Mock
+    private ChuongService chuongService;
 
-//     @Mock
-//     private HttpSession session;
+    @Mock
+    private DongVatService dongVatService;
 
-//     @Mock
-//     private Model model;
+    @Mock
+    private HttpSession session;
 
-//     @InjectMocks
-//     private ChuongController chuongController;
+    @Mock
+    private Model model;
 
-//     private User adminUser;
-//     private User normalUser;
+    @InjectMocks
+    private ChuongController chuongController;
 
-//     @BeforeEach
-//     void setUp() {
-//         MockitoAnnotations.openMocks(this);
-//         adminUser = new User();
-//         adminUser.setRole("admin");
+    private User adminUser;
+    private User staffUser;
+    private User normalUser;
 
-//         normalUser = new User();
-//         normalUser.setRole("user");
-//     }
+    @BeforeEach
+    void setUp() {
+        adminUser = new User();
+        adminUser.setRole("admin");
 
-//     @Test
-//     void testList_AsAdmin_ShouldReturnListView() {
-//         when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
-//         when(chuongService.hienThi()).thenReturn(Arrays.asList(new Chuong("C01", "Khu A", 10, 5)));
+        staffUser = new User();
+        staffUser.setRole("staff");
 
-//         String viewName = chuongController.list(model, session);
+        normalUser = new User();
+        normalUser.setRole("user");
+    }
 
-//         assertEquals("chuong/list", viewName);
-//         verify(model).addAttribute(eq("danhSach"), any());
-//     }
+    @Test
+    void testList_AsAdmin_ShouldReturnListView() {
+        when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
+        when(chuongService.hienThi()).thenReturn(Arrays.asList(new Chuong("C01", "Khu A", 10, 5)));
 
-//     @Test
-//     void testList_AsUser_ShouldRedirectToError() {
-//         when(session.getAttribute("loggedInUser")).thenReturn(normalUser);
+        String viewName = chuongController.list(model, session, null);
 
-//         String viewName = chuongController.list(model, session);
+        assertEquals("chuong/list", viewName);
+        verify(model).addAttribute(eq("danhSach"), any());
+    }
 
-//         assertEquals("redirect:/error/505", viewName);
-//     }
+    @Test
+    void testList_AsStaff_ShouldReturnListView() {
+        when(session.getAttribute("loggedInUser")).thenReturn(staffUser);
+        when(chuongService.hienThi()).thenReturn(Collections.emptyList());
 
-//     @Test
-//     void testThemForm_AsAdmin_ShouldReturnForm() {
-//         when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
+        String viewName = chuongController.list(model, session, null);
+        assertEquals("chuong/list", viewName);
+    }
 
-//         String viewName = chuongController.themForm(model, session);
+    @Test
+    void testList_AsUser_ShouldRedirectError() {
+        when(session.getAttribute("loggedInUser")).thenReturn(normalUser);
 
-//         assertEquals("chuong/form", viewName);
-//         verify(model).addAttribute(eq("mode"), eq("add"));
-//     }
+        String viewName = chuongController.list(model, session, null);
+        assertEquals("redirect:/error/505", viewName);
+    }
 
-//     @Test
-//     void testSuaForm_NotFound_ShouldRedirect() {
-//         when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
-//         when(chuongService.timTheoMa("C01")).thenReturn(null);
+    @Test
+    void testThemForm_AsAdmin() {
+        when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
+        String viewName = chuongController.themForm(model, session);
 
-//         String viewName = chuongController.suaForm("C01", model, session);
+        assertEquals("chuong/form", viewName);
+        verify(model).addAttribute(eq("mode"), eq("add"));
+    }
 
-//         assertEquals("redirect:/chuong", viewName);
-//     }
+    @Test
+    void testSuaForm_NotFound_ShouldRedirect() {
+        when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
+        when(chuongService.timTheoMa("C01")).thenReturn(null);
 
-//     @Test
-//     void testLuu_AddMode_NewChuong_ShouldRedirect() {
-//         when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
-//         when(chuongService.timTheoMa("C01")).thenReturn(null);
+        String viewName = chuongController.suaForm("C01", model, session);
+        assertEquals("redirect:/chuong", viewName);
+    }
 
-//         Chuong chuong = new Chuong("C01", "Khu A", 10, 5);
+    @Test
+    void testLuu_AddMode_NewChuong_ShouldRedirect() {
+        when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
+        when(chuongService.timTheoMa("C01")).thenReturn(null);
 
-//         String viewName = chuongController.luu(chuong, "add", session, model);
+        Chuong chuong = new Chuong("C01", "Khu A", 10, 5);
+        String viewName = chuongController.luu(chuong, "add", session, model);
 
-//         assertEquals("redirect:/chuong", viewName);
-//         verify(chuongService).them(chuong);
-//     }
+        assertEquals("redirect:/chuong", viewName);
+        verify(chuongService).them(any(Chuong.class));
+    }
 
-//     @Test
-//     void testXoa_AsAdmin_ShouldRedirect() {
-//         when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
+    @Test
+    void testXoa_AsAdmin_NoAnimal_ShouldRedirectDeleted() {
+        when(session.getAttribute("loggedInUser")).thenReturn(adminUser);
+        when(dongVatService.demDongVatTheoMaChuong("C01")).thenReturn(0L);
 
-//         String viewName = chuongController.xoa("C01", session, model);
-
-//         assertEquals("redirect:/chuong", viewName);
-//         verify(chuongService).xoa("C01");
-//     }
-// }
+        String viewName = chuongController.xoa("C01", session, model);
+        assertEquals("redirect:/chuong?deleted", viewName);
+        verify(chuongService).xoa("C01");
+    }
+}
