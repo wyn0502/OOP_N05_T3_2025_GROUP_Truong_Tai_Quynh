@@ -3,6 +3,9 @@ package com.example.zoo.test;
 import com.example.zoo.model.Chuong;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChuongTest {
@@ -22,16 +25,38 @@ class ChuongTest {
     }
 
     @Test
-    void testValidateChuong_SoLuongLonHonSucChua() {
+    void testValidateChuong_SoLuongLonHonSucChua() throws Exception {
         Chuong c = new Chuong("C03", "Khu C", 5, 10);
-        IllegalStateException ex = assertThrows(IllegalStateException.class, c::validateChuong);
+
+        Method m = Chuong.class.getDeclaredMethod("validateChuong");
+        m.setAccessible(true);
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> {
+            try {
+                m.invoke(c);
+            } catch (InvocationTargetException e) {
+                throw (RuntimeException) e.getCause();
+            }
+        });
+
         assertTrue(ex.getMessage().contains("không thể lớn hơn"));
     }
 
     @Test
-    void testValidateChuong_SucChuaKhongHopLe() {
+    void testValidateChuong_SucChuaKhongHopLe() throws Exception {
         Chuong c = new Chuong("C04", "Khu D", 0, 0);
-        IllegalStateException ex = assertThrows(IllegalStateException.class, c::validateChuong);
+
+        Method m = Chuong.class.getDeclaredMethod("validateChuong");
+        m.setAccessible(true);
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> {
+            try {
+                m.invoke(c);
+            } catch (InvocationTargetException e) {
+                throw (RuntimeException) e.getCause();
+            }
+        });
+
         assertEquals("Sức chứa tối đa phải lớn hơn 0", ex.getMessage());
     }
 
