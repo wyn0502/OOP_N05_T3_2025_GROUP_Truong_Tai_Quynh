@@ -59,7 +59,7 @@ class LichChoAnControllerTest {
         staffUser.setId(2L);
         
         sampleDongVat = new DongVat();
-        sampleDongVat.setId("DV001");
+        
         sampleDongVat.setTen("Hổ Bengal");
         
         sampleLich = new LichChoAn();
