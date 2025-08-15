@@ -234,6 +234,10 @@ OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/<br>
 <img src="https://img.icons8.com/color/26/internet--v1.png" width="22"/> **Link web:**  
 👉 [`WEB`](https://wyn0502.id.vn/login)
 
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" width="18" /> **Youtube demo:** <br>
+👉 [`Video demo`](https://youtu.be/mDq7qwH_H2o?si=uHPT6aPfjwXKKDeb)
+
 ---
 
 💡 **Nếu bạn thấy dự án hữu ích, hãy nhấn 🌟 star để ủng hộ nhóm nhé!**
