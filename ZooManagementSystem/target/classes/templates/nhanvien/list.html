@@ -23,6 +23,18 @@
     <p class="lead text-muted">Tất cả nhân viên đang làm việc tại sở thú</p>
   </div>
 
+  <!-- Tìm kiếm -->
+  <form th:action="@{/nhanvien/search}" method="get" class="d-flex justify-content-center mb-4 flex-wrap gap-2">
+    <select name="type" class="form-select w-auto">
+      <option value="id" th:selected="${searchType == 'id'}">ID</option>
+      <option value="username" th:selected="${searchType == 'username'}">Username</option>
+      <option value="fullname" th:selected="${searchType == 'fullname'}">Họ tên</option>
+    </select>
+    <input type="text" name="keyword" th:value="${keyword}" class="form-control w-auto" placeholder="Từ khóa..." />
+    <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Tìm</button>
+    <a href="/nhanvien" class="btn btn-outline-secondary"><i class="fas fa-times me-1"></i> Xoá lọc</a>
+  </form>
+
   <!-- Hành động -->
   <div class="d-flex justify-content-center mb-4 gap-3 flex-wrap">
     <a href="/nhanvien/add" class="btn btn-primary btn-lg shadow-sm">
@@ -80,8 +92,8 @@
     <!-- Nếu không có dữ liệu -->
     <div th:if="${#lists.isEmpty(danhSach)}" class="text-center py-5 bg-white shadow-sm rounded">
       <i class="fas fa-user-times display-1 text-muted mb-3"></i>
-      <h3 class="text-muted mb-2">Chưa có nhân viên nào</h3>
-      <p class="text-muted">Hãy thêm nhân viên đầu tiên để bắt đầu quản lý!</p>
+      <h3 class="text-muted mb-2">Không có nhân viên phù hợp</h3>
+      <p class="text-muted">Hãy kiểm tra lại từ khoá tìm kiếm hoặc thêm nhân viên mới.</p>
     </div>
   </div>
 </div>
