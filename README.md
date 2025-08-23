@@ -175,9 +175,9 @@ OOP_N05_T3_2025_GROUP_Truong_Tai_Quynh/<br>
     │                           ├── GiaVeControllerTest.java<br>
     │                           ├── GiaVeServiceTest.java<br>
     │                           └── GiaVeTest.java<br>
-    |                           └── LichChoAnTest.java<br>
-    |                           ├── LichChoAnServiceTest.java<br>
-    |                           ├── LichChoAnControllerTest.java<br>
+    │                           ├── LichChoAnControllerTest.java
+    │                           ├── LichChoAnServiceTest.java
+    │                           └── LichChoAnTest.java
     └── review/Start/test/                                                  # Development/Testing Files<br>
             ├── quynh/<br>
             ├── tai/<br>
